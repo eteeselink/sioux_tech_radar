@@ -10,60 +10,61 @@ var Quadrant = (function () {
     return Quadrant;
 })();
 var Thing = (function () {
-    function Thing(name, quadrant, goodness) {
+    function Thing(name, quadraant, goodness) {
         this.name = name;
-        this.quadrant = quadrant;
+        this.quadraant = quadraant;
         this.goodness = goodness;
-        var badness = 1.0 - this.goodness;
-        this.x = badness * Math.cos(this.quadrant.angle);
-        this.y = -badness * Math.sin(this.quadrant.angle);
     }
     return Thing;
 })();
-var Canvas = (function () {
-    function Canvas(width, height, xOrigin, yOrigin, things) {
+function id(v) {
+    return v;
+}
+var Viewport = (function () {
+    function Viewport(width, xOrigin, yOrigin) {
         this.width = width;
-        this.height = height;
         this.xOrigin = xOrigin;
         this.yOrigin = yOrigin;
-        this.things = things;
+        this.svg = d3.select("body").append("svg").attr("width", $(document).width()).attr("height", width).style("transform", "translate(" + xOrigin + ", " + yOrigin + ")").style("border", "1px 1px 0 0 solid black");
     }
-    Canvas.prototype.draw = function () {
-        var thingDots = d3.select("#radar-plot").selectAll("div.thing").data(this.things);
-        this.setThings(thingDots);
-        this.setThings(thingDots.enter().append("div.thing"));
-        thingDots.exit().remove();
-        var origin = d3.select("#radar-plot").selectAll("div.origin").data([
-            0
-        ]);
-        this.setOrigin(origin.enter().append("div"));
-    };
-    Canvas.prototype.setOrigin = function (origin) {
-        origin.classed("origin", true).style("left", (this.xOrigin - 10) + "px").style("top", (this.yOrigin - 10) + "px").style("width", 20 + "px").style("height", 20 + "px");
-    };
-    Canvas.prototype.setThings = function (thingDots) {
+    Viewport.prototype.draw = function (things) {
         var self = this;
-        thingDots.classed("thing", true).text(function (thing) {
-            return thing.name;
-        }).style("position", "absolute").style("left", function (thing) {
-            return Math.round(thing.x * self.width / 2 + self.xOrigin) + "px";
-        }).style("top", function (thing) {
-            return Math.round(thing.y * self.height / 2 + self.yOrigin) + "px";
+        var circles = this.svg.selectAll("g").data(things);
+        var enter = circles.enter().append("g");
+        enter.attr("transform", "translate(10, 10)").attr("y", function (thing) {
+            return thing.goodness * self.width;
         });
+        enter.append("circle").attr("r", 10).attr("fill", "#3366ff").call(d3.behavior.drag().on("drag", move));
+        enter.append("text").attr("dx", 20).attr("dy", 5).text(function (thing) {
+            return thing.name;
+        });
+        enter.transition().duration(750).ease("cubic-out").attr("transform", function (thing) {
+            var xy = thing.goodness * self.width;
+            return "translate(" + xy + ", " + xy + ")";
+        });
+        console.log(circles);
     };
-    return Canvas;
+    return Viewport;
 })();
+function move() {
+    this.parentNode.appendChild(this);
+    var dragTarget = d3.select(this);
+    dragTarget.attr("cx", function () {
+        return d3.event.dx + parseInt(dragTarget.attr("cx"));
+    }).attr("cy", function () {
+        return d3.event.dy + parseInt(dragTarget.attr("cy"));
+    });
+}
+; ;
 $(function () {
-    var thingData = [
-        new Thing("C++", Quadrant.Languages, 0.1), 
-        new Thing("TypeScript", Quadrant.Languages, 0.3), 
-        new Thing("C#", Quadrant.Languages, 0.9), 
-        new Thing("Continuous Integration", Quadrant.Techniques, 0.8), 
-        new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5), 
-        new Thing("NCrunch", Quadrant.Tools, 0.5), 
-        new Thing("Git", Quadrant.Tools, 0.6), 
+    var things = [
+        new Thing("C++", Quadrant.Languages, 0.9), 
+        new Thing("TypeScript", Quadrant.Languages, 0.7), 
+        new Thing("C#", Quadrant.Languages, 0.1), 
+        new Thing("APL", Quadrant.Languages, 0.8), 
+        new Thing("Scala", Quadrant.Languages, 0.6), 
         
     ];
-    var canvas = new Canvas(600, 600, $(document).width() / 2, 300, thingData);
-    canvas.draw();
+    var canvas = new Viewport(400, $(document).width() / 2, 200);
+    canvas.draw(things);
 });

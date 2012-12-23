@@ -1,8 +1,6 @@
 // Definitions from https://github.com/borisyankov/DefinitelyTyped
 /// <reference path="jquery-1.8.d.ts" />
-/// // <reference path="d3-2.10.d.ts" />
-
-declare var d3: any;
+/// <reference path="d3-2.10.d.ts" />
 
 var deg45 = Math.PI / 4;
 
@@ -20,12 +18,10 @@ class Quadrant {
 class Thing {
   constructor(
     public name: string, 
-    public quadraant: Quadrant, 
+    public quadrant: Quadrant, 
     public goodness: number,   // between 0.0 and 1.0; closer to zero is better
   ) { }
 }
-
-function id(v) { return v; }
 
 class Viewport {
   constructor(
@@ -40,7 +36,7 @@ class Viewport {
       .style("border", "1px 1px 0 0 solid black");
   }
   
-  public svg: any;
+  public svg: ID3Selection;
   //public g: ID3Selection;
   
   public draw(things: Thing[]) {
@@ -49,41 +45,18 @@ class Viewport {
         .data(things);
     
     // enter
-    var enter = circles.enter().append("g");
-    
-    enter
-      .attr("transform", "translate(10, 10)")
+    var enter = circles.enter().append("g")
+      .attr("x", function(thing) { return thing.goodness * self.width; })
       .attr("y", function(thing) { return thing.goodness * self.width; });
     
     enter.append("circle")
       .attr("r", 10)
-      .attr("fill", "#3366ff")
-      .call(d3.behavior.drag().on("drag", move));
+      .attr("fill", "#3366ff");
 
-    enter.append("text")
-      .attr("dx", 20)
-      .attr("dy", 5)
-      .text(function (thing) { return thing.name; });
-
-    enter.transition()
-      .duration(750)
-      .ease("cubic-out")
-      .attr("transform", function (thing) {
-          var xy = thing.goodness * self.width;
-          return "translate(" + xy + ", " + xy + ")";
-      });
     
     console.log(circles);
   }
 }
-
-function move(){
-    this.parentNode.appendChild(this);
-    var dragTarget = d3.select(this);
-    dragTarget
-        .attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
-        .attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
-};
 
 $(function() {
 
