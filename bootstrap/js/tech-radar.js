@@ -1,3 +1,8 @@
+var __extends = this.__extends || function (d, b) {
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var deg45 = Math.PI / 4;
 var Quadrant = (function () {
     function Quadrant(angle) {
@@ -9,53 +14,85 @@ var Quadrant = (function () {
     Quadrant.Languages = new Quadrant(7 * deg45);
     return Quadrant;
 })();
-var Thing = (function () {
-    function Thing(name, quadraant, goodness) {
+var D3Node = (function () {
+    function D3Node(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return D3Node;
+})();
+var D3Link = (function () {
+    function D3Link(source, target) {
+        this.source = source;
+        this.target = target;
+    }
+    return D3Link;
+})();
+var Thing = (function (_super) {
+    __extends(Thing, _super);
+    function Thing(name, quadrant, goodness) {
+        _super.call(this, goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001), goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001));
         this.name = name;
-        this.quadraant = quadraant;
+        this.quadrant = quadrant;
         this.goodness = goodness;
     }
     return Thing;
-})();
-function id(v) {
-    return v;
-}
+})(D3Node);
 var Viewport = (function () {
     function Viewport(width, xOrigin, yOrigin) {
         this.width = width;
         this.xOrigin = xOrigin;
         this.yOrigin = yOrigin;
-        this.svg = d3.select("body").append("svg").attr("width", $(document).width()).attr("height", width).style("transform", "translate(" + xOrigin + ", " + yOrigin + ")").style("border", "1px 1px 0 0 solid black");
-    }
-    Viewport.prototype.draw = function (things) {
-        var self = this;
-        var circles = this.svg.selectAll("g").data(things);
-        var enter = circles.enter().append("g");
-        enter.attr("transform", "translate(10, 10)").attr("y", function (thing) {
-            return thing.goodness * self.width;
+        var _this = this;
+        this.svg = d3.select("body").append("svg").attr("width", $(document).width()).attr("height", width).style("border", "1px 1px 0 0 solid black");
+        this.origin = new D3Node(0, 0);
+        this.force = d3.layout.force().nodes([
+            this.origin
+        ]).size([
+            1, 
+            1
+        ]).gravity(0).linkDistance(function (link) {
+            return link.target.goodness * 1;
+        }).linkStrength(1).charge(function (node) {
+            return (node instanceof Thing) ? 0 : 0;
+        }).on("tick", function () {
+            return _this.tick();
         });
-        enter.append("circle").attr("r", 10).attr("fill", "#3366ff").call(d3.behavior.drag().on("drag", move));
+        this.nodes = this.force.nodes();
+        this.things = [];
+        this.links = this.force.links();
+    }
+    Viewport.prototype.tick = function () {
+        var self = this;
+        this.svg.selectAll("g").attr("transform", function (thing) {
+            return "translate(" + thing.x * self.width + ", " + thing.y * self.width + ")";
+        });
+    };
+    Viewport.prototype.addThing = function (thing) {
+        this.things.push(thing);
+        this.nodes.push(thing);
+        this.links.push(new D3Link(this.origin, thing));
+    };
+    Viewport.prototype.restart = function () {
+        var origin = this.svg.selectAll("circle").data([
+            this.origin
+        ]);
+        origin.enter().append("circle").attr("class", "origin").attr("cx", function (o) {
+            return o.x;
+        }).attr("cy", function (o) {
+            return o.y;
+        }).attr("r", 5).attr("fill", "#000");
+        var circles = this.svg.selectAll("g").data(this.things);
+        var enter = circles.enter().append("g");
+        enter.append("circle").attr("r", 10).attr("fill", "#3366ff");
         enter.append("text").attr("dx", 20).attr("dy", 5).text(function (thing) {
             return thing.name;
         });
-        enter.transition().duration(750).ease("cubic-out").attr("transform", function (thing) {
-            var xy = thing.goodness * self.width;
-            return "translate(" + xy + ", " + xy + ")";
-        });
-        console.log(circles);
+        this.force.start();
+        this.force.alpha(0.01);
     };
     return Viewport;
 })();
-function move() {
-    this.parentNode.appendChild(this);
-    var dragTarget = d3.select(this);
-    dragTarget.attr("cx", function () {
-        return d3.event.dx + parseInt(dragTarget.attr("cx"));
-    }).attr("cy", function () {
-        return d3.event.dy + parseInt(dragTarget.attr("cy"));
-    });
-}
-; ;
 $(function () {
     var things = [
         new Thing("C++", Quadrant.Languages, 0.9), 
@@ -66,5 +103,8 @@ $(function () {
         
     ];
     var canvas = new Viewport(400, $(document).width() / 2, 200);
-    canvas.draw(things);
+    for(var i = 0; i != things.length; i++) {
+        canvas.addThing(things[i]);
+    }
+    canvas.restart();
 });

@@ -14,18 +14,27 @@ class Quadrant {
   public static Platforms  = new Quadrant(5 * deg45);
   public static Languages  = new Quadrant(7 * deg45);
 }
-  
 
-
-class Thing {
-  constructor(
-    public name: string, 
-    public quadraant: Quadrant, 
-    public goodness: number,   // between 0.0 and 1.0; closer to zero is better
-  ) { }
+class D3Node {
+  constructor(public x: number, public y: number) { }  
 }
 
-function id(v) { return v; }
+class D3Link {
+  constructor(public source: D3Node, public target: D3Node) { }
+}
+
+
+class Thing extends D3Node {
+  constructor(
+    public name: string, 
+    public quadrant: Quadrant, 
+    public goodness: number,   // between 0.0 and 1.0; closer to zero is better
+  ) {
+    //var xy = ;
+    super(goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001), goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001));
+   }
+}
+
 
 class Viewport {
   constructor(
@@ -36,54 +45,93 @@ class Viewport {
     this.svg = d3.select("body").append("svg")
       .attr("width", $(document).width())
       .attr("height", width)
-      .style("transform", "translate(" + xOrigin + ", " + yOrigin + ")")
+     // .style("transform", "translate(" + xOrigin + ", " + yOrigin + ")")
       .style("border", "1px 1px 0 0 solid black");
+
+    this.origin = new D3Node(0, 0);
+
+    this.force = d3.layout.force()
+      .nodes([this.origin])
+      //.size([this.width, this.width])
+      .size([1,1])
+      .gravity(0)
+      .linkDistance(link => link.target.goodness * 1)
+      .linkStrength(1)
+      .charge(node => (node instanceof Thing) ? 0  : 0)
+      .on("tick", () => this.tick());
+
+    this.nodes = this.force.nodes();
+    this.things = [];
+    this.links = this.force.links();
   }
   
   public svg: any;
-  //public g: ID3Selection;
   
-  public draw(things: Thing[]) {
+  public force: any;
+  public origin: D3Node;
+  public things: Thing[];
+  public nodes: D3Node[];
+  public links: D3Link[];
+  
+  public tick() {
     var self = this;
+    
+    this.svg.selectAll("g")
+      .attr("transform", function (thing) {
+        //console.log([thing.name, thing.x, thing.y]);
+        return "translate(" + thing.x * self.width + ", " + thing.y * self.width + ")";
+      })
+  }
+
+  public addThing(thing: Thing) {
+    this.things.push(thing);
+    this.nodes.push(thing);
+    this.links.push(new D3Link(this.origin, thing));
+  }
+
+  
+  public restart() {
+
+    var origin = this.svg.selectAll("circle")
+        .data([this.origin]);
+
+    origin.enter()
+      .append("circle")
+      .attr("class", "origin")
+      .attr("cx", o => o.x)
+      .attr("cy", o => o.y)
+      .attr("r", 5)
+      .attr("fill", "#000");
+
     var circles = this.svg.selectAll("g")
-        .data(things);
+        .data(this.things);
     
-    // enter
+    // enter; no special animation; create sub-elements upon creation
     var enter = circles.enter().append("g");
-    
-    enter
-      .attr("transform", "translate(10, 10)")
-      .attr("y", function(thing) { return thing.goodness * self.width; });
     
     enter.append("circle")
       .attr("r", 10)
-      .attr("fill", "#3366ff")
-      .call(d3.behavior.drag().on("drag", move));
+      .attr("fill", "#3366ff");
+      //.call(d3.behavior.drag().on("drag", move));
 
     enter.append("text")
       .attr("dx", 20)
       .attr("dy", 5)
-      .text(function (thing) { return thing.name; });
-
-    enter.transition()
-      .duration(750)
-      .ease("cubic-out")
-      .attr("transform", function (thing) {
-          var xy = thing.goodness * self.width;
-          return "translate(" + xy + ", " + xy + ")";
-      });
+      .text(thing => thing.name);  
     
-    console.log(circles);
+    
+    this.force.start();
+    this.force.alpha(0.01);
   }
 }
 
-function move(){
-    this.parentNode.appendChild(this);
-    var dragTarget = d3.select(this);
-    dragTarget
-        .attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
-        .attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
-};
+//function move(){
+//    this.parentNode.appendChild(this);
+//    var dragTarget = d3.select(this);
+//    dragTarget
+//        .attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
+//        .attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
+//};
 
 $(function() {
 
@@ -100,7 +148,10 @@ $(function() {
   ];
 
   var canvas = new Viewport(400, $(document).width() / 2, 200);
-  canvas.draw(things);
+  for (var i = 0; i != things.length; i++) {
+    canvas.addThing(things[i]);
+  }
+  canvas.restart();
 });
 
 //
