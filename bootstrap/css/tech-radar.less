@@ -1,15 +1,28 @@
 body
 {
-  font-family: monospace
+  font-family: monospace;
+  text-align: center;
 }
 
-div.origin,
-div.thing
+svg.radar
 {
-  position: absolute;
+  circle.thing
+  {
+    stroke: #83b2e5;
+    stroke-width: 3;
+    fill: white;
+  }
+
+  line.lines,
+  circle.lines {
+    stroke: #ccc;
+    stroke-width: 1;
+    fill: none;
+  }
+
+  text {
+    font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
+    font-size: 12px;
+  }
 }
 
-div.origin
-{
-  background: black;
-}

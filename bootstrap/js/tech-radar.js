@@ -99,6 +99,7 @@ var Radar = (function () {
         var _this = this;
         this.quadrantGravity = 0.03;
         var halfWidth = this.width / 2;
+        var ymargin = 10;
         this.transformx = d3.scale.linear().domain([
             -Radar.radius, 
             Radar.radius
@@ -110,8 +111,8 @@ var Radar = (function () {
             -Radar.radius, 
             Radar.radius
         ]).range([
-            0, 
-            this.width
+            ymargin, 
+            this.width + ymargin
         ]);
         this.scale = d3.scale.linear().domain([
             0, 
@@ -120,7 +121,7 @@ var Radar = (function () {
             0, 
             this.width
         ]);
-        this.svg = d3.select("body").append("svg").attr("width", width * 2).attr("height", width);
+        this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", width * 2).attr("height", width + ymargin * 2);
         this.drawBackground();
         this.force = d3.layout.force().nodes([]).size([
             Radar.radius * 2, 
@@ -158,9 +159,18 @@ var Radar = (function () {
         });
     };
     Radar.prototype.drawBackground = function () {
-        this.svg.append("line").attr("x1", this.transformx(0)).attr("y1", this.transformy(Radar.radius)).attr("x2", this.transformx(0)).attr("y2", this.transformy(-Radar.radius)).attr("stroke", "black").attr("stoke-width", 1);
-        this.svg.append("line").attr("x1", this.transformx(Radar.radius)).attr("y1", this.transformy(0)).attr("x2", this.transformx(-Radar.radius)).attr("y2", this.transformy(0)).attr("stroke", "black").attr("stoke-width", 1);
-        this.svg.append("circle").attr("cx", this.transformx(0)).attr("cy", this.transformy(0)).attr("r", this.scale(Radar.radius / 2)).attr("stroke", "black").attr("stroke-width", 1).attr("fill", "none");
+        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
+        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+        this.drawCenteredCircle(Radar.radius * 0.3);
+        this.drawCenteredCircle(Radar.radius * 0.55);
+        this.drawCenteredCircle(Radar.radius * 0.8);
+        this.drawCenteredCircle(Radar.radius * 1.0);
+    };
+    Radar.prototype.drawLine = function (x1, y1, x2, y2) {
+        this.svg.append("line").attr("class", "lines").attr("x1", this.transformx(x1)).attr("y1", this.transformy(y1)).attr("x2", this.transformx(x2)).attr("y2", this.transformy(y2));
+    };
+    Radar.prototype.drawCenteredCircle = function (r) {
+        this.svg.append("circle").attr("class", "lines").attr("cx", this.transformx(0)).attr("cy", this.transformy(0)).attr("r", this.scale(r));
     };
     Radar.prototype.addThing = function (thing) {
         this.things.push(thing);
@@ -168,10 +178,10 @@ var Radar = (function () {
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
         var enter = circles.enter().append("circle");
-        enter.attr("class", "thing").attr("r", 10).attr("fill", "#3366ff").call(this.force.drag);
+        enter.attr("class", "thing").attr("r", 6).attr("fill", "#3366ff").call(this.force.drag);
         var texts = this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
-            return thing.quadrant.isLeft() ? 20 : -20;
-        }).attr("dy", 5).attr("text-anchor", function (thing) {
+            return (thing.quadrant.isLeft() ? 1 : -1) * 12;
+        }).attr("dy", 4).attr("text-anchor", function (thing) {
             return thing.quadrant.isLeft() ? "start" : "end";
         });
         this.force.start();

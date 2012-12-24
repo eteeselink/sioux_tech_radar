@@ -115,6 +115,7 @@ class Radar {
     //// create transforms and other plot-related constants
 
     var halfWidth = this.width / 2;
+    var ymargin = 10;
 
     this.transformx = d3.scale.linear()
       .domain([-Radar.radius, Radar.radius])
@@ -122,15 +123,16 @@ class Radar {
 
     this.transformy = d3.scale.linear()
       .domain([-Radar.radius, Radar.radius])
-      .range([0, this.width]);
+      .range([ymargin, this.width + ymargin]);
 
     this.scale = d3.scale.linear()
       .domain([0, Radar.radius * 2])
       .range([0, this.width]);
 
     this.svg = d3.select("body").append("svg")
+      .attr("class", "radar")
       .attr("width", width * 2)
-      .attr("height", width);
+      .attr("height", width + ymargin * 2);
 
     this.drawBackground();
 
@@ -201,30 +203,36 @@ class Radar {
   private drawBackground() {
 
     // x axis
-    this.svg.append("line")
-      .attr("x1", this.transformx(0))
-      .attr("y1", this.transformy(Radar.radius))
-      .attr("x2", this.transformx(0))
-      .attr("y2", this.transformy(-Radar.radius)) 
-      .attr("stroke", "black")
-      .attr("stoke-width", 1);
+    this.drawLine(
+      0, Radar.radius * 1.1,
+      0, -Radar.radius * 1.1);
 
     // y axis
-    this.svg.append("line")
-      .attr("x1", this.transformx(Radar.radius))
-      .attr("y1", this.transformy(0))
-      .attr("x2", this.transformx(-Radar.radius))
-      .attr("y2", this.transformy(0)) 
-      .attr("stroke", "black")
-      .attr("stoke-width", 1);
+     this.drawLine(
+       Radar.radius * 1.1, 0,
+       -Radar.radius * 1.1, 0);
 
+     this.drawCenteredCircle(Radar.radius * 0.3);
+     this.drawCenteredCircle(Radar.radius * 0.55);
+     this.drawCenteredCircle(Radar.radius * 0.8);
+     this.drawCenteredCircle(Radar.radius * 1.0);
+  }
+
+  private drawLine(x1: number, y1: number, x2: number, y2: number) {
+    this.svg.append("line")
+      .attr("class", "lines")
+      .attr("x1", this.transformx(x1))
+      .attr("y1", this.transformy(y1))
+      .attr("x2", this.transformx(x2))
+      .attr("y2", this.transformy(y2));
+  }
+
+  private drawCenteredCircle(r: number) {
     this.svg.append("circle")
+      .attr("class", "lines")
       .attr("cx", this.transformx(0))
       .attr("cy", this.transformy(0))
-      .attr("r", this.scale(Radar.radius / 2))
-      .attr("stroke", "black")
-      .attr("stroke-width", 1)
-      .attr("fill", "none");
+      .attr("r", this.scale(r))
   }
 
   public addThing(thing: Thing) {
@@ -243,7 +251,7 @@ class Radar {
     
     enter
       .attr("class", "thing")
-      .attr("r", 10)
+      .attr("r", 6)
       .attr("fill", "#3366ff")
       .call(this.force.drag);
 
@@ -252,8 +260,8 @@ class Radar {
       .enter()
       .append("text")
       .attr("class", "thing")
-      .attr("dx", (thing: Thing) => thing.quadrant.isLeft() ? 20 : -20)
-      .attr("dy", 5)
+      .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? 1 : -1) * 12)
+      .attr("dy", 4)
       .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "start" : "end")
     
     this.force.start();
