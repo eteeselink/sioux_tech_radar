@@ -17,6 +17,8 @@ class Quadrant {
 
 class D3Node {
   constructor(public x: number, public y: number) { }  
+  public px: number;
+  public py: number;
 }
 
 class D3Link {
@@ -28,197 +30,138 @@ class Thing extends D3Node {
   constructor(
     public name: string, 
     public quadrant: Quadrant, 
-    public goodness: number,   // between 0.0 and 1.0; closer to zero is better
+    goodness: number,   // between 0.0 and 1.0; closer to zero is better
+    private scale: number,
   ) {
-    //var xy = ;
-    super(goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001), goodness * Math.SQRT2 + (Math.random() * 0.002 - 0.001));
+    super(null, null);
+    var polar = new Polar(goodness * scale, Math.random() * Math.PI * 0.5 + Math.PI * 1.5);
+    this.x = polar.x();
+    this.y = polar.y();
    }
+
+  public goodness() {
+    var polar = Polar.fromPoint(this.x, this.y);
+    return polar.r / this.scale;
+  }
+}
+
+class Polar {
+  constructor(public r: number, public phi: number) { }
+
+  public static fromPoint(x: number, y: number) {
+    y = -y;
+    return new Polar(Math.sqrt(x * x + y * y), Math.atan2(y, x));
+  }
+
+  public x() {
+    return this.r * Math.cos(this.phi);
+  }
+  public y() {
+    return -this.r * Math.sin(this.phi);
+  }
 }
 
 
 class Viewport {
   constructor(
-    public width: number,
-    public xOrigin: number,
-    public yOrigin: number,
+    private width: number,
   ) {
     this.svg = d3.select("body").append("svg")
-      .attr("width", $(document).width())
+      .attr("width", width * 1.5)
       .attr("height", width)
-     // .style("transform", "translate(" + xOrigin + ", " + yOrigin + ")")
-      .style("border", "1px 1px 0 0 solid black");
-
-    this.origin = new D3Node(0, 0);
+      .style("border", "1px solid black");
 
     this.force = d3.layout.force()
-      .nodes([this.origin])
-      //.size([this.width, this.width])
-      .size([1,1])
-      .gravity(0)
-      .linkDistance(link => link.target.goodness * 1)
-      .linkStrength(1)
-      .charge(node => (node instanceof Thing) ? 0  : 0)
+      .nodes([])
+      .size([this.width, this.width])
+      .gravity(0.005)
       .on("tick", () => this.tick());
 
-    this.nodes = this.force.nodes();
-    this.things = [];
-    this.links = this.force.links();
+    this.things = <Thing[]>this.force.nodes();
   }
+
+  private svg: any;
+  private force: any;
+  private things: Thing[];
   
-  public svg: any;
-  
-  public force: any;
-  public origin: D3Node;
-  public things: Thing[];
-  public nodes: D3Node[];
-  public links: D3Link[];
-  
-  public tick() {
-    var self = this;
+  private tick() {
     
-    this.svg.selectAll("g")
-      .attr("transform", function (thing) {
-        //console.log([thing.name, thing.x, thing.y]);
-        return "translate(" + thing.x * self.width + ", " + thing.y * self.width + ")";
-      })
+    // change every node's newly computed position such that
+    // the distance from the origin (r) never changes, and only 
+    // its angle (phi) can.
+    for (var i = 0; i != this.things.length; i++) {
+      var thing = this.things[i];
+      var prev = Polar.fromPoint(thing.px, thing.py);
+      var cur  = Polar.fromPoint(thing.x, thing.y);
+      var r = prev.r;
+      var sens = this.width / 100;
+      r = Math.round(r / sens) * sens;
+      var next = new Polar(r, cur.phi);
+
+      thing.x = next.x();
+      thing.y = next.y();
+    }
+
+    var origin = this.width / 2;
+
+    this.svg.selectAll("circle")
+      .attr("cx", thing => thing.x + origin)
+      .attr("cy", thing => thing.y + origin);
+
+    this.svg.selectAll("text")
+      .attr("x", thing => thing.x + origin)
+      .attr("y", thing => thing.y + origin)
+      .text(thing => thing.name + " (" + thing.goodness().toPrecision(2) + ")");
   }
 
   public addThing(thing: Thing) {
     this.things.push(thing);
-    this.nodes.push(thing);
-    this.links.push(new D3Link(this.origin, thing));
   }
 
   
   public restart() {
 
-    var origin = this.svg.selectAll("circle")
-        .data([this.origin]);
-
-    origin.enter()
-      .append("circle")
-      .attr("class", "origin")
-      .attr("cx", o => o.x)
-      .attr("cy", o => o.y)
-      .attr("r", 5)
-      .attr("fill", "#000");
-
-    var circles = this.svg.selectAll("g")
+    var circles = this.svg.selectAll("circle")
         .data(this.things);
     
     // enter; no special animation; create sub-elements upon creation
-    var enter = circles.enter().append("g");
+    var enter = circles.enter().append("circle");
     
-    enter.append("circle")
+    
+    enter
       .attr("r", 10)
-      .attr("fill", "#3366ff");
-      //.call(d3.behavior.drag().on("drag", move));
+      .attr("fill", "#3366ff")
+      .call(this.force.drag);
 
-    enter.append("text")
+    var texts = this.svg.selectAll("text")
+      .data(this.things)
+      .enter()
+      .append("text")
       .attr("dx", 20)
       .attr("dy", 5)
-      .text(thing => thing.name);  
-    
     
     this.force.start();
-    this.force.alpha(0.01);
   }
 }
 
-//function move(){
-//    this.parentNode.appendChild(this);
-//    var dragTarget = d3.select(this);
-//    dragTarget
-//        .attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
-//        .attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
-//};
-
 $(function() {
+  var width = 200;
 
   var things = [
-    new Thing("C++",        Quadrant.Languages, 0.9),
-    new Thing("TypeScript", Quadrant.Languages, 0.7),
-    new Thing("C#",         Quadrant.Languages, 0.1),
-    new Thing("APL",        Quadrant.Languages, 0.8),
-    new Thing("Scala",      Quadrant.Languages, 0.6),
+    new Thing("C++",        Quadrant.Languages, 0.9, width),
+    new Thing("Scala",      Quadrant.Languages, 0.6, width),
+    new Thing("TypeScript", Quadrant.Languages, 0.7, width),
+    new Thing("C#",         Quadrant.Languages, 0.1, width),
+    new Thing("APL",        Quadrant.Languages, 0.8, width),
     //new Thing("Continuous Integration", Quadrant.Techniques, 0.8),
     //new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5),
     //new Thing("NCrunch", Quadrant.Tools, 0.5),
     //new Thing("Git", Quadrant.Tools, 0.6),
   ];
 
-  var canvas = new Viewport(400, $(document).width() / 2, 200);
+  var canvas = new Viewport(width * 2);
   for (var i = 0; i != things.length; i++) {
     canvas.addThing(things[i]);
   }
   canvas.restart();
 });
-
-//
-//class Thing {
-//  constructor(
-//    public name: string, 
-//    public quadrant: Quadrant, 
-//    public goodness: number,
-//  ) { 
-//    var badness = 1.0 - this.goodness;
-//    this.x =  badness * Math.cos(this.quadrant.angle);
-//    this.y = -badness * Math.sin(this.quadrant.angle);
-//  }
-//  
-//  public x: number;
-//  public y: number;
-//}
-//
-//
-//class Canvas {
-//
-//  constructor(
-//    public width:   number, 
-//    public height:  number, 
-//    public xOrigin: number, 
-//    public yOrigin: number, 
-//    public things:  Thing[],
-//  ) { }
-//  
-//  public draw() {
-//  
-//    var thingDots = d3.select("#radar-plot")
-//                   .selectAll("div.thing")
-//                   .data(this.things);
-//    
-//    this.setThings(thingDots);
-//    
-//    this.setThings(thingDots.enter().append("div.thing"));
-//      
-//    thingDots.exit().remove();
-//    
-//    var origin = d3.select("#radar-plot")
-//                 .selectAll("div.origin")
-//                 .data([0]);
-//    
-//    this.setOrigin(origin.enter().append("div"));
-//  }
-//  
-//  private setOrigin(origin: ID3Selection) {
-//    origin
-//      .classed("origin", true)
-//      .style("left", (this.xOrigin - 10) + "px")
-//      .style("top",  (this.yOrigin - 10) + "px")
-//      .style("width", 20 + "px")
-//      .style("height", 20 + "px");
-//  }
-//  
-//  private setThings(thingDots: ID3Selection) {
-//  
-//    var self = this;
-//    thingDots
-//      .classed("thing", true)
-//      .text(function(thing) { return thing.name; })
-//      .style("position", "absolute")
-//      .style("left", function(thing: Thing) { return Math.round(thing.x * self.width / 2  + self.xOrigin) + "px"; })
-//      .style("top",  function(thing: Thing) { return Math.round(thing.y * self.height / 2 + self.yOrigin) + "px"; });
-//  }
-//}
-//
-//
