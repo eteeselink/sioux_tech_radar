@@ -88,6 +88,9 @@ var Polar = (function () {
     };
     return Polar;
 })();
+function cap(lowerBound, value, upperBound) {
+    return Math.max(lowerBound, Math.min(upperBound, value));
+}
 var Viewport = (function () {
     function Viewport(width) {
         this.width = width;
@@ -107,8 +110,9 @@ var Viewport = (function () {
             var thing = this.things[i];
             thing.updatePolar();
             thing.fixRadius();
-            console.log(e.alpha);
             thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
+            thing.polar.phi = cap(thing.quadrant.angleLower(), thing.polar.phi, thing.quadrant.angleUpper());
+            thing.polar.r = Math.min(thing.polar.r, this.width / 2);
             thing.updateXY();
         }
         var origin = this.width / 2;

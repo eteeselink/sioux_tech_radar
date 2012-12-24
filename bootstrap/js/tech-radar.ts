@@ -98,6 +98,10 @@ class Polar {
   }
 }
 
+function cap(lowerBound: number, value: number, upperBound: number) {
+  return Math.max(lowerBound, Math.min(upperBound, value));
+}
+
 
 class Viewport {
   constructor(
@@ -134,8 +138,13 @@ class Viewport {
       thing.updatePolar();
       thing.fixRadius();
       
-      console.log(e.alpha);
+      //console.log(e.alpha);
       thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
+
+      thing.polar.phi = cap(thing.quadrant.angleLower(), thing.polar.phi, thing.quadrant.angleUpper());
+
+      thing.polar.r = Math.min(thing.polar.r, this.width / 2);
+
       //if(thing.name.indexOf("cala")===1) console.log(thing.polar.phi);
       thing.updateXY();
     }
