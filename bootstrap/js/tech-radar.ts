@@ -11,20 +11,34 @@ class Quadrant {
 
   public static Tools      = new Quadrant(1 * deg45);
   public static Techniques = new Quadrant(3 * deg45);
-  public static Platforms  = new Quadrant(5 * deg45);
-  public static Languages  = new Quadrant(7 * deg45);
+  public static Platforms  = new Quadrant(-3 * deg45);
+  public static Languages  = new Quadrant(-1 * deg45);
+
+  public angleLower() {
+    return this.angle - deg45;
+  }
+
+  public angleUpper() {
+    return this.angle + deg45;
+  }
 }
 
 class D3Node {
   constructor(public x: number, public y: number) { }  
   public px: number;
   public py: number;
+  public fixed: number;
 }
 
 class D3Link {
   constructor(public source: D3Node, public target: D3Node) { }
 }
 
+
+function random(from: number, to: number) {
+  var domain = to - from;
+  return Math.random() * domain + from;
+}
 
 class Thing extends D3Node {
   constructor(
@@ -34,14 +48,37 @@ class Thing extends D3Node {
     private scale: number,
   ) {
     super(null, null);
-    var polar = new Polar(goodness * scale, Math.random() * Math.PI * 0.5 + Math.PI * 1.5);
-    this.x = polar.x();
-    this.y = polar.y();
-   }
+    var r = goodness * scale;
+    
+    var phi = random(quadrant.angleLower(), quadrant.angleUpper());
+    this.polar = new Polar(r, phi);
+    this.updateXY();
+  }
 
+  public polar: Polar;
+  public prevPolar: Polar;
+
+  public updatePolar() {
+    this.prevPolar = this.polar;
+    this.polar = Polar.fromPoint(this.x, this.y);
+  } 
+
+  public fixRadius() {
+    if (!this.isBeingDragged()) {
+      this.polar.r = this.prevPolar.r;
+    }
+  }
+
+  public updateXY() {
+    this.x = this.polar.x();
+    this.y = this.polar.y();
+  }
+
+  public isBeingDragged() {
+    return this.fixed & 2;
+  }
   public goodness() {
-    var polar = Polar.fromPoint(this.x, this.y);
-    return polar.r / this.scale;
+    return this.polar.r / this.scale;
   }
 }
 
@@ -74,8 +111,9 @@ class Viewport {
     this.force = d3.layout.force()
       .nodes([])
       .size([this.width, this.width])
-      .gravity(0.005)
-      .on("tick", () => this.tick());
+      .gravity(0)
+      .charge(-200)
+      .on("tick", e => this.tick(e));
 
     this.things = <Thing[]>this.force.nodes();
   }
@@ -83,23 +121,23 @@ class Viewport {
   private svg: any;
   private force: any;
   private things: Thing[];
+  private quadrantGravity = 0.05;
   
-  private tick() {
+  private tick(e: any) {
     
     // change every node's newly computed position such that
     // the distance from the origin (r) never changes, and only 
     // its angle (phi) can.
     for (var i = 0; i != this.things.length; i++) {
       var thing = this.things[i];
-      var prev = Polar.fromPoint(thing.px, thing.py);
-      var cur  = Polar.fromPoint(thing.x, thing.y);
-      var r = prev.r;
-      var sens = this.width / 100;
-      r = Math.round(r / sens) * sens;
-      var next = new Polar(r, cur.phi);
-
-      thing.x = next.x();
-      thing.y = next.y();
+      
+      thing.updatePolar();
+      thing.fixRadius();
+      
+      console.log(e.alpha);
+      thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
+      //if(thing.name.indexOf("cala")===1) console.log(thing.polar.phi);
+      thing.updateXY();
     }
 
     var origin = this.width / 2;
@@ -153,10 +191,10 @@ $(function() {
     new Thing("TypeScript", Quadrant.Languages, 0.7, width),
     new Thing("C#",         Quadrant.Languages, 0.1, width),
     new Thing("APL",        Quadrant.Languages, 0.8, width),
-    //new Thing("Continuous Integration", Quadrant.Techniques, 0.8),
-    //new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5),
-    //new Thing("NCrunch", Quadrant.Tools, 0.5),
-    //new Thing("Git", Quadrant.Tools, 0.6),
+    new Thing("Continuous Integration", Quadrant.Techniques, 0.8, width),
+    new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5, width),
+    new Thing("NCrunch", Quadrant.Tools, 0.5, width),
+    new Thing("Git", Quadrant.Tools, 0.6, width),
   ];
 
   var canvas = new Viewport(width * 2);

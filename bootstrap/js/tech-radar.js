@@ -10,8 +10,14 @@ var Quadrant = (function () {
     }
     Quadrant.Tools = new Quadrant(1 * deg45);
     Quadrant.Techniques = new Quadrant(3 * deg45);
-    Quadrant.Platforms = new Quadrant(5 * deg45);
-    Quadrant.Languages = new Quadrant(7 * deg45);
+    Quadrant.Platforms = new Quadrant(-3 * deg45);
+    Quadrant.Languages = new Quadrant(-1 * deg45);
+    Quadrant.prototype.angleLower = function () {
+        return this.angle - deg45;
+    };
+    Quadrant.prototype.angleUpper = function () {
+        return this.angle + deg45;
+    };
     return Quadrant;
 })();
 var D3Node = (function () {
@@ -28,6 +34,10 @@ var D3Link = (function () {
     }
     return D3Link;
 })();
+function random(from, to) {
+    var domain = to - from;
+    return Math.random() * domain + from;
+}
 var Thing = (function (_super) {
     __extends(Thing, _super);
     function Thing(name, quadrant, goodness, scale) {
@@ -35,13 +45,29 @@ var Thing = (function (_super) {
         this.name = name;
         this.quadrant = quadrant;
         this.scale = scale;
-        var polar = new Polar(goodness * scale, Math.random() * Math.PI * 0.5 + Math.PI * 1.5);
-        this.x = polar.x();
-        this.y = polar.y();
+        var r = goodness * scale;
+        var phi = random(quadrant.angleLower(), quadrant.angleUpper());
+        this.polar = new Polar(r, phi);
+        this.updateXY();
     }
+    Thing.prototype.updatePolar = function () {
+        this.prevPolar = this.polar;
+        this.polar = Polar.fromPoint(this.x, this.y);
+    };
+    Thing.prototype.fixRadius = function () {
+        if(!this.isBeingDragged()) {
+            this.polar.r = this.prevPolar.r;
+        }
+    };
+    Thing.prototype.updateXY = function () {
+        this.x = this.polar.x();
+        this.y = this.polar.y();
+    };
+    Thing.prototype.isBeingDragged = function () {
+        return this.fixed & 2;
+    };
     Thing.prototype.goodness = function () {
-        var polar = Polar.fromPoint(this.x, this.y);
-        return polar.r / this.scale;
+        return this.polar.r / this.scale;
     };
     return Thing;
 })(D3Node);
@@ -66,26 +92,24 @@ var Viewport = (function () {
     function Viewport(width) {
         this.width = width;
         var _this = this;
+        this.quadrantGravity = 0.05;
         this.svg = d3.select("body").append("svg").attr("width", width * 1.5).attr("height", width).style("border", "1px solid black");
         this.force = d3.layout.force().nodes([]).size([
             this.width, 
             this.width
-        ]).gravity(0.005).on("tick", function () {
-            return _this.tick();
+        ]).gravity(0).charge(-200).on("tick", function (e) {
+            return _this.tick(e);
         });
         this.things = this.force.nodes();
     }
-    Viewport.prototype.tick = function () {
+    Viewport.prototype.tick = function (e) {
         for(var i = 0; i != this.things.length; i++) {
             var thing = this.things[i];
-            var prev = Polar.fromPoint(thing.px, thing.py);
-            var cur = Polar.fromPoint(thing.x, thing.y);
-            var r = prev.r;
-            var sens = this.width / 100;
-            r = Math.round(r / sens) * sens;
-            var next = new Polar(r, cur.phi);
-            thing.x = next.x();
-            thing.y = next.y();
+            thing.updatePolar();
+            thing.fixRadius();
+            console.log(e.alpha);
+            thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
+            thing.updateXY();
         }
         var origin = this.width / 2;
         this.svg.selectAll("circle").attr("cx", function (thing) {
@@ -121,6 +145,10 @@ $(function () {
         new Thing("TypeScript", Quadrant.Languages, 0.7, width), 
         new Thing("C#", Quadrant.Languages, 0.1, width), 
         new Thing("APL", Quadrant.Languages, 0.8, width), 
+        new Thing("Continuous Integration", Quadrant.Techniques, 0.8, width), 
+        new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5, width), 
+        new Thing("NCrunch", Quadrant.Tools, 0.5, width), 
+        new Thing("Git", Quadrant.Tools, 0.6, width), 
         
     ];
     var canvas = new Viewport(width * 2);
