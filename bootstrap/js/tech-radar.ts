@@ -151,23 +151,30 @@ class Radar {
       .append("g")
       .attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey +")");
 
-    // x axis
-    this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
-
-    // y axis
-    this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
-
     this.drawCenteredCircle(Radar.radius * 0.4);
     this.drawCenteredCircle(Radar.radius * 0.7);
     this.drawCenteredCircle(Radar.radius * 0.85);
     this.drawCenteredCircle(Radar.radius * 0.86);
     this.drawCenteredCircle(Radar.radius * 1.0);
 
+    var radius = 0.7
     var arc = d3.svg.arc()
-      .innerRadius(Radar.radius * 0.68)
-      .outerRadius(Radar.radius * 0.72)
+      .innerRadius(Radar.radius * (radius * 0.95))
+      .outerRadius(Radar.radius * (radius / 0.95))
       .startAngle(0)
       .endAngle(Math.PI / 4);
+
+    this.svg.append("path")
+      .attr("d", arc)
+      .style("stroke", "none")
+      .style("fill", "white");
+
+    // x axis
+    this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
+
+    // y axis
+    this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+
 
   }
 

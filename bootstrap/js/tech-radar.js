@@ -115,14 +115,16 @@ var Radar = (function () {
         var translatey = Radar.radius + ymargin;
         var scale = this.width / (Radar.radius * 2);
         this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2).append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
-        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
-        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
         this.drawCenteredCircle(Radar.radius * 0.4);
         this.drawCenteredCircle(Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
         this.drawCenteredCircle(Radar.radius * 0.86);
         this.drawCenteredCircle(Radar.radius * 1.0);
-        var arc = d3.svg.arc().innerRadius(Radar.radius * 0.68).outerRadius(Radar.radius * 0.72).startAngle(0).endAngle(Math.PI / 4);
+        var radius = 0.7;
+        var arc = d3.svg.arc().innerRadius(Radar.radius * (radius * 0.95)).outerRadius(Radar.radius * (radius / 0.95)).startAngle(0).endAngle(Math.PI / 4);
+        this.svg.append("path").attr("d", arc).style("stroke", "none").style("fill", "white");
+        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
+        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
     };
     Radar.prototype.setupForceLayout = function () {
         var _this = this;
