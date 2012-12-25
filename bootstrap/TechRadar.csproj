@@ -21,7 +21,13 @@
     <UpgradeBackupLocation />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="css\tech-radar.css">
+      <DependentUpon>tech-radar.less</DependentUpon>
+    </Content>
     <Content Include="css\tech-radar.less" />
+    <Content Include="css\tech-radar.min.css">
+      <DependentUpon>tech-radar.less</DependentUpon>
+    </Content>
     <Content Include="index.html" />
     <Content Include="js\tech-radar.min.js">
       <DependentUpon>tech-radar.ts</DependentUpon>

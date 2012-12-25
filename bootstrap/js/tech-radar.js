@@ -115,14 +115,11 @@ var Radar = (function () {
         var translatey = Radar.radius + ymargin;
         var scale = this.width / (Radar.radius * 2);
         this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2).append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
-        this.drawCenteredCircle(Radar.radius * 0.4);
-        this.drawCenteredCircle(Radar.radius * 0.7);
+        this.drawLabeledCircle("Doen!", 0.53, Radar.radius * 0.4);
+        this.drawLabeledCircle("Proberen", 0.44, Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
-        this.drawCenteredCircle(Radar.radius * 0.86);
-        this.drawCenteredCircle(Radar.radius * 1.0);
-        var radius = 0.7;
-        var arc = d3.svg.arc().innerRadius(Radar.radius * (radius * 0.95)).outerRadius(Radar.radius * (radius / 0.95)).startAngle(0).endAngle(Math.PI / 4);
-        this.svg.append("path").attr("d", arc).style("stroke", "none").style("fill", "white");
+        this.drawLabeledCircle("Experimenteren", 0.6, Radar.radius * 0.86);
+        this.drawLabeledCircle("Afblijven", 0.3, Radar.radius * 1.0);
         this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
         this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
     };
@@ -173,6 +170,13 @@ var Radar = (function () {
     };
     Radar.prototype.drawLine = function (x1, y1, x2, y2) {
         this.svg.append("line").attr("class", "lines").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2);
+    };
+    Radar.prototype.drawLabeledCircle = function (name, endAngle, r) {
+        this.drawCenteredCircle(r);
+        var arc = d3.svg.arc().innerRadius(r - 0.02 * Radar.radius).outerRadius(r + 0.02 * Radar.radius).startAngle(0).endAngle(endAngle);
+        var id = name.replace(/[^a-z]/, "");
+        this.svg.append("path").attr("d", arc).attr("id", id).style("stroke", "none").style("fill", "white");
+        this.svg.append("text").append("textPath").attr("xlink:href", "#" + id).append("tspan").attr("dy", 10).attr("dx", 5).text(name);
     };
     Radar.prototype.drawCenteredCircle = function (r) {
         this.svg.append("circle").attr("class", "lines").attr("cx", 0).attr("cy", 0).attr("r", r);

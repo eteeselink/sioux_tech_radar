@@ -9,11 +9,14 @@ svg.radar circle.thing {
 }
 svg.radar line.lines,
 svg.radar circle.lines {
-  stroke: #ccc;
+  stroke: #cccccc;
   stroke-width: 1;
   fill: none;
 }
 svg.radar text {
   font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
   font-size: 12px;
+}
+svg.radar tspan {
+  fill: #cccccc;
 }

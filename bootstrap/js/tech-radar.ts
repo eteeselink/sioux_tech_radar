@@ -151,30 +151,20 @@ class Radar {
       .append("g")
       .attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey +")");
 
-    this.drawCenteredCircle(Radar.radius * 0.4);
-    this.drawCenteredCircle(Radar.radius * 0.7);
+    //this.drawCenteredCircle(Radar.radius * 0.7);
+    this.drawLabeledCircle("Doen!",          0.53, Radar.radius * 0.4);
+    this.drawLabeledCircle("Proberen",       0.44, Radar.radius * 0.7);
     this.drawCenteredCircle(Radar.radius * 0.85);
-    this.drawCenteredCircle(Radar.radius * 0.86);
-    this.drawCenteredCircle(Radar.radius * 1.0);
+    this.drawLabeledCircle("Experimenteren", 0.60, Radar.radius * 0.86);
+    this.drawLabeledCircle("Afblijven",      0.30, Radar.radius * 1.0);
 
-    var radius = 0.7
-    var arc = d3.svg.arc()
-      .innerRadius(Radar.radius * (radius * 0.95))
-      .outerRadius(Radar.radius * (radius / 0.95))
-      .startAngle(0)
-      .endAngle(Math.PI / 4);
-
-    this.svg.append("path")
-      .attr("d", arc)
-      .style("stroke", "none")
-      .style("fill", "white");
+    
 
     // x axis
     this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
 
     // y axis
     this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
-
 
   }
 
@@ -268,6 +258,32 @@ class Radar {
       .attr("y1", y1)
       .attr("x2", x2)
       .attr("y2", y2);
+  }
+
+  private drawLabeledCircle(name: string, endAngle: number, r: number) {
+
+    this.drawCenteredCircle(r);
+
+    var arc = d3.svg.arc()
+      .innerRadius(r - 0.02 * Radar.radius)
+      .outerRadius(r + 0.02 * Radar.radius)
+      .startAngle(0)
+      .endAngle(endAngle);
+
+    var id = name.replace(/[^a-z]/, "");
+    this.svg.append("path")
+      .attr("d", arc)
+      .attr("id", id)
+      .style("stroke", "none")
+      .style("fill", "white");
+
+    this.svg.append("text")
+      .append("textPath")
+      .attr("xlink:href", "#" + id)
+      .append("tspan")
+      .attr("dy", 10)
+      .attr("dx", 5)
+      .text(name);
   }
 
   private drawCenteredCircle(r: number) {
