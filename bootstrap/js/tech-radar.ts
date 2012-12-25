@@ -48,7 +48,7 @@ class Thing extends D3Node {
     super(null, null);
     var r = goodness * Radar.radius;
     
-    var phi = random(quadrant.angleLower(), quadrant.angleUpper());
+    var phi = quadrant.angle;  //random(quadrant.angleLower(), quadrant.angleUpper());
     this.polar = new Polar(r, phi);
     this.updateXY();
   }
@@ -108,140 +108,86 @@ function cap(lowerBound: number, value: number, upperBound: number) {
 
 
 class Radar {
+  /// the distance from the origin to each of the four edges
+  /// i.e. the radar's radius. hard-coded to 200 because some of the
+  /// force layout's constants depend on it
+  public static radius = 200;
+
+  private svg: any;
+  private force: any;
+  private things: Thing[];
+  private static quadrantGravity = 0.03;
+
   constructor(
     private width: number,
   ) {
 
     //// create transforms and other plot-related constants
 
-    var halfWidth = this.width / 2;
     var ymargin = 10;
 
-    this.transformx = d3.scale.linear()
-      .domain([-Radar.radius, Radar.radius])
-      .range([halfWidth, 3 * halfWidth]);
+    this.drawBackground(ymargin);
+    this.setupForceLayout();
+  }
 
-    this.transformy = d3.scale.linear()
-      .domain([-Radar.radius, Radar.radius])
-      .range([ymargin, this.width + ymargin]);
+  /// Call this to add more models to the view. 
+  public addThings(things: Thing[]) {
+    things.forEach(thing => this.things.push(thing));
+    this.restart();
+  }
 
-    this.scale = d3.scale.linear()
-      .domain([0, Radar.radius * 2])
-      .range([0, this.width]);
+  /// Draw the main SVG tag and the static background lines.
+  private drawBackground(ymargin: number) {
+
+    var halfWidth = this.width / 2;
+    var translatex = Radar.radius * 2;
+    var translatey = Radar.radius + ymargin;
+    var scale = this.width / (Radar.radius * 2);
 
     this.svg = d3.select("body").append("svg")
       .attr("class", "radar")
-      .attr("width", width * 2)
-      .attr("height", width + ymargin * 2);
+      .attr("width", this.width * 2)
+      .attr("height", this.width + ymargin * 2)
+      .append("g")
+      .attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey +")");
 
-    this.drawBackground();
+    // x axis
+    this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
 
+    // y axis
+    this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+
+    this.drawCenteredCircle(Radar.radius * 0.4);
+    this.drawCenteredCircle(Radar.radius * 0.7);
+    this.drawCenteredCircle(Radar.radius * 0.85);
+    this.drawCenteredCircle(Radar.radius * 0.86);
+    this.drawCenteredCircle(Radar.radius * 1.0);
+
+    var arc = d3.svg.arc()
+      .innerRadius(Radar.radius * 0.68)
+      .outerRadius(Radar.radius * 0.72)
+      .startAngle(0)
+      .endAngle(Math.PI / 4);
+
+  }
+
+  /// Creates a d3 force layout with unlinked nodes that repel each other and
+  /// no gravitational force towards the centre of the diagram
+  /// Additional forces are added in the `tick` method.
+  private setupForceLayout() {
     this.force = d3.layout.force()
       .nodes([])
       .size([Radar.radius * 2, Radar.radius * 2])
       .gravity(0)
-      .charge(-100)
+      .charge(-50)
       .on("tick", e => this.tick(e));
 
     this.things = <Thing[]>this.force.nodes();
   }
 
-  // the distance from the origin to each of the four edges
-  // i.e. the radar's radius. hard-coded to 200 because some of the
-  // force's constants depend on it
-  public static radius = 200;
-
-  private transformx: (number) => number;
-  private transformy: (number) => number;
-  private scale: (number) => number;
-  private svg: any;
-  private force: any;
-  private things: Thing[];
-  private quadrantGravity = 0.03;
-  
-  private tick(e: any) {
-    
-    // change every node's newly computed position such that
-    // the distance from the origin (r) never changes, and only 
-    // its angle (phi) can.
-    for (var i = 0; i != this.things.length; i++) {
-      var thing = this.things[i];
-      
-      // "read" the newly computed x,y values into `thing.polar`.
-      thing.updatePolar();
-
-      // set the thing's radius to whatever it was, unless we're being dragged
-      thing.fixRadius();
-      
-      // enable "quadrant gravity", pulling each node a bit to the centre diagonal
-      // of its quadrant
-      thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
-
-      var borderOffset = 10 / (thing.polar.r + 0.1);
-      // ensure that nodes never leave their quadrant
-      thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);
-
-      // ensure that nodes never leave the radar
-      thing.polar.r = Math.min(thing.polar.r, Radar.radius);
-
-      // "save" the modifed polar coordinates back to x,y.
-      thing.updateXY();
-    }
-
-    var origin = this.width / 2;
-
-    this.svg.selectAll("circle.thing")
-      .attr("cx", thing => this.transformx(thing.x))
-      .attr("cy", thing => this.transformy(thing.y));
-
-    this.svg.selectAll("text.thing")
-      .attr("x", thing => this.transformx(thing.x))
-      .attr("y", thing => this.transformy(thing.y))
-      .text(thing => thing.name + " (" + thing.goodness().toPrecision(2) + ")");
-  }
-
-  private drawBackground() {
-
-    // x axis
-    this.drawLine(
-      0, Radar.radius * 1.1,
-      0, -Radar.radius * 1.1);
-
-    // y axis
-     this.drawLine(
-       Radar.radius * 1.1, 0,
-       -Radar.radius * 1.1, 0);
-
-     this.drawCenteredCircle(Radar.radius * 0.3);
-     this.drawCenteredCircle(Radar.radius * 0.55);
-     this.drawCenteredCircle(Radar.radius * 0.8);
-     this.drawCenteredCircle(Radar.radius * 1.0);
-  }
-
-  private drawLine(x1: number, y1: number, x2: number, y2: number) {
-    this.svg.append("line")
-      .attr("class", "lines")
-      .attr("x1", this.transformx(x1))
-      .attr("y1", this.transformy(y1))
-      .attr("x2", this.transformx(x2))
-      .attr("y2", this.transformy(y2));
-  }
-
-  private drawCenteredCircle(r: number) {
-    this.svg.append("circle")
-      .attr("class", "lines")
-      .attr("cx", this.transformx(0))
-      .attr("cy", this.transformy(0))
-      .attr("r", this.scale(r))
-  }
-
-  public addThing(thing: Thing) {
-    this.things.push(thing);
-  }
-
-  // restart the force animation. re-call this every time you add one or
-  // more Things to the radar  .
-  public restart() {
+  /// Restart the force animation. Must be re-called every time the model (i.e.
+  /// `this.things` changes.
+  private restart() {
 
     var circles = this.svg.selectAll("circle.thing")
         .data(this.things);
@@ -252,7 +198,6 @@ class Radar {
     enter
       .attr("class", "thing")
       .attr("r", 6)
-      .attr("fill", "#3366ff")
       .call(this.force.drag);
 
     var texts = this.svg.selectAll("text.thing")
@@ -263,8 +208,67 @@ class Radar {
       .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? 1 : -1) * 12)
       .attr("dy", 4)
       .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "start" : "end")
+      .text((thing: Thing) => thing.name);
     
     this.force.start();
+  }
+
+
+  private tick(e: any) {
+    
+    // change every node's newly computed position such that
+    // the distance from the origin (r) never changes, and only 
+    // its angle (phi) can.
+    this.things.forEach(thing => {
+
+      // "read" the newly computed x,y values into `thing.polar`.
+      thing.updatePolar();
+
+      // set the thing's radius to whatever it was, unless we're being dragged
+      thing.fixRadius();
+
+      // enable "quadrant gravity", pulling each node a bit to the centre diagonal
+      // of its quadrant
+      thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
+
+      var borderOffset = 10 / (thing.polar.r + 0.1);
+      // ensure that nodes never leave their quadrant
+      thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);
+
+      // ensure that nodes never leave the radar
+      thing.polar.r = Math.min(thing.polar.r, Radar.radius);
+
+      // "save" the modifed polar coordinates back to x,y.
+      thing.updateXY();
+    });
+
+    var origin = this.width / 2;
+
+    this.svg.selectAll("circle.thing")
+      .attr("cx", thing => thing.x)
+      .attr("cy", thing => thing.y);
+
+    this.svg.selectAll("text.thing")
+      .attr("x", thing => thing.x)
+      .attr("y", thing => thing.y);
+      //.text(thing => thing.name + " (" + thing.goodness().toPrecision(2) + ")");
+  }
+
+  private drawLine(x1: number, y1: number, x2: number, y2: number) {
+    this.svg.append("line")
+      .attr("class", "lines")
+      .attr("x1", x1)
+      .attr("y1", y1)
+      .attr("x2", x2)
+      .attr("y2", y2);
+  }
+
+  private drawCenteredCircle(r: number) {
+    this.svg.append("circle")
+      .attr("class", "lines")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", r)
   }
 }
 
@@ -283,9 +287,11 @@ $(function() {
     new Thing("Git", Quadrant.Tools, 0.6),
   ];
 
-  var radar = new Radar(400);
-  for (var i = 0; i != things.length; i++) {
-    radar.addThing(things[i]);
-  }
-  radar.restart();
+  var q = [Quadrant.Languages, Quadrant.Platforms, Quadrant.Techniques, Quadrant.Tools];
+
+  d3.range(60).forEach(i => things.push(new Thing(i.toString(), q[i % 4], random(0.1, 1.0))));
+
+  var radar = new Radar(500);
+
+  radar.addThings(things);
 });

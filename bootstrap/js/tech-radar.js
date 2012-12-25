@@ -44,7 +44,7 @@ var Thing = (function (_super) {
         this.name = name;
         this.quadrant = quadrant;
         var r = goodness * Radar.radius;
-        var phi = random(quadrant.angleLower(), quadrant.angleUpper());
+        var phi = quadrant.angle;
         this.polar = new Polar(r, phi);
         this.updateXY();
     }
@@ -96,95 +96,84 @@ function cap(lowerBound, value, upperBound) {
 var Radar = (function () {
     function Radar(width) {
         this.width = width;
-        var _this = this;
-        this.quadrantGravity = 0.03;
-        var halfWidth = this.width / 2;
         var ymargin = 10;
-        this.transformx = d3.scale.linear().domain([
-            -Radar.radius, 
-            Radar.radius
-        ]).range([
-            halfWidth, 
-            3 * halfWidth
-        ]);
-        this.transformy = d3.scale.linear().domain([
-            -Radar.radius, 
-            Radar.radius
-        ]).range([
-            ymargin, 
-            this.width + ymargin
-        ]);
-        this.scale = d3.scale.linear().domain([
-            0, 
-            Radar.radius * 2
-        ]).range([
-            0, 
-            this.width
-        ]);
-        this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", width * 2).attr("height", width + ymargin * 2);
-        this.drawBackground();
+        this.drawBackground(ymargin);
+        this.setupForceLayout();
+    }
+    Radar.radius = 200;
+    Radar.quadrantGravity = 0.03;
+    Radar.prototype.addThings = function (things) {
+        var _this = this;
+        things.forEach(function (thing) {
+            return _this.things.push(thing);
+        });
+        this.restart();
+    };
+    Radar.prototype.drawBackground = function (ymargin) {
+        var halfWidth = this.width / 2;
+        var translatex = Radar.radius * 2;
+        var translatey = Radar.radius + ymargin;
+        var scale = this.width / (Radar.radius * 2);
+        this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2).append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
+        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
+        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+        this.drawCenteredCircle(Radar.radius * 0.4);
+        this.drawCenteredCircle(Radar.radius * 0.7);
+        this.drawCenteredCircle(Radar.radius * 0.85);
+        this.drawCenteredCircle(Radar.radius * 0.86);
+        this.drawCenteredCircle(Radar.radius * 1.0);
+        var arc = d3.svg.arc().innerRadius(Radar.radius * 0.68).outerRadius(Radar.radius * 0.72).startAngle(0).endAngle(Math.PI / 4);
+    };
+    Radar.prototype.setupForceLayout = function () {
+        var _this = this;
         this.force = d3.layout.force().nodes([]).size([
             Radar.radius * 2, 
             Radar.radius * 2
-        ]).gravity(0).charge(-100).on("tick", function (e) {
+        ]).gravity(0).charge(-50).on("tick", function (e) {
             return _this.tick(e);
         });
         this.things = this.force.nodes();
-    }
-    Radar.radius = 200;
-    Radar.prototype.tick = function (e) {
-        var _this = this;
-        for(var i = 0; i != this.things.length; i++) {
-            var thing = this.things[i];
-            thing.updatePolar();
-            thing.fixRadius();
-            thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * this.quadrantGravity;
-            var borderOffset = 10 / (thing.polar.r + 0.1);
-            thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);
-            thing.polar.r = Math.min(thing.polar.r, Radar.radius);
-            thing.updateXY();
-        }
-        var origin = this.width / 2;
-        this.svg.selectAll("circle.thing").attr("cx", function (thing) {
-            return _this.transformx(thing.x);
-        }).attr("cy", function (thing) {
-            return _this.transformy(thing.y);
-        });
-        this.svg.selectAll("text.thing").attr("x", function (thing) {
-            return _this.transformx(thing.x);
-        }).attr("y", function (thing) {
-            return _this.transformy(thing.y);
-        }).text(function (thing) {
-            return thing.name + " (" + thing.goodness().toPrecision(2) + ")";
-        });
-    };
-    Radar.prototype.drawBackground = function () {
-        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
-        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
-        this.drawCenteredCircle(Radar.radius * 0.3);
-        this.drawCenteredCircle(Radar.radius * 0.55);
-        this.drawCenteredCircle(Radar.radius * 0.8);
-        this.drawCenteredCircle(Radar.radius * 1.0);
-    };
-    Radar.prototype.drawLine = function (x1, y1, x2, y2) {
-        this.svg.append("line").attr("class", "lines").attr("x1", this.transformx(x1)).attr("y1", this.transformy(y1)).attr("x2", this.transformx(x2)).attr("y2", this.transformy(y2));
-    };
-    Radar.prototype.drawCenteredCircle = function (r) {
-        this.svg.append("circle").attr("class", "lines").attr("cx", this.transformx(0)).attr("cy", this.transformy(0)).attr("r", this.scale(r));
-    };
-    Radar.prototype.addThing = function (thing) {
-        this.things.push(thing);
     };
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
         var enter = circles.enter().append("circle");
-        enter.attr("class", "thing").attr("r", 6).attr("fill", "#3366ff").call(this.force.drag);
+        enter.attr("class", "thing").attr("r", 6).call(this.force.drag);
         var texts = this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
             return (thing.quadrant.isLeft() ? 1 : -1) * 12;
         }).attr("dy", 4).attr("text-anchor", function (thing) {
             return thing.quadrant.isLeft() ? "start" : "end";
+        }).text(function (thing) {
+            return thing.name;
         });
         this.force.start();
+    };
+    Radar.prototype.tick = function (e) {
+        this.things.forEach(function (thing) {
+            thing.updatePolar();
+            thing.fixRadius();
+            thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
+            var borderOffset = 10 / (thing.polar.r + 0.1);
+            thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);
+            thing.polar.r = Math.min(thing.polar.r, Radar.radius);
+            thing.updateXY();
+        });
+        var origin = this.width / 2;
+        this.svg.selectAll("circle.thing").attr("cx", function (thing) {
+            return thing.x;
+        }).attr("cy", function (thing) {
+            return thing.y;
+        });
+        this.svg.selectAll("text.thing").attr("x", function (thing) {
+            return thing.x;
+        }).attr("y", function (thing) {
+            return thing.y;
+        });
+    };
+    Radar.prototype.drawLine = function (x1, y1, x2, y2) {
+        this.svg.append("line").attr("class", "lines").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2);
+    };
+    Radar.prototype.drawCenteredCircle = function (r) {
+        this.svg.append("circle").attr("class", "lines").attr("cx", 0).attr("cy", 0).attr("r", r);
     };
     return Radar;
 })();
@@ -201,9 +190,15 @@ $(function () {
         new Thing("Git", Quadrant.Tools, 0.6), 
         
     ];
-    var radar = new Radar(400);
-    for(var i = 0; i != things.length; i++) {
-        radar.addThing(things[i]);
-    }
-    radar.restart();
+    var q = [
+        Quadrant.Languages, 
+        Quadrant.Platforms, 
+        Quadrant.Techniques, 
+        Quadrant.Tools
+    ];
+    d3.range(60).forEach(function (i) {
+        return things.push(new Thing(i.toString(), q[i % 4], random(0.1, 1.0)));
+    });
+    var radar = new Radar(500);
+    radar.addThings(things);
 });
