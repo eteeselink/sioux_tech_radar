@@ -1,91 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var deg45 = Math.PI / 4;
-var Quadrant = (function () {
-    function Quadrant(angle) {
-        this.angle = angle;
-    }
-    Quadrant.Tools = new Quadrant(1 * deg45);
-    Quadrant.Techniques = new Quadrant(3 * deg45);
-    Quadrant.Platforms = new Quadrant(-3 * deg45);
-    Quadrant.Languages = new Quadrant(-1 * deg45);
-    Quadrant.prototype.angleLower = function () {
-        return this.angle - deg45;
-    };
-    Quadrant.prototype.angleUpper = function () {
-        return this.angle + deg45;
-    };
-    Quadrant.prototype.isLeft = function () {
-        return Math.abs(this.angle) < (Math.PI / 2);
-    };
-    return Quadrant;
-})();
-var D3Node = (function () {
-    function D3Node(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    return D3Node;
-})();
-var D3Link = (function () {
-    function D3Link(source, target) {
-        this.source = source;
-        this.target = target;
-    }
-    return D3Link;
-})();
-var Thing = (function (_super) {
-    __extends(Thing, _super);
-    function Thing(name, quadrant, goodness) {
-        _super.call(this, null, null);
-        this.name = name;
-        this.quadrant = quadrant;
-        var r = goodness * Radar.radius;
-        var phi = quadrant.angle;
-        this.polar = new Polar(r, phi);
-        this.updateXY();
-    }
-    Thing.prototype.updatePolar = function () {
-        this.prevPolar = this.polar;
-        this.polar = Polar.fromPoint(this.x, this.y);
-    };
-    Thing.prototype.fixRadius = function () {
-        if(!this.isBeingDragged()) {
-            this.polar.r = this.prevPolar.r;
-        }
-    };
-    Thing.prototype.updateXY = function () {
-        this.x = this.polar.x();
-        this.y = this.polar.y();
-    };
-    Thing.prototype.isBeingDragged = function () {
-        return this.fixed & 2;
-    };
-    Thing.prototype.goodness = function () {
-        return this.polar.r / Radar.radius;
-    };
-    return Thing;
-})(D3Node);
-var Polar = (function () {
-    function Polar(r, phi) {
-        this.r = r;
-        this.phi = phi;
-    }
-    Polar.fromPoint = function fromPoint(x, y) {
-        y = -y;
-        return new Polar(Math.sqrt(x * x + y * y), Math.atan2(y, x));
-    }
-    Polar.prototype.x = function () {
-        return this.r * Math.cos(this.phi);
-    };
-    Polar.prototype.y = function () {
-        return -this.r * Math.sin(this.phi);
-    };
-    return Polar;
-})();
 function random(from, to) {
     var domain = to - from;
     return Math.random() * domain + from;
@@ -111,10 +23,11 @@ var Radar = (function () {
     };
     Radar.prototype.drawBackground = function (ymargin) {
         var halfWidth = this.width / 2;
+        var svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2);
         var translatex = Radar.radius * 2;
         var translatey = Radar.radius + ymargin;
         var scale = this.width / (Radar.radius * 2);
-        this.svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2).append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
+        this.svg = svg.append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
         this.drawLabeledCircle("Doen!", 0.53, Radar.radius * 0.4);
         this.drawLabeledCircle("Proberen", 0.44, Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
@@ -183,28 +96,3 @@ var Radar = (function () {
     };
     return Radar;
 })();
-$(function () {
-    var things = [
-        new Thing("C++", Quadrant.Languages, 0.9), 
-        new Thing("Scala", Quadrant.Languages, 0.6), 
-        new Thing("TypeScript", Quadrant.Languages, 0.7), 
-        new Thing("C#", Quadrant.Languages, 0.1), 
-        new Thing("APL", Quadrant.Languages, 0.8), 
-        new Thing("Continuous Integration", Quadrant.Techniques, 0.8), 
-        new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5), 
-        new Thing("NCrunch", Quadrant.Tools, 0.5), 
-        new Thing("Git", Quadrant.Tools, 0.6), 
-        
-    ];
-    var q = [
-        Quadrant.Languages, 
-        Quadrant.Platforms, 
-        Quadrant.Techniques, 
-        Quadrant.Tools
-    ];
-    d3.range(60).forEach(function (i) {
-        return things.push(new Thing(i.toString(), q[i % 4], random(0.1, 1.0)));
-    });
-    var radar = new Radar(500);
-    radar.addThings(things);
-});

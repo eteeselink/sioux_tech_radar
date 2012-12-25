@@ -29,9 +29,20 @@
       <DependentUpon>tech-radar.less</DependentUpon>
     </Content>
     <Content Include="index.html" />
+    <TypeScriptCompile Include="js\structs.ts" />
+    <Content Include="js\structs.js">
+      <DependentUpon>structs.ts</DependentUpon>
+    </Content>
+    <Content Include="js\structs.min.js">
+      <DependentUpon>structs.ts</DependentUpon>
+    </Content>
     <Content Include="js\tech-radar.min.js">
       <DependentUpon>tech-radar.ts</DependentUpon>
     </Content>
+    <Content Include="js\view-model.js">
+      <DependentUpon>view-model.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="js\view-model.ts" />
     <TypeScriptCompile Include="js\tech-radar.ts" />
     <Content Include="js\tech-radar.js">
       <DependentUpon>tech-radar.ts</DependentUpon>
@@ -71,7 +82,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptSourceMap> --sourcemap</TypeScriptSourceMap>
+    <TypeScriptSourceMap> --sourcemap --module amd</TypeScriptSourceMap>
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <Message Text="Compiling TypeScript files" />
