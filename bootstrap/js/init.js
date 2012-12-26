@@ -41,7 +41,8 @@ var TechRadar;
         });
     }
     $(function () {
+        console.log("askjhadj");
         makeTabs();
-        showTab("none");
+        showTab("all");
     });
 })(TechRadar || (TechRadar = {}));

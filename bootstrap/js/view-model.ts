@@ -1,5 +1,5 @@
 /// <reference path="structs.ts" />
-/// <reference path="tech-radar.ts" />
+/// <reference path="radar.ts" />
 
 var deg45 = Math.PI / 4;
 

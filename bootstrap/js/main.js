@@ -1,2 +1,6 @@
-require(["structs", "view-model", "tech-radar", "init"]);
-
+require([
+    "structs", 
+    "view-model", 
+    "radar",
+    "init"
+]);

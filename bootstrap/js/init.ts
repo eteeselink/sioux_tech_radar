@@ -1,8 +1,11 @@
 /// <reference path="structs.ts" />
 /// <reference path="view-model.ts" />
+/// <reference path="radar.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar {
+
+  declare var d3: any;
 
   var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
 
@@ -46,11 +49,14 @@ module TechRadar {
     $('a[data-toggle="tab"]').on('shown', e => showTab($(e.target).data('q')));
   }
 
+  
   $(function () {
 
+    console.log("askjhadj");
     makeTabs();
 
-    showTab("none");
+    showTab("all");
   });
 
 }
+

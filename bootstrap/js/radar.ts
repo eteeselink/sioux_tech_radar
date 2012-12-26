@@ -2,7 +2,6 @@
 /// <reference path="view-model.ts" />
 
 declare var d3: any;
-
  
 function random(from: number, to: number) {
   var domain = to - from;
