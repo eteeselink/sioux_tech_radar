@@ -7,11 +7,14 @@ body
 @bgcolor: #ccc;
 svg.radar
 {
+  //border: 2px solid red;
+
+  @stroke: #83b2e5;
   circle.thing
   {
-    stroke: #83b2e5;
-    stroke-width: 3;
-    fill: white;
+    stroke: @stroke;
+    stroke-width: 1;
+    fill: @stroke + (#fff - @stroke) * 0.5;
   }
 
   line.lines,
@@ -28,7 +31,7 @@ svg.radar
 
   tspan {
     font-size: 10px;
-    fill: @bgcolor;
+    fill: @bgcolor * 0.6;
   }
 }
 

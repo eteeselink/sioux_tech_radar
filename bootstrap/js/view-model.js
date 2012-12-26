@@ -5,13 +5,15 @@ var __extends = this.__extends || function (d, b) {
 };
 var deg45 = Math.PI / 4;
 var Quadrant = (function () {
-    function Quadrant(angle) {
+    function Quadrant(xloc, yloc, angle) {
+        this.xloc = xloc;
+        this.yloc = yloc;
         this.angle = angle;
     }
-    Quadrant.Tools = new Quadrant(1 * deg45);
-    Quadrant.Techniques = new Quadrant(3 * deg45);
-    Quadrant.Platforms = new Quadrant(-3 * deg45);
-    Quadrant.Languages = new Quadrant(-1 * deg45);
+    Quadrant.Tools = new Quadrant(1, -1, 1 * deg45);
+    Quadrant.Techniques = new Quadrant(-1, -1, 3 * deg45);
+    Quadrant.Platforms = new Quadrant(-1, 1, -3 * deg45);
+    Quadrant.Languages = new Quadrant(1, 1, -1 * deg45);
     Quadrant.prototype.angleLower = function () {
         return this.angle - deg45;
     };
@@ -19,7 +21,10 @@ var Quadrant = (function () {
         return this.angle + deg45;
     };
     Quadrant.prototype.isLeft = function () {
-        return Math.abs(this.angle) < (Math.PI / 2);
+        return this.xloc < 0;
+    };
+    Quadrant.prototype.isTop = function () {
+        return this.yloc < 0;
     };
     return Quadrant;
 })();

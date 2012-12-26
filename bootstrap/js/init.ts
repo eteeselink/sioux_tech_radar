@@ -1,6 +1,6 @@
 /// <reference path="structs.ts" />
 /// <reference path="view-model.ts" />
-/// <reference path="jquery-1.8.d.ts" />
+/// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar {
 
@@ -22,7 +22,13 @@ module TechRadar {
 
     d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), q[i % 4], random(0.1, 1.0))) });
 
-    var radar = new Radar(500);
+    var quad: Quadrant
+    if (document.location.hash) {
+      var hash = parseInt(document.location.hash.substr(1));
+      quad = q[hash];
+    }
+
+    var radar = new Radar(500, quad);
 
     radar.addThings(things);
   });

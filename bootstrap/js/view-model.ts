@@ -6,12 +6,12 @@ var deg45 = Math.PI / 4;
 /// Emulation of an "enum" with 4 elements. The good thing about
 /// faking an enum with a class and statics is that you can add methods
 class Quadrant {
-  constructor(public angle: number) {}
+  constructor(public xloc: number, public yloc: number, public angle: number) {}
 
-  public static Tools      = new Quadrant( 1 * deg45);
-  public static Techniques = new Quadrant( 3 * deg45);
-  public static Platforms  = new Quadrant(-3 * deg45);
-  public static Languages  = new Quadrant(-1 * deg45);
+  public static Tools      = new Quadrant( 1, -1,  1 * deg45);
+  public static Techniques = new Quadrant(-1, -1,  3 * deg45);
+  public static Platforms  = new Quadrant(-1,  1, -3 * deg45);
+  public static Languages  = new Quadrant( 1,  1, -1 * deg45);
 
   public angleLower() {
     return this.angle - deg45;
@@ -22,7 +22,11 @@ class Quadrant {
   }
 
   public isLeft() {
-    return Math.abs(this.angle) < (Math.PI / 2);
+    return this.xloc < 0;
+  }
+
+  public isTop() {
+    return this.yloc < 0;
   }
 }
 

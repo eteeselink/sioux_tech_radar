@@ -1,6 +1,5 @@
 /// <reference path="structs.ts" />
 /// <reference path="view-model.ts" />
-/// <reference path="jquery-1.8.d.ts" />
 
 declare var d3: any;
 
@@ -26,13 +25,21 @@ class Radar {
   private things: Thing[];
   private static quadrantGravity = 0.03;
 
+  /// @param diameter the diameter (in pixels) of the generated radar. the SVG
+  /// element generated will be double as wide and slightly higher.
+  /// @param quadrant (optional) the quadrant to display. To display the entire radar,
+  /// pass `null`.
   constructor(
-    private width: number,
+    private diameter: number,
+    private quadrant: Quadrant
   ) {
+    // a margin, where necessary, to accommodate for the ends of the axes
+    // as well as parts of dots places near axes. specified in a factor of the
+    // entire radar diameter.
+    var margin = 1.1; // 10% margin
 
-    var ymargin = 10;
-
-    this.drawBackground(ymargin);
+    this.createSvg(margin)
+    this.drawBackground(margin);
     this.setupForceLayout();
   }
 
@@ -42,23 +49,38 @@ class Radar {
     this.restart();
   }
 
-  /// Draw the main SVG tag and the static background lines.
-  private drawBackground(ymargin: number) {
+  private createSvg(margin: number) {
 
-    var halfWidth = this.width / 2;
-
+    // single quadrant: make the svg 1.5x wider that specified to accommodate
+    // for text labels
+    // all quadrants: make the svg 2x wider for the same reason, making space
+    // for text labels in both directions.
     var svg = d3.select("body").append("svg")
       .attr("class", "radar")
-      .attr("width", this.width * 2)
-      .attr("height", this.width + ymargin * 2);
+      .attr("width",  this.diameter * (this.quadrant ? 1.5    : 2))
+      .attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
 
-    // set up a global transformation from internal coordinate system
-    // to whatever `this.width` has been set to
-    var translatex = Radar.radius * 2;
-    var translatey = Radar.radius + ymargin;
-    var scale = this.width / (Radar.radius * 2);
+    // set up a global SVG transformation from internal coordinate system
+    // to whatever `this.diameter` has been set to.
+    if (this.quadrant) {
+      var scale      = this.diameter / Radar.radius; 
+      var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5    : 0;
+      var translatey = this.quadrant.isTop()  ? Radar.radius * margin : 0;
+    } else {
+      var scale      = this.diameter / (Radar.radius * 2); 
+      var translatex = Radar.radius * 2;
+      var translatey = Radar.radius + margin;
+    }
+
+    // you can't put a transform on the svg element itself, so we simply put all
+    // svg elements in a global group node that has the transform.
     this.svg = svg.append("g")
       .attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey +")");
+
+  }
+
+  /// Draw the main SVG tag and the static background lines.
+  private drawBackground(axisLengthFactor) {
 
     this.drawLabeledCircle("Doen!",          0.53, Radar.radius * 0.4);
     this.drawLabeledCircle("Proberen",       0.44, Radar.radius * 0.7);
@@ -67,12 +89,13 @@ class Radar {
     this.drawLabeledCircle("Afblijven",      0.30, Radar.radius * 1.0);
 
     
+    var axislen = Radar.radius * axisLengthFactor;
 
     // x axis
-    this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
+    this.drawLine(0, axislen, 0, -axislen);
 
     // y axis
-    this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+    this.drawLine(axislen, 0, -axislen, 0);
 
   }
 
@@ -102,7 +125,7 @@ class Radar {
     
     enter
       .attr("class", "thing")
-      .attr("r", 6)
+      .attr("r", 4)
       .call(this.force.drag);
 
     var texts = this.svg.selectAll("text.thing")
@@ -110,9 +133,9 @@ class Radar {
       .enter()
       .append("text")
       .attr("class", "thing")
-      .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? 1 : -1) * 12)
+      .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? -1 : 1) * 12)
       .attr("dy", 4)
-      .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "start" : "end")
+      .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
       .text((thing: Thing) => thing.name);
     
     this.force.start();
@@ -147,7 +170,7 @@ class Radar {
       thing.updateXY();
     });
 
-    var origin = this.width / 2;
+    var origin = this.diameter / 2;
 
     this.svg.selectAll("circle.thing")
       .attr("cx", thing => thing.x)

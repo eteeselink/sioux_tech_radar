@@ -6,10 +6,12 @@ function cap(lowerBound, value, upperBound) {
     return Math.max(lowerBound, Math.min(upperBound, value));
 }
 var Radar = (function () {
-    function Radar(width) {
-        this.width = width;
-        var ymargin = 10;
-        this.drawBackground(ymargin);
+    function Radar(diameter, quadrant) {
+        this.diameter = diameter;
+        this.quadrant = quadrant;
+        var margin = 1.1;
+        this.createSvg(margin);
+        this.drawBackground(margin);
         this.setupForceLayout();
     }
     Radar.radius = 200;
@@ -21,20 +23,28 @@ var Radar = (function () {
         });
         this.restart();
     };
-    Radar.prototype.drawBackground = function (ymargin) {
-        var halfWidth = this.width / 2;
-        var svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.width * 2).attr("height", this.width + ymargin * 2);
-        var translatex = Radar.radius * 2;
-        var translatey = Radar.radius + ymargin;
-        var scale = this.width / (Radar.radius * 2);
+    Radar.prototype.createSvg = function (margin) {
+        var svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.diameter * (this.quadrant ? 1.5 : 2)).attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
+        if(this.quadrant) {
+            var scale = this.diameter / Radar.radius;
+            var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5 : 0;
+            var translatey = this.quadrant.isTop() ? Radar.radius * margin : 0;
+        } else {
+            var scale = this.diameter / (Radar.radius * 2);
+            var translatex = Radar.radius * 2;
+            var translatey = Radar.radius + margin;
+        }
         this.svg = svg.append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
+    };
+    Radar.prototype.drawBackground = function (axisLengthFactor) {
         this.drawLabeledCircle("Doen!", 0.53, Radar.radius * 0.4);
         this.drawLabeledCircle("Proberen", 0.44, Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
         this.drawLabeledCircle("Experimenteren", 0.6, Radar.radius * 0.86);
         this.drawLabeledCircle("Afblijven", 0.3, Radar.radius * 1.0);
-        this.drawLine(0, Radar.radius * 1.1, 0, -Radar.radius * 1.1);
-        this.drawLine(Radar.radius * 1.1, 0, -Radar.radius * 1.1, 0);
+        var axislen = Radar.radius * axisLengthFactor;
+        this.drawLine(0, axislen, 0, -axislen);
+        this.drawLine(axislen, 0, -axislen, 0);
     };
     Radar.prototype.setupForceLayout = function () {
         var _this = this;
@@ -49,11 +59,11 @@ var Radar = (function () {
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
         var enter = circles.enter().append("circle");
-        enter.attr("class", "thing").attr("r", 6).call(this.force.drag);
+        enter.attr("class", "thing").attr("r", 4).call(this.force.drag);
         var texts = this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
-            return (thing.quadrant.isLeft() ? 1 : -1) * 12;
+            return (thing.quadrant.isLeft() ? -1 : 1) * 12;
         }).attr("dy", 4).attr("text-anchor", function (thing) {
-            return thing.quadrant.isLeft() ? "start" : "end";
+            return thing.quadrant.isLeft() ? "end" : "start";
         }).text(function (thing) {
             return thing.name;
         });
@@ -69,7 +79,7 @@ var Radar = (function () {
             thing.polar.r = Math.min(thing.polar.r, Radar.radius);
             thing.updateXY();
         });
-        var origin = this.width / 2;
+        var origin = this.diameter / 2;
         this.svg.selectAll("circle.thing").attr("cx", function (thing) {
             return thing.x;
         }).attr("cy", function (thing) {
