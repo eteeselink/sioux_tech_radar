@@ -6,11 +6,11 @@ function cap(lowerBound, value, upperBound) {
     return Math.max(lowerBound, Math.min(upperBound, value));
 }
 var Radar = (function () {
-    function Radar(diameter, quadrant) {
+    function Radar(diameter, quadrant, auxClasses) {
         this.diameter = diameter;
         this.quadrant = quadrant;
         var margin = 1.1;
-        this.createSvg(margin);
+        this.createSvg(auxClasses, margin);
         this.drawBackground(margin);
         this.setupForceLayout();
     }
@@ -23,8 +23,8 @@ var Radar = (function () {
         });
         this.restart();
     };
-    Radar.prototype.createSvg = function (margin) {
-        var svg = d3.select("body").append("svg").attr("class", "radar").attr("width", this.diameter * (this.quadrant ? 1.5 : 2)).attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
+    Radar.prototype.createSvg = function (auxClasses, margin) {
+        var svg = d3.select("body").append("svg").attr("class", "radar " + auxClasses).attr("width", this.diameter * (this.quadrant ? 1.5 : 2)).attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
         if(this.quadrant) {
             var scale = this.diameter / Radar.radius;
             var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5 : 0;
@@ -58,15 +58,14 @@ var Radar = (function () {
     };
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
-        var enter = circles.enter().append("circle");
-        enter.attr("class", "thing").attr("r", 4).call(this.force.drag);
-        var texts = this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
+        this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
             return (thing.quadrant.isLeft() ? -1 : 1) * 12;
         }).attr("dy", 4).attr("text-anchor", function (thing) {
             return thing.quadrant.isLeft() ? "end" : "start";
         }).text(function (thing) {
             return thing.name;
         });
+        circles.enter().append("circle").attr("class", "thing").attr("r", 4).call(this.force.drag);
         this.force.start();
     };
     Radar.prototype.tick = function (e) {

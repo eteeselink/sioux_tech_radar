@@ -14,7 +14,7 @@ svg.radar
   {
     stroke: @stroke;
     stroke-width: 1;
-    fill: @stroke + (#fff - @stroke) * 0.5;
+    fill: lighten(@stroke, 15%);
   }
 
   line.lines,
@@ -31,7 +31,7 @@ svg.radar
 
   tspan {
     font-size: 10px;
-    fill: @bgcolor * 0.6;
+    fill: darken(@bgcolor, 33%);
   }
 }
 

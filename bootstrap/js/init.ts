@@ -4,8 +4,9 @@
 
 module TechRadar {
 
-  $(function () {
+  var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
 
+  function getThings() {
     var things = [
       new Thing("C++", Quadrant.Languages, 0.9),
       new Thing("Scala", Quadrant.Languages, 0.6),
@@ -18,19 +19,38 @@ module TechRadar {
       new Thing("Git", Quadrant.Tools, 0.6),
     ];
 
-    var q = [Quadrant.Languages, Quadrant.Platforms, Quadrant.Techniques, Quadrant.Tools];
+    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], random(0.1, 1.0))) });
 
-    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), q[i % 4], random(0.1, 1.0))) });
 
-    var quad: Quadrant
-    if (document.location.hash) {
-      var hash = parseInt(document.location.hash.substr(1));
-      quad = q[hash];
+    return things;
+  }
+
+  function showTab(q: string) {
+
+    // remove earlier radars, if any.
+    $('svg.radar').remove();
+
+    var quad = (q == "all") ? null : quadrants[parseInt(q, 10)];
+    var classes = "quadrant-" + q;
+    if (quad !== null) {
+      classes += " single-quadrant";
     }
+    var radar = new Radar(500, quad, classes);
 
-    var radar = new Radar(500, quad);
-
+    var things = getThings();
     radar.addThings(things);
+
+  }
+
+  function makeTabs() {
+    $('a[data-toggle="tab"]').on('shown', e => showTab($(e.target).data('q')));
+  }
+
+  $(function () {
+
+    makeTabs();
+
+    showTab("none");
   });
 
 }

@@ -31,14 +31,15 @@ class Radar {
   /// pass `null`.
   constructor(
     private diameter: number,
-    private quadrant: Quadrant
+    private quadrant: Quadrant,
+    auxClasses: string,
   ) {
     // a margin, where necessary, to accommodate for the ends of the axes
     // as well as parts of dots places near axes. specified in a factor of the
     // entire radar diameter.
     var margin = 1.1; // 10% margin
 
-    this.createSvg(margin)
+    this.createSvg(auxClasses, margin)
     this.drawBackground(margin);
     this.setupForceLayout();
   }
@@ -49,14 +50,14 @@ class Radar {
     this.restart();
   }
 
-  private createSvg(margin: number) {
+  private createSvg(auxClasses: string, margin: number) {
 
     // single quadrant: make the svg 1.5x wider that specified to accommodate
     // for text labels
     // all quadrants: make the svg 2x wider for the same reason, making space
     // for text labels in both directions.
     var svg = d3.select("body").append("svg")
-      .attr("class", "radar")
+      .attr("class", "radar " + auxClasses)
       .attr("width",  this.diameter * (this.quadrant ? 1.5    : 2))
       .attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
 
@@ -121,14 +122,7 @@ class Radar {
         .data(this.things);
     
     // the enter set; no special animation; create sub-elements upon creation
-    var enter = circles.enter().append("circle");
-    
-    enter
-      .attr("class", "thing")
-      .attr("r", 4)
-      .call(this.force.drag);
-
-    var texts = this.svg.selectAll("text.thing")
+    this.svg.selectAll("text.thing")
       .data(this.things)
       .enter()
       .append("text")
@@ -138,6 +132,11 @@ class Radar {
       .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
       .text((thing: Thing) => thing.name);
     
+    circles.enter().append("circle")
+      .attr("class", "thing")
+      .attr("r", 4)
+      .call(this.force.drag);
+
     this.force.start();
   }
 
