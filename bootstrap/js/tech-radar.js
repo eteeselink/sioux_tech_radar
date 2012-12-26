@@ -32,16 +32,16 @@ var Radar = (function () {
         } else {
             var scale = this.diameter / (Radar.radius * 2);
             var translatex = Radar.radius * 2;
-            var translatey = Radar.radius + margin;
+            var translatey = Radar.radius * margin;
         }
         this.svg = svg.append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
     };
     Radar.prototype.drawBackground = function (axisLengthFactor) {
-        this.drawLabeledCircle("Doen!", 0.53, Radar.radius * 0.4);
-        this.drawLabeledCircle("Proberen", 0.44, Radar.radius * 0.7);
+        this.drawLabeledCircle("Doen!", 0.47, Radar.radius * 0.4);
+        this.drawLabeledCircle("Proberen", 0.4, Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
-        this.drawLabeledCircle("Experimenteren", 0.6, Radar.radius * 0.86);
-        this.drawLabeledCircle("Afblijven", 0.3, Radar.radius * 1.0);
+        this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
+        this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1.0);
         var axislen = Radar.radius * axisLengthFactor;
         this.drawLine(0, axislen, 0, -axislen);
         this.drawLine(axislen, 0, -axislen, 0);
@@ -94,12 +94,31 @@ var Radar = (function () {
     Radar.prototype.drawLine = function (x1, y1, x2, y2) {
         this.svg.append("line").attr("class", "lines").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2);
     };
-    Radar.prototype.drawLabeledCircle = function (name, endAngle, r) {
+    Radar.prototype.drawLabeledCircle = function (name, arcWidth, r) {
+        var quadrant = this.quadrant || Quadrant.Tools;
         this.drawCenteredCircle(r);
-        var arc = d3.svg.arc().innerRadius(r - 0.02 * Radar.radius).outerRadius(r + 0.02 * Radar.radius).startAngle(0).endAngle(endAngle);
+        if(quadrant.isTop()) {
+            var middleAngle = 0;
+        } else {
+            var middleAngle = Math.PI;
+            arcWidth = -arcWidth;
+        }
+        if(quadrant.isLeft()) {
+            var startAngle = middleAngle - arcWidth;
+            var endAngle = middleAngle;
+        } else {
+            var startAngle = middleAngle;
+            var endAngle = middleAngle + arcWidth;
+        }
+        if(!quadrant.isTop()) {
+            var h = endAngle;
+            endAngle = startAngle;
+            startAngle = h;
+        }
+        var arc = d3.svg.arc().innerRadius(r - 0.02 * Radar.radius).outerRadius(r + 0.02 * Radar.radius).startAngle(startAngle).endAngle(endAngle);
         var id = name.replace(/[^a-z]/, "");
         this.svg.append("path").attr("d", arc).attr("id", id).style("stroke", "none").style("fill", "white");
-        this.svg.append("text").append("textPath").attr("xlink:href", "#" + id).append("tspan").attr("dy", 10).attr("dx", 5).text(name);
+        this.svg.append("text").append("textPath").attr("xlink:href", "#" + id).attr("startOffset", quadrant.isTop() ? "0%" : "50%").append("tspan").attr("dy", 8).attr("dx", 5).text(name);
     };
     Radar.prototype.drawCenteredCircle = function (r) {
         this.svg.append("circle").attr("class", "lines").attr("cx", 0).attr("cy", 0).attr("r", r);

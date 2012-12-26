@@ -69,7 +69,7 @@ class Radar {
     } else {
       var scale      = this.diameter / (Radar.radius * 2); 
       var translatex = Radar.radius * 2;
-      var translatey = Radar.radius + margin;
+      var translatey = Radar.radius * margin;
     }
 
     // you can't put a transform on the svg element itself, so we simply put all
@@ -82,11 +82,11 @@ class Radar {
   /// Draw the main SVG tag and the static background lines.
   private drawBackground(axisLengthFactor) {
 
-    this.drawLabeledCircle("Doen!",          0.53, Radar.radius * 0.4);
-    this.drawLabeledCircle("Proberen",       0.44, Radar.radius * 0.7);
+    this.drawLabeledCircle("Doen!",          0.47, Radar.radius * 0.4);
+    this.drawLabeledCircle("Proberen",       0.40, Radar.radius * 0.7);
     this.drawCenteredCircle(Radar.radius * 0.85);
-    this.drawLabeledCircle("Experimenteren", 0.60, Radar.radius * 0.86);
-    this.drawLabeledCircle("Afblijven",      0.30, Radar.radius * 1.0);
+    this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
+    this.drawLabeledCircle("Afblijven",      0.27, Radar.radius * 1.0);
 
     
     var axislen = Radar.radius * axisLengthFactor;
@@ -191,14 +191,37 @@ class Radar {
       .attr("y2", y2);
   }
 
-  private drawLabeledCircle(name: string, endAngle: number, r: number) {
+  private drawLabeledCircle(name: string, arcWidth: number, r: number) {
+
+    var quadrant = this.quadrant || Quadrant.Tools;
 
     this.drawCenteredCircle(r);
+
+    if (quadrant.isTop()) {
+      var middleAngle = 0;
+    } else {
+      var middleAngle = Math.PI;
+      arcWidth = -arcWidth;
+    }
+
+    if (quadrant.isLeft()) {
+      var startAngle = middleAngle - arcWidth;
+      var endAngle = middleAngle;
+    } else {
+      var startAngle = middleAngle;
+      var endAngle = middleAngle + arcWidth;
+    }
+
+    if (!quadrant.isTop()) {
+      var h = endAngle;
+      endAngle = startAngle;
+      startAngle = h;
+    }
 
     var arc = d3.svg.arc()
       .innerRadius(r - 0.02 * Radar.radius)
       .outerRadius(r + 0.02 * Radar.radius)
-      .startAngle(0)
+      .startAngle(startAngle)
       .endAngle(endAngle);
 
     var id = name.replace(/[^a-z]/, "");
@@ -211,8 +234,9 @@ class Radar {
     this.svg.append("text")
       .append("textPath")
       .attr("xlink:href", "#" + id)
+      .attr("startOffset", quadrant.isTop() ? "0%" : "50%")
       .append("tspan")
-      .attr("dy", 10)
+      .attr("dy", 8)
       .attr("dx", 5)
       .text(name);
   }
