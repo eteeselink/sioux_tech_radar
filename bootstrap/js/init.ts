@@ -24,7 +24,6 @@ module TechRadar {
 
     d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], random(0.1, 1.0))) });
 
-
     return things;
   }
 
@@ -32,17 +31,41 @@ module TechRadar {
 
     // remove earlier radars, if any.
     $('svg.radar').remove();
+    $('div.thing-list').remove();
 
-    var quad = (q == "all") ? null : quadrants[parseInt(q, 10)];
+    var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];
     var classes = "quadrant-" + q;
     if (quad !== null) {
       classes += " single-quadrant";
     }
-    var radar = new Radar(500, quad, classes);
-
+    var radar = new Radar(500, quad, (quad !== null), classes);
+   
     var things = getThings();
     radar.addThings(things);
 
+    if (quad !== null) {
+      showList(things, quad, radar);
+    }
+  }
+  
+  function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {
+    var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
+    var container = $('<div class="btn-group btn-group-vertical thing-list '+contClass+'" data-toggle="buttons-checkbox">');
+    var selectedThings = things.filter(t => t.quadrant === quadrant);
+    selectedThings.forEach(thing => {
+      container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.name + '</button>')
+    });
+
+    container.find('.btn').click(function(ev) {
+      
+      var thing = things.filter(t => t.name == $(this).data('thing'));
+      if (!$(this).hasClass('active')) {
+        radar.addThings(thing);
+      } else {
+        //radar.removeThings(thing.map(t => t.name));
+      }
+    });
+    $('body').append(container);
   }
 
   function makeTabs() {
@@ -51,11 +74,8 @@ module TechRadar {
 
   
   $(function () {
-
-    console.log("askjhadj");
     makeTabs();
-
-    showTab("all");
+    showTab($('li.active a[data-toggle="tab"]').data('q'));
   });
 
 }

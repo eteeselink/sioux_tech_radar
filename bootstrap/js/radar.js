@@ -6,9 +6,10 @@ function cap(lowerBound, value, upperBound) {
     return Math.max(lowerBound, Math.min(upperBound, value));
 }
 var Radar = (function () {
-    function Radar(diameter, quadrant, auxClasses) {
+    function Radar(diameter, quadrant, goodnessEditable, auxClasses) {
         this.diameter = diameter;
         this.quadrant = quadrant;
+        this.goodnessEditable = goodnessEditable;
         var margin = 1.1;
         this.createSvg(auxClasses, margin);
         this.drawBackground(margin);
@@ -58,6 +59,7 @@ var Radar = (function () {
     };
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
+        circles.enter().append("circle").attr("class", "thing").attr("r", 4).call(this.force.drag);
         this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
             return (thing.quadrant.isLeft() ? -1 : 1) * 12;
         }).attr("dy", 4).attr("text-anchor", function (thing) {
@@ -65,13 +67,13 @@ var Radar = (function () {
         }).text(function (thing) {
             return thing.name;
         });
-        circles.enter().append("circle").attr("class", "thing").attr("r", 4).call(this.force.drag);
         this.force.start();
     };
     Radar.prototype.tick = function (e) {
+        var _this = this;
         this.things.forEach(function (thing) {
             thing.updatePolar();
-            thing.fixRadius();
+            thing.fixRadius(_this.goodnessEditable);
             thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
             var borderOffset = 10 / (thing.polar.r + 0.1);
             thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);

@@ -31,6 +31,7 @@ class Radar {
   constructor(
     private diameter: number,
     private quadrant: Quadrant,
+    private goodnessEditable: bool,
     auxClasses: string,
   ) {
     // a margin, where necessary, to accommodate for the ends of the axes
@@ -48,6 +49,13 @@ class Radar {
     things.forEach(thing => this.things.push(thing));
     this.restart();
   }
+
+  //public removeThings(names: string[]) {
+  //  var deleteIds = this.things
+  //    .filter(thing => names.indexOf(name)
+  //    thing.
+  //  });
+  //}
 
   private createSvg(auxClasses: string, margin: number) {
 
@@ -120,7 +128,12 @@ class Radar {
     var circles = this.svg.selectAll("circle.thing")
         .data(this.things);
     
-    // the enter set; no special animation; create sub-elements upon creation
+    // append elements to the enter set (= the set of newly created elements)
+    circles.enter().append("circle")
+      .attr("class", "thing")
+      .attr("r", 4)
+      .call(this.force.drag);
+
     this.svg.selectAll("text.thing")
       .data(this.things)
       .enter()
@@ -131,11 +144,6 @@ class Radar {
       .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
       .text((thing: Thing) => thing.name);
     
-    circles.enter().append("circle")
-      .attr("class", "thing")
-      .attr("r", 4)
-      .call(this.force.drag);
-
     this.force.start();
   }
 
@@ -151,7 +159,7 @@ class Radar {
       thing.updatePolar();
 
       // set the thing's radius to whatever it was, unless we're being dragged
-      thing.fixRadius();
+      thing.fixRadius(this.goodnessEditable);
 
       // enable "quadrant gravity", pulling each node a bit to the centre diagonal
       // of its quadrant

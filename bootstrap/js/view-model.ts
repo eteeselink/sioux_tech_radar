@@ -3,10 +3,25 @@
 
 var deg45 = Math.PI / 4;
 
+/// base class for fake enums; searches the constructor object
+/// for a slow but functional toString implementation.
+class Enum {
+  public toString() : string {
+    var classObj = this['constructor'];
+    for (var key in classObj) {
+      if (Quadrant[key] === this) {
+        return key;
+      }
+    }
+    return null;
+  }
+}
+
 /// Emulation of an "enum" with 4 elements. The good thing about
-/// faking an enum with a class and statics is that you can add methods
-class Quadrant {
-  constructor(public xloc: number, public yloc: number, public angle: number) {}
+/// faking an enum with a class and statics is that you can add methods, more
+/// like Java and less like C(#/++/)
+class Quadrant extends Enum {
+  constructor(public xloc: number, public yloc: number, public angle: number) { super(); }
 
   public static Tools      = new Quadrant( 1, -1,  1 * deg45);
   public static Techniques = new Quadrant(-1, -1,  3 * deg45);
@@ -41,7 +56,7 @@ class Thing extends D3Node {
     super(null, null);
     var r = goodness * Radar.radius;
     
-    var phi = quadrant.angle;  //random(quadrant.angleLower(), quadrant.angleUpper());
+    var phi = quadrant.angle + random(0.01, 0.02);
     this.polar = new Polar(r, phi);
     this.updateXY();
   }
@@ -54,8 +69,8 @@ class Thing extends D3Node {
     this.polar = Polar.fromPoint(this.x, this.y);
   } 
 
-  public fixRadius() {
-    if (!this.isBeingDragged()) {
+  public fixRadius(goodnessEditable: bool) {
+    if ((!this.isBeingDragged()) || (!goodnessEditable)) {
       this.polar.r = this.prevPolar.r;
     }
   }

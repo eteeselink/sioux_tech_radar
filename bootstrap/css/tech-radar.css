@@ -2,6 +2,16 @@
   font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace;
   text-align: center;
 }
+div.thing-list {
+  position: absolute;
+  top: 60px;
+}
+div.thing-list-right {
+  right: 20px;
+}
+div.thing-list-left {
+  left: 20px;
+}
 svg.radar circle.thing {
   stroke: #83b2e5;
   stroke-width: 1;
