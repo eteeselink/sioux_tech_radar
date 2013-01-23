@@ -7,5 +7,7 @@ Survey and reporting engine for a colleague-sourced Technology Radar on embedded
 
 * users but no validation or passwords
 * rest api for data
-* linkable urls
+* deeplinks to users input
+* some form of discussion on Things
+* wiki like info pages on Things
 
