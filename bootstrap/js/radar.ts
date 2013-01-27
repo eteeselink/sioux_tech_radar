@@ -2,7 +2,16 @@
 /// <reference path="view-model.ts" />
 
 declare var d3: any;
- 
+declare var io : {
+    connect(url: string): Socket;
+}
+interface Socket {
+    on(event: string, callback: (data: any) => void );
+    emit(event: string, data: any);
+}
+
+
+
 function random(from: number, to: number) {
   var domain = to - from;
   return Math.random() * domain + from;
@@ -24,6 +33,8 @@ class Radar {
   private things: Thing[];
   private static quadrantGravity = 0.03;
 
+  private socket: Socket;
+
   /// @param diameter the diameter (in pixels) of the generated radar. the SVG
   /// element generated will be double as wide and slightly higher.
   /// @param quadrant (optional) the quadrant to display. To display the entire radar,
@@ -42,9 +53,10 @@ class Radar {
     this.createSvg(auxClasses, margin)
     this.drawBackground(margin);
     this.setupForceLayout();
+    this.setupSocketIO();
   }
 
-  /// Call this to add more models to the view. 
+  /// Call this to add more models to the view.
   public addThings(things: Thing[]) {
     things.forEach(thing => this.things.push(thing));
     this.restart();
@@ -71,11 +83,11 @@ class Radar {
     // set up a global SVG transformation from internal coordinate system
     // to whatever `this.diameter` has been set to.
     if (this.quadrant) {
-      var scale      = this.diameter / Radar.radius; 
+      var scale      = this.diameter / Radar.radius;
       var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5    : 0;
       var translatey = this.quadrant.isTop()  ? Radar.radius * margin : 0;
     } else {
-      var scale      = this.diameter / (Radar.radius * 2); 
+      var scale      = this.diameter / (Radar.radius * 2);
       var translatex = Radar.radius * 2;
       var translatey = Radar.radius * margin;
     }
@@ -96,7 +108,7 @@ class Radar {
     this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
     this.drawLabeledCircle("Afblijven",      0.27, Radar.radius * 1.0);
 
-    
+
     var axislen = Radar.radius * axisLengthFactor;
 
     // x axis
@@ -121,13 +133,18 @@ class Radar {
     this.things = <Thing[]>this.force.nodes();
   }
 
+  /// Creates the eventhandlers that watch the socket.io messagebus
+  private setupSocketIO(){
+    this.socket = io.connect("http://localhost")
+  }
+
   /// Restart the force animation. Must be re-called every time the model (i.e.
   /// `this.things` changes.
   private restart() {
 
     var circles = this.svg.selectAll("circle.thing")
         .data(this.things);
-    
+
     // append elements to the enter set (= the set of newly created elements)
     circles.enter().append("circle")
       .attr("class", "thing")
@@ -143,15 +160,15 @@ class Radar {
       .attr("dy", 4)
       .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
       .text((thing: Thing) => thing.name);
-    
+
     this.force.start();
   }
 
 
   private tick(e: any) {
-    
+
     // change every node's newly computed position such that
-    // the distance from the origin (r) never changes, and only 
+    // the distance from the origin (r) never changes, and only
     // its angle (phi) can.
     this.things.forEach(thing => {
 

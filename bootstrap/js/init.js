@@ -20,7 +20,7 @@ var TechRadar;
             
         ];
         d3.range(60).forEach(function (i) {
-            things.push(new Thing(i.toString(), quadrants[i % 4], random(0.1, 1.0)));
+            things.push(new Thing(i.toString(), quadrants[i % 4], random(0.1, 1)));
         });
         return things;
     }
@@ -70,3 +70,4 @@ var TechRadar;
         showTab($('li.active a[data-toggle="tab"]').data('q'));
     });
 })(TechRadar || (TechRadar = {}));
+

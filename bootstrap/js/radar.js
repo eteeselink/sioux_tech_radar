@@ -14,6 +14,7 @@ var Radar = (function () {
         this.createSvg(auxClasses, margin);
         this.drawBackground(margin);
         this.setupForceLayout();
+        this.setupSocketIO();
     }
     Radar.radius = 200;
     Radar.quadrantGravity = 0.03;
@@ -42,7 +43,7 @@ var Radar = (function () {
         this.drawLabeledCircle("Proberen", 0.4, Radar.radius * 0.7);
         this.drawCenteredCircle(Radar.radius * 0.85);
         this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
-        this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1.0);
+        this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1);
         var axislen = Radar.radius * axisLengthFactor;
         this.drawLine(0, axislen, 0, -axislen);
         this.drawLine(axislen, 0, -axislen, 0);
@@ -56,6 +57,9 @@ var Radar = (function () {
             return _this.tick(e);
         });
         this.things = this.force.nodes();
+    };
+    Radar.prototype.setupSocketIO = function () {
+        this.socket = io.connect("http://localhost");
     };
     Radar.prototype.restart = function () {
         var circles = this.svg.selectAll("circle.thing").data(this.things);
