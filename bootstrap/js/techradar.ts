@@ -3,11 +3,20 @@
 /// <reference path="radar.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
-module TechRadar {
+import RadarModule = module('radar')
+import ViewModel = module('view-model')
+
+export module TechRadar {
+
+  var Quadrant = ViewModel.Quadrant;
+  var Thing = ViewModel.Thing;
+  var Radar = RadarModule.Radar;
 
   declare var d3: any;
 
   var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
+
+
 
   function getThings() {
     var things = [
@@ -22,7 +31,7 @@ module TechRadar {
       new Thing("Git", Quadrant.Tools, 0.6),
     ];
 
-    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], random(0.1, 1.0))) });
+    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], RadarModule.random(0.1, 1.0))) });
 
     return things;
   }
@@ -39,7 +48,7 @@ module TechRadar {
       classes += " single-quadrant";
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
-   
+
     var things = getThings();
     radar.addThings(things);
 
@@ -47,8 +56,8 @@ module TechRadar {
       showList(things, quad, radar);
     }
   }
-  
-  function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {
+
+  function showList(things: ViewModel.Thing[], quadrant: ViewModel.Quadrant, radar: RadarModule.Radar) {
     var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
     var container = $('<div class="btn-group btn-group-vertical thing-list '+contClass+'" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant === quadrant);
@@ -57,7 +66,7 @@ module TechRadar {
     });
 
     container.find('.btn').click(function(ev) {
-      
+
       var thing = things.filter(t => t.name == $(this).data('thing'));
       if (!$(this).hasClass('active')) {
         radar.addThings(thing);
@@ -72,11 +81,12 @@ module TechRadar {
     $('a[data-toggle="tab"]').on('shown', e => showTab($(e.target).data('q')));
   }
 
-  
-  $(function () {
+
+  export function Start() {
     makeTabs();
     showTab($('li.active a[data-toggle="tab"]').data('q'));
-  });
+    return this;
+  }
 
 }
 

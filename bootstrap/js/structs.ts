@@ -1,16 +1,16 @@
 
 /// A class that mimicks some of the properties that the d3 force layout's
 /// node objects have.
-class D3Node {
+export class D3Node {
   constructor(public x: number, public y: number) { }
   public px: number;
   public py: number;
   public fixed: number;
 }
-   
+
 /// A polar coordinate, including methods to convert from and to
 /// cartesian coordinates.
-class Polar {
+export class Polar {
   constructor(public r: number, public phi: number) { }
 
   public static fromPoint(x: number, y: number) {

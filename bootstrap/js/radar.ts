@@ -1,5 +1,6 @@
-/// <reference path="structs.ts" />
 /// <reference path="view-model.ts" />
+
+import ViewModel = module('view-model')
 
 declare var d3: any;
 declare var io : {
@@ -12,7 +13,7 @@ interface Socket {
 
 
 
-function random(from: number, to: number) {
+export function random(from: number, to: number) {
   var domain = to - from;
   return Math.random() * domain + from;
 }
@@ -22,7 +23,7 @@ function cap(lowerBound: number, value: number, upperBound: number) {
 }
 
 
-class Radar {
+export class Radar {
   /// the distance from the origin to each of the four edges
   /// i.e. the radar's radius. hard-coded to 200 because some of the
   /// force layout's constants depend on it
@@ -30,7 +31,7 @@ class Radar {
 
   private svg: any;
   private force: any;
-  private things: Thing[];
+  private things: ViewModel.Thing[];
   private static quadrantGravity = 0.03;
 
   private socket: Socket;
@@ -41,7 +42,7 @@ class Radar {
   /// pass `null`.
   constructor(
     private diameter: number,
-    private quadrant: Quadrant,
+    private quadrant: ViewModel.Quadrant,
     private goodnessEditable: bool,
     auxClasses: string,
   ) {
@@ -57,7 +58,7 @@ class Radar {
   }
 
   /// Call this to add more models to the view.
-  public addThings(things: Thing[]) {
+  public addThings(things: ViewModel.Thing[]) {
     things.forEach(thing => this.things.push(thing));
     this.restart();
   }
@@ -130,7 +131,7 @@ class Radar {
       .charge(-50)
       .on("tick", e => this.tick(e));
 
-    this.things = <Thing[]>this.force.nodes();
+    this.things = <ViewModel.Thing[]>this.force.nodes();
   }
 
   /// Creates the eventhandlers that watch the socket.io messagebus
@@ -156,10 +157,10 @@ class Radar {
       .enter()
       .append("text")
       .attr("class", "thing")
-      .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? -1 : 1) * 12)
+      .attr("dx", (thing: ViewModel.Thing) => (thing.quadrant.isLeft() ? -1 : 1) * 12)
       .attr("dy", 4)
-      .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
-      .text((thing: Thing) => thing.name);
+      .attr("text-anchor", (thing: ViewModel.Thing) => thing.quadrant.isLeft() ? "end" : "start")
+      .text((thing: ViewModel.Thing) => thing.name);
 
     this.force.start();
   }
@@ -216,7 +217,7 @@ class Radar {
 
   private drawLabeledCircle(name: string, arcWidth: number, r: number) {
 
-    var quadrant = this.quadrant || Quadrant.Tools;
+    var quadrant = this.quadrant || ViewModel.Quadrant.Tools;
 
     this.drawCenteredCircle(r);
 
