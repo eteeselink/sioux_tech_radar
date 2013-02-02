@@ -3,12 +3,15 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 }
-define(["require", "exports", 'structs', 'radar'], function(require, exports, __Structs__, __RadarModule__) {
+define(["require", "exports", 'structs', 'radar', 'socket'], function(require, exports, __Structs__, __RadarModule__, __Socket__) {
     /// <reference path="structs.ts" />
     /// <reference path="radar.ts" />
+    /// <reference path="socket.ts" />
     var Structs = __Structs__;
 
     var RadarModule = __RadarModule__;
+
+    var Socket = __Socket__;
 
     var deg45 = Math.PI / 4;
     /// base class for fake enums; searches the constructor object
@@ -69,7 +72,11 @@ define(["require", "exports", 'structs', 'radar'], function(require, exports, __
             var phi = quadrant.angle + RadarModule.random(0.01, 0.02);
             this.polar = new Structs.Polar(r, phi);
             this.updateXY();
+            Socket.Bus.instance().getSocket("Thing").on("Thing", this.notify);
         }
+        Thing.prototype.notify = function (data) {
+            console.log("yay got data " + data);
+        };
         Thing.prototype.updatePolar = function () {
             this.prevPolar = this.polar;
             this.polar = Structs.Polar.fromPoint(this.x, this.y);

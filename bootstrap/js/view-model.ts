@@ -1,8 +1,10 @@
 /// <reference path="structs.ts" />
 /// <reference path="radar.ts" />
+/// <reference path="socket.ts" />
 
 import Structs = module('structs')
 import RadarModule = module('radar')
+import Socket = module('socket')
 
 var deg45 = Math.PI / 4;
 
@@ -62,8 +64,11 @@ export class Thing extends Structs.D3Node {
     var phi = quadrant.angle + RadarModule.random(0.01, 0.02);
     this.polar = new Structs.Polar(r, phi);
     this.updateXY();
+    Socket.Bus.instance().getSocket("Thing").on("Thing",this.notify)
   }
-
+  public notify(data:any){
+      console.log("yay got data "+data);
+  }
   public polar: Structs.Polar;
   public prevPolar: Structs.Polar;
 

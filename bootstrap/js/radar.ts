@@ -3,14 +3,6 @@
 import ViewModel = module('view-model')
 
 declare var d3: any;
-declare var io : {
-    connect(url: string): Socket;
-}
-interface Socket {
-    on(event: string, callback: (data: any) => void );
-    emit(event: string, data: any);
-}
-
 
 
 export function random(from: number, to: number) {
@@ -34,7 +26,6 @@ export class Radar {
   private things: ViewModel.Thing[];
   private static quadrantGravity = 0.03;
 
-  private socket: Socket;
 
   /// @param diameter the diameter (in pixels) of the generated radar. the SVG
   /// element generated will be double as wide and slightly higher.
@@ -54,7 +45,6 @@ export class Radar {
     this.createSvg(auxClasses, margin)
     this.drawBackground(margin);
     this.setupForceLayout();
-    this.setupSocketIO();
   }
 
   /// Call this to add more models to the view.
@@ -134,10 +124,6 @@ export class Radar {
     this.things = <ViewModel.Thing[]>this.force.nodes();
   }
 
-  /// Creates the eventhandlers that watch the socket.io messagebus
-  private setupSocketIO(){
-    this.socket = io.connect("http://localhost")
-  }
 
   /// Restart the force animation. Must be re-called every time the model (i.e.
   /// `this.things` changes.

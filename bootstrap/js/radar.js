@@ -27,7 +27,6 @@ define(["require", "exports", 'view-model'], function(require, exports, __ViewMo
             this.createSvg(auxClasses, margin);
             this.drawBackground(margin);
             this.setupForceLayout();
-            this.setupSocketIO();
         }
         /// Call this to add more models to the view.
                 Radar.radius = 200;
@@ -91,10 +90,6 @@ define(["require", "exports", 'view-model'], function(require, exports, __ViewMo
                 return _this.tick(e);
             });
             this.things = this.force.nodes();
-        }/// Creates the eventhandlers that watch the socket.io messagebus
-        ;
-        Radar.prototype.setupSocketIO = function () {
-            this.socket = io.connect("http://localhost");
         }/// Restart the force animation. Must be re-called every time the model (i.e.
         /// `this.things` changes.
         ;
