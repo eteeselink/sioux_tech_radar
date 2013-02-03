@@ -13,9 +13,13 @@ define(["require", "exports"], function(require, exports) {
     exports.Guid = Guid;    
     var Bus = (function () {
         function Bus() {
-            this.thingSocket = io.connect("http://localhost/Thing");
-            this.personSocket = io.connect("http://localhost/Person");
-            this.opinionSocket = io.connect("http://localhost/Opinion");
+            var http = location.protocol;
+            var slashes = http.concat("//");
+            var port = window.location.port;
+            var host = slashes.concat(window.location.hostname).concat(":" + port);
+            this.thingSocket = io.connect(host + "/Thing");
+            this.personSocket = io.connect(host + "/Person");
+            this.opinionSocket = io.connect(host + "/Opinion");
         }
         Bus.single = null;
         Bus.instance = function instance() {
@@ -23,6 +27,15 @@ define(["require", "exports"], function(require, exports) {
                 Bus.single = new Bus();
             }
             return Bus.single;
+        }
+        Bus.Thing = function Thing() {
+            return Bus.instance().getSocket("Thing");
+        }
+        Bus.Person = function Person() {
+            return Bus.instance().getSocket("Person");
+        }
+        Bus.Opinion = function Opinion() {
+            return Bus.instance().getSocket("Opinion");
         }
         Bus.prototype.getSocket = function (namespace) {
             if(namespace == "Thing") {

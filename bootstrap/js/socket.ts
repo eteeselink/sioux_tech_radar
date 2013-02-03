@@ -26,6 +26,7 @@ export class Guid{
 }
 export class Bus{
     private socket: Socket;
+
     private thingSocket: Socket;
     private personSocket: Socket;
     private opinionSocket: Socket;
@@ -35,11 +36,24 @@ export class Bus{
         if (single == null) single = new Bus();
         return single;
     }
+    public static Thing(){
+        return Bus.instance().getSocket("Thing");
+    }
+    public static Person(){
+        return Bus.instance().getSocket("Person");
+    }
+    public static Opinion(){
+        return Bus.instance().getSocket("Opinion");
+    }
 
     constructor(){
-        this.thingSocket = io.connect("http://localhost/Thing");
-        this.personSocket = io.connect("http://localhost/Person");
-        this.opinionSocket = io.connect("http://localhost/Opinion");
+        var http = location.protocol;
+        var slashes = http.concat("//");
+        var port = window.location.port;
+        var host = slashes.concat(window.location.hostname).concat(":"+port);
+        this.thingSocket = io.connect(host+"/Thing");
+        this.personSocket = io.connect(host+"/Person");
+        this.opinionSocket = io.connect(host+"/Opinion");
     }
     getSocket(namespace:string):Socket{
         if (namespace == "Thing") return this.thingSocket;
