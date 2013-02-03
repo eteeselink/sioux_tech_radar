@@ -15,6 +15,11 @@ var port = process.env.PORT || 5000;
 server.listen(port, function () {
     console.log("Listening on " + port);
 });
-sio.sockets.on('connection', function (socket) {
-    socket.emit('hello');
+var thingSocket = sio.of("/Thing").on('connection', function (socket) {
+    socket.on('register', function (name) {
+        console.log("connected with Thing(" + name + ")");
+        socket.on('disconnect', function () {
+            return console.log("disconnected with Thing(" + name + ")");
+        });
+    });
 });
