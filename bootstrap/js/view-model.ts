@@ -64,10 +64,12 @@ export class Thing extends Structs.D3Node {
     var phi = quadrant.angle + RadarModule.random(0.01, 0.02);
     this.polar = new Structs.Polar(r, phi);
     this.updateXY();
-    Socket.Bus.instance().getSocket("Thing").on("Thing",this.notify)
+    var socket = Socket.Bus.Thing();
+    socket.on(name,this.notify);
+    socket.emit("register", name);
   }
   public notify(data:any){
-      console.log("yay got data "+data);
+      console.log("yay got("+name+") data "+JSON.stringify(data));
   }
   public polar: Structs.Polar;
   public prevPolar: Structs.Polar;

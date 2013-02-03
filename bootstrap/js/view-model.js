@@ -72,10 +72,12 @@ define(["require", "exports", 'structs', 'radar', 'socket'], function(require, e
             var phi = quadrant.angle + RadarModule.random(0.01, 0.02);
             this.polar = new Structs.Polar(r, phi);
             this.updateXY();
-            Socket.Bus.instance().getSocket("Thing").on("Thing", this.notify);
+            var socket = Socket.Bus.Thing();
+            socket.on(name, this.notify);
+            socket.emit("register", name);
         }
         Thing.prototype.notify = function (data) {
-            console.log("yay got data " + data);
+            console.log("yay got(" + name + ") data " + JSON.stringify(data));
         };
         Thing.prototype.updatePolar = function () {
             this.prevPolar = this.polar;
