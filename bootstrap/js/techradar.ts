@@ -3,20 +3,11 @@
 /// <reference path="radar.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
-import RadarModule = module('radar')
-import ViewModel = module('view-model')
-
-export module TechRadar {
-
-  var Quadrant = ViewModel.Quadrant;
-  var Thing = ViewModel.Thing;
-  var Radar = RadarModule.Radar;
+module TechRadar.Client {
 
   declare var d3: any;
 
   var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
-
-
 
   function getThings() {
     var things = [
@@ -31,7 +22,8 @@ export module TechRadar {
       new Thing("Git", Quadrant.Tools, 0.6),
     ];
 
-    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], RadarModule.random(0.1, 1.0))) });
+    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], 
+      random(0.1, 1.0))) });
 
     return things;
   }
@@ -57,7 +49,7 @@ export module TechRadar {
     }
   }
 
-  function showList(things: ViewModel.Thing[], quadrant: ViewModel.Quadrant, radar: RadarModule.Radar) {
+  function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {
     var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
     var container = $('<div class="btn-group btn-group-vertical thing-list '+contClass+'" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant === quadrant);

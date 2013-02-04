@@ -1,42 +1,31 @@
-define(["require", "exports", 'radar', 'view-model'], function(require, exports, __RadarModule__, __ViewModel__) {
-    /// <reference path="structs.ts" />
-    /// <reference path="view-model.ts" />
-    /// <reference path="radar.ts" />
-    /// <reference path="ext/jquery-1.8.d.ts" />
-    var RadarModule = __RadarModule__;
-
-    var ViewModel = __ViewModel__;
-
-    (function (TechRadar) {
-        var Quadrant = ViewModel.Quadrant;
-        var Thing = ViewModel.Thing;
-        var Radar = RadarModule.Radar;
+var TechRadar;
+(function (TechRadar) {
+    (function (Client) {
         var quadrants = [
-            Quadrant.Techniques, 
-            Quadrant.Tools, 
-            Quadrant.Languages, 
-            Quadrant.Platforms
+            Client.Quadrant.Techniques, 
+            Client.Quadrant.Tools, 
+            Client.Quadrant.Languages, 
+            Client.Quadrant.Platforms
         ];
         function getThings() {
             var things = [
-                new Thing("C++", Quadrant.Languages, 0.9), 
-                new Thing("Scala", Quadrant.Languages, 0.6), 
-                new Thing("TypeScript", Quadrant.Languages, 0.7), 
-                new Thing("C#", Quadrant.Languages, 0.1), 
-                new Thing("APL", Quadrant.Languages, 0.8), 
-                new Thing("Continuous Integration", Quadrant.Techniques, 0.8), 
-                new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5), 
-                new Thing("NCrunch", Quadrant.Tools, 0.5), 
-                new Thing("Git", Quadrant.Tools, 0.6), 
+                new Client.Thing("C++", Client.Quadrant.Languages, 0.9), 
+                new Client.Thing("Scala", Client.Quadrant.Languages, 0.6), 
+                new Client.Thing("TypeScript", Client.Quadrant.Languages, 0.7), 
+                new Client.Thing("C#", Client.Quadrant.Languages, 0.1), 
+                new Client.Thing("APL", Client.Quadrant.Languages, 0.8), 
+                new Client.Thing("Continuous Integration", Client.Quadrant.Techniques, 0.8), 
+                new Client.Thing("CodeSourcery GCC", Client.Quadrant.Platforms, 0.5), 
+                new Client.Thing("NCrunch", Client.Quadrant.Tools, 0.5), 
+                new Client.Thing("Git", Client.Quadrant.Tools, 0.6), 
                 
             ];
             d3.range(60).forEach(function (i) {
-                things.push(new Thing(i.toString(), quadrants[i % 4], RadarModule.random(0.1, 1)));
+                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1)));
             });
             return things;
         }
         function showTab(q) {
-            // remove earlier radars, if any.
             $('svg.radar').remove();
             $('div.thing-list').remove();
             var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];
@@ -44,7 +33,7 @@ define(["require", "exports", 'radar', 'view-model'], function(require, exports,
             if(quad !== null) {
                 classes += " single-quadrant";
             }
-            var radar = new Radar(500, quad, (quad !== null), classes);
+            var radar = new Client.Radar(500, quad, (quad !== null), classes);
             var things = getThings();
             radar.addThings(things);
             if(quad !== null) {
@@ -82,8 +71,9 @@ define(["require", "exports", 'radar', 'view-model'], function(require, exports,
             showTab($('li.active a[data-toggle="tab"]').data('q'));
             return this;
         }
-        TechRadar.Start = Start;
-    })(exports.TechRadar || (exports.TechRadar = {}));
+        Client.Start = Start;
+    })(TechRadar.Client || (TechRadar.Client = {}));
+    var Client = TechRadar.Client;
 
-})
+})(TechRadar || (TechRadar = {}));
 
