@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechRadar", "TechRadar.csproj", "{3545EAAE-A8E2-4595-B763-1B2B1B88A0D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sioux.TechRadar", "..\server\Sioux.TechRadar.csproj", "{B543418A-E4E2-4CE0-9C3B-A372B6C9096E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,13 @@ Global
 		{3545EAAE-A8E2-4595-B763-1B2B1B88A0D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3545EAAE-A8E2-4595-B763-1B2B1B88A0D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3545EAAE-A8E2-4595-B763-1B2B1B88A0D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B543418A-E4E2-4CE0-9C3B-A372B6C9096E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B543418A-E4E2-4CE0-9C3B-A372B6C9096E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B543418A-E4E2-4CE0-9C3B-A372B6C9096E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B543418A-E4E2-4CE0-9C3B-A372B6C9096E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ..\server\Sioux.TechRadar.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
