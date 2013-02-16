@@ -33,54 +33,41 @@
       <DependentUpon>tech-radar.less</DependentUpon>
     </Content>
     <Content Include="index.html" />
-    <TypeScriptCompile Include="js\init.ts" />
-    <Content Include="js\init.js">
-      <DependentUpon>init.ts</DependentUpon>
+    <TypeScriptCompile Include="js\main.ts" />
+    <Content Include="js\radar.js">
+      <DependentUpon>radar.ts</DependentUpon>
     </Content>
-    <Content Include="js\init.min.js">
-      <DependentUpon>init.ts</DependentUpon>
+    <Content Include="js\radar.js.map">
+      <DependentUpon>radar.ts</DependentUpon>
     </Content>
-    <Content Include="js\view-model.min.js">
-      <DependentUpon>view-model.ts</DependentUpon>
+    <Content Include="js\radar.min.js">
+      <DependentUpon>radar.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="js\structs.ts" />
+    <TypeScriptCompile Include="js\socket.ts" />
     <Content Include="js\structs.js">
+      <DependentUpon>structs.ts</DependentUpon>
+    </Content>
+    <Content Include="js\structs.js.map">
       <DependentUpon>structs.ts</DependentUpon>
     </Content>
     <Content Include="js\structs.min.js">
       <DependentUpon>structs.ts</DependentUpon>
     </Content>
-    <Content Include="js\radar.min.js">
-      <DependentUpon>radar.ts</DependentUpon>
-    </Content>
+    <TypeScriptCompile Include="js\techradar.ts" />
     <Content Include="js\view-model.js">
       <DependentUpon>view-model.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="js\view-model.ts" />
-    <TypeScriptCompile Include="js\radar.ts" />
-    <Content Include="js\radar.js">
-      <DependentUpon>radar.ts</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="js\radar.js.map">
-      <DependentUpon>radar.ts</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="js\structs.js.map">
-      <DependentUpon>structs.ts</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="js\view-model.js.map">
+      <DependentUpon>view-model.ts</DependentUpon>
+    </Content>
+    <Content Include="js\view-model.min.js">
       <DependentUpon>view-model.ts</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\init.js.map">
-      <DependentUpon>init.ts</DependentUpon>
-    </Content>
+    <TypeScriptCompile Include="js\radar.ts" />
+    <TypeScriptCompile Include="js\structs.ts" />
+    <TypeScriptCompile Include="js\view-model.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -95,7 +82,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+      <FlavorProperties GUID="{349C5851-65DF-11DA-9384-00065B846F21}">
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
@@ -125,7 +112,7 @@
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <Message Text="Compiling TypeScript files" />
-    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" />
-    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
+    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
+    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
   </Target>
 </Project>
