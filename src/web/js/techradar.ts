@@ -2,7 +2,7 @@
 /// <reference path="view-model.ts" />
 /// <reference path="radar.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
-
+ 
 module TechRadar.Client {
 
   declare var d3: any;

@@ -25,7 +25,7 @@ var TechRadar;
                 
             ];
             d3.range(60).forEach(function (i) {
-                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1)));
+                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1.0)));
             });
             return things;
         }
@@ -79,6 +79,5 @@ var TechRadar;
         Client.Start = Start;
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-
+//@ sourceMappingURL=techradar.js.map

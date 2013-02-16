@@ -62,7 +62,7 @@ var TechRadar;
                 this.drawLabeledCircle("Proberen", 0.4, Radar.radius * 0.7);
                 this.drawCenteredCircle(Radar.radius * 0.85);
                 this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
-                this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1);
+                this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1.0);
                 var axislen = Radar.radius * axisLengthFactor;
                 // x axis
                 this.drawLine(0, axislen, 0, -axislen);
@@ -168,6 +168,5 @@ var TechRadar;
         Client.Radar = Radar;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-
+//@ sourceMappingURL=radar.js.map

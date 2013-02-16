@@ -1,6 +1,5 @@
 /// <reference path="structs.ts" />
 /// <reference path="radar.ts" />
-/// <reference path="socket.ts" />
 /// <reference path="utils.ts" />
 
 
@@ -54,15 +53,15 @@ module TechRadar.Client{
     }
    
     private setupListener(){
-      var socket = Bus.Thing();
-      socket.on(name, (data:any)=>{
-        console.log("yay got("+name+") data "+JSON.stringify(data));
-      });
-      socket.emit("register", name);
+    //  var socket = Bus.Thing();
+    //  socket.on(name, (data:any)=>{
+    //    console.log("yay got("+name+") data "+JSON.stringify(data));
+    //  });
+    //  socket.emit("register", name);
     }
     private notifyServer(){
-      var socket = Bus.Thing();
-      socket.emit(name, this.goodness());
+    //  var socket = Bus.Thing();
+    //  socket.emit(name, this.goodness());
     }
 
 

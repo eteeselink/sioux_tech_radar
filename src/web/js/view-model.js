@@ -2,10 +2,9 @@ var __extends = this.__extends || function (d, b) {
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
-}
+};
 /// <reference path="structs.ts" />
 /// <reference path="radar.ts" />
-/// <reference path="socket.ts" />
 /// <reference path="utils.ts" />
 var TechRadar;
 (function (TechRadar) {
@@ -56,16 +55,16 @@ var TechRadar;
                 this.updateXY();
             }
             Thing.prototype.setupListener = function () {
-                var socket = Client.Bus.Thing();
-                socket.on(name, function (data) {
-                    console.log("yay got(" + name + ") data " + JSON.stringify(data));
-                });
-                socket.emit("register", name);
-            };
+                //  var socket = Bus.Thing();
+                //  socket.on(name, (data:any)=>{
+                //    console.log("yay got("+name+") data "+JSON.stringify(data));
+                //  });
+                //  socket.emit("register", name);
+                            };
             Thing.prototype.notifyServer = function () {
-                var socket = Client.Bus.Thing();
-                socket.emit(name, this.goodness());
-            };
+                //  var socket = Bus.Thing();
+                //  socket.emit(name, this.goodness());
+                            };
             Thing.prototype.updatePolar = function () {
                 this.prevPolar = this.polar;
                 this.polar = Client.Polar.fromPoint(this.x, this.y);
@@ -92,6 +91,5 @@ var TechRadar;
         Client.Thing = Thing;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-
+//@ sourceMappingURL=view-model.js.map

@@ -1,12 +1,9 @@
 /// <reference path="techradar.ts" />
-/// <reference path="ext/require.ts" />
-this.require([
-    'ext/bootstrap.min', 
-    'ext/d3.v2.min'
-], function () {
-    require([
-        'techradar'
-    ], function (TechRadar) {
-        var startedApp = TechRadar.Client.TechRadar.Start();
-    });
-});
+//require(['ext/bootstrap.min','ext/d3.v2.min'], () => {
+//    require(['utils', 'structs', 'view-model', 'techradar'],(t)=>{
+//      console.log(t);
+//      var startedApp = t.TechRadar.Client.Start();
+//    });
+//});
+TechRadar.Client.Start();
+//@ sourceMappingURL=main.js.map
