@@ -2,8 +2,7 @@
 /// <reference path="ext/require.ts" />
 this.require([
     'ext/bootstrap.min', 
-    'ext/d3.v2.min', 
-    '/socket.io/socket.io.js'
+    'ext/d3.v2.min'
 ], function () {
     require([
         'techradar'
