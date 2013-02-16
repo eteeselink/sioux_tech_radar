@@ -32,58 +32,58 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="MsgPack">
-      <HintPath>import\ServiceStack-v3.9.32\MsgPack.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Authentication.OpenId">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Authentication.OpenId.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Authentication.OpenId.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.FluentValidation.Mvc3">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Plugins.MsgPack">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Plugins.MsgPack.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Plugins.MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Plugins.ProtoBuf">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Plugins.ProtoBuf.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Plugins.ProtoBuf.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Razor">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Razor.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Razor.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Redis">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.ServiceInterface.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack">
-      <HintPath>import\ServiceStack-v3.9.32\ServiceStack.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor">
-      <HintPath>import\ServiceStack-v3.9.32\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment">
-      <HintPath>import\ServiceStack-v3.9.32\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor">
-      <HintPath>import\ServiceStack-v3.9.32\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages">
-      <HintPath>import\ServiceStack-v3.9.32\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
