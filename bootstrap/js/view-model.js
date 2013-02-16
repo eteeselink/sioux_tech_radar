@@ -3,10 +3,17 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 }
+/// <reference path="structs.ts" />
+/// <reference path="radar.ts" />
+/// <reference path="socket.ts" />
+/// <reference path="utils.ts" />
 var TechRadar;
 (function (TechRadar) {
     (function (Client) {
         var deg45 = Math.PI / 4;
+        /// Emulation of an "enum" with 4 elements. The good thing about
+        /// faking an enum with a class and statics is that you can add methods, more
+        /// like Java and less like C(#/++/)
         var Quadrant = (function (_super) {
             __extends(Quadrant, _super);
             function Quadrant(xloc, yloc, angle) {
@@ -34,9 +41,12 @@ var TechRadar;
             return Quadrant;
         })(TechRadar.Enum);
         Client.Quadrant = Quadrant;        
+        /// View model for a "thing" that can be positioned at some place
+        /// on the technology radar.
         var Thing = (function (_super) {
             __extends(Thing, _super);
             function Thing(name, quadrant, goodness) {
+                // between 0.0 and 1.0; closer to zero is better
                         _super.call(this, null, null);
                 this.name = name;
                 this.quadrant = quadrant;

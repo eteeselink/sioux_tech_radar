@@ -1,6 +1,8 @@
 var TechRadar;
 (function (TechRadar) {
     (function (Client) {
+        /// A class that mimicks some of the properties that the d3 force layout's
+        /// node objects have.
         var D3Node = (function () {
             function D3Node(x, y) {
                 this.x = x;
@@ -9,6 +11,8 @@ var TechRadar;
             return D3Node;
         })();
         Client.D3Node = D3Node;        
+        /// A polar coordinate, including methods to convert from and to
+        /// cartesian coordinates.
         var Polar = (function () {
             function Polar(r, phi) {
                 this.r = r;
