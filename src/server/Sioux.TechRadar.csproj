@@ -31,59 +31,47 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="MsgPack">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\MsgPack.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Authentication.OpenId">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Authentication.OpenId.dll</HintPath>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\packages\ServiceStack.Text.3.9.37\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.FluentValidation.Mvc3">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
+      <HintPath>..\..\packages\ServiceStack.Common.3.9.37\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\packages\ServiceStack.Common.3.9.37\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.OrmLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Plugins.MsgPack">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Plugins.MsgPack.dll</HintPath>
+    <Reference Include="ServiceStack.OrmLite.SqliteNET">
+      <HintPath>..\..\packages\ServiceStack.OrmLite.Sqlite32.3.9.37\lib\net40\ServiceStack.OrmLite.SqliteNET.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Plugins.ProtoBuf">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Plugins.ProtoBuf.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Razor">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Razor.dll</HintPath>
+    <Reference Include="ServiceStack.Logging.NLog">
+      <HintPath>..\..\packages\ServiceStack.Logging.NLog.1.0.6.0\lib\net35\ServiceStack.Logging.NLog.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Redis">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\..\packages\ServiceStack.Redis.3.9.37\lib\net35\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer">
+      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.9.37\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.9.37\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\..\packages\ServiceStack.3.9.37\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\ServiceStack.dll</HintPath>
+      <HintPath>..\..\packages\ServiceStack.3.9.37\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages">
-      <HintPath>..\..\lib\ServiceStack-v3.9.32\System.Web.WebPages.dll</HintPath>
+    <Reference Include="ServiceStack.FluentValidation.Mvc3">
+      <HintPath>..\..\packages\ServiceStack.Mvc.3.9.37\lib\net40\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -98,5 +86,10 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Content Include="Global.asax" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="x64\SQLite.Interop.dll" />
+    <None Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
 </Project>

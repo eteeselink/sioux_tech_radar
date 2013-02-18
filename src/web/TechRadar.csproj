@@ -112,7 +112,7 @@
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <Message Text="Compiling TypeScript files" />
-    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
-    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
+    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" />
+    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
   </Target>
 </Project>
