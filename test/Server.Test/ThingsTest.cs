@@ -1,6 +1,8 @@
 using System;
 using NUnit.Framework;
 using RestSharp;
+using System.Net;
+
 
 namespace Sioux.TechRadar
 {
@@ -28,14 +30,15 @@ namespace Sioux.TechRadar
 				request.AddUrlSegment("name", "Mike");
 				var response = client.Execute(request);
 				Assert.IsNotNullOrEmpty(response.Content);
+				Assert.AreEqual(HttpStatusCode.OK ,response.StatusCode);
 
 				testServer.Stop();
 
 				response = client.Execute(request);
 				Assert.IsNullOrEmpty(response.Content);
 			}
-
 		}
+
 	}
 }
 
