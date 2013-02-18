@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="AppHost.cs" />
     <Compile Include="Things\Things.cs" />
@@ -83,6 +82,7 @@
     <Compile Include="Things\ThingsRepository.cs" />
     <Compile Include="Things\ThingsService.cs" />
     <Compile Include="Things\IThingsRepository.cs" />
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
