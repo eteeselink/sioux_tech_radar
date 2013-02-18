@@ -7,7 +7,7 @@ namespace Sioux.TechRadar
 	{
 		public class TodosService : Service
 		{
-			public ThingsRepository Repository { get; set; }  //Injected by IOC
+			public IThingsRepository Repository { get; set; }  //Injected by IOC
 			
 			public object Get(Things request)
 			{

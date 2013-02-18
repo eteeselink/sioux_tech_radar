@@ -8,9 +8,9 @@ namespace Sioux.TechRadar
 	[Route("/things/{name}")]
 	public class Thing : IReturn<Thing>
 	{
-		public string name{ get; set; }
-		public string description{ get; set; }
-		public Quadrant quadrant{ get; set; }
+		public string Name{ get; set; }
+		public string Description{ get; set; }
+		public Quadrant Quadrant{ get; set; }
 	}
 
 	public enum Quadrant{

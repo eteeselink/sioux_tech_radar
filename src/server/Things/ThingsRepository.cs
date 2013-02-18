@@ -3,7 +3,7 @@ using ServiceStack.ServiceInterface;
 
 namespace Sioux.TechRadar
 {
-	public class ThingsRepository
+	public class ThingsRepository : IThingsRepository
 	{
 		public object Store(Thing thing)
 		{

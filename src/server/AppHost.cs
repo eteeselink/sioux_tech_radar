@@ -11,7 +11,7 @@ namespace Sioux.TechRadar
 
 		public override void Configure(Container container)
 		{
-			container.Register(new ThingsRepository());
+			container.Register<IThingsRepository>(new ThingsRepository());
 		}
 
 	}

@@ -77,11 +77,12 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Things.cs" />
-    <Compile Include="Thing.cs" />
-    <Compile Include="ThingsRepository.cs" />
     <Compile Include="AppHost.cs" />
-    <Compile Include="ThingsService.cs" />
+    <Compile Include="Things\Things.cs" />
+    <Compile Include="Things\Thing.cs" />
+    <Compile Include="Things\ThingsRepository.cs" />
+    <Compile Include="Things\ThingsService.cs" />
+    <Compile Include="Things\IThingsRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -91,5 +92,8 @@
     <None Include="packages.config" />
     <None Include="x64\SQLite.Interop.dll" />
     <None Include="x86\SQLite.Interop.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Things\" />
   </ItemGroup>
 </Project>
