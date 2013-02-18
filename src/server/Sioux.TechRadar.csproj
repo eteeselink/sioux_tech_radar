@@ -73,6 +73,9 @@
     <Reference Include="ServiceStack.FluentValidation.Mvc3">
       <HintPath>..\..\packages\ServiceStack.Mvc.3.9.37\lib\net40\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
     </Reference>
+    <Reference Include="NDesk.Options">
+      <HintPath>..\..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

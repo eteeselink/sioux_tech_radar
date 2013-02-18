@@ -8,13 +8,21 @@ namespace Sioux.TechRadar
 	public class ThingsTest
 	{
 		[Test()]
+		public void TestServerConstruction ()
+		{
+			using (var testServer = new Server()) {
+				Assert.IsNotNull(testServer.AppHost);
+				Assert.AreEqual(8888,testServer.Port);
+			}
+		}
+
+		[Test()]
 		public void TestStartAndStop ()
 		{
 			using (var testServer = new Server()) {
 				testServer.Start();
 
 				var client = new RestClient("http://localhost:"+testServer.Port);
-				// client.Authenticator = new HttpBasicAuthenticator(username, password);
 			
 				var request = new RestRequest("Things/{name}", Method.GET);
 				request.AddUrlSegment("name", "Mike");
