@@ -37,6 +37,26 @@ namespace Sioux.TechRadar
 		}
 
 		[Test()]
+		public void TestFunqSecondContainer()
+		{
+			using (var fakeThings = new FakeThingsRepository()){
+				var mike = new Thing(){Name="Mike"};
+				fakeThings.Things.AddFirst(mike);
+
+				using(var container = new Container())
+				{
+					container.Register<IThingsRepository>(fakeThings);
+
+					using (var container2 = new Container().)
+					{
+						var things = container2.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
+						Assert.That(things.First(),Is.EqualTo(mike));
+					}
+				}
+			}
+		}
+
+		[Test()]
 		public void TestBasicRequest ()
 		{
 			using (var testServer = new Server()) {
