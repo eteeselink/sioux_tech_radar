@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
+
 
 namespace Sioux.TechRadar
 {
-	public interface IThingsRepository
+	public interface IThingsRepository : IDisposable
 	{
-		object Store(Thing thing);
-		object GetByName (string[] names);	
-		object GetAll();
+		IEnumerable<Thing> Store(Thing thing);
+		IEnumerable<Thing> GetByName (string[] names);	
+		IEnumerable<Thing> GetAll();
 	}
 }
 

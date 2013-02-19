@@ -1,22 +1,25 @@
 using System;
 using ServiceStack.ServiceInterface;
+using System.Collections.Generic;
 
 namespace Sioux.TechRadar
 {
 	public class ThingsRepository : IThingsRepository
 	{
-		public object Store(Thing thing)
+		public IEnumerable<Thing> Store(Thing thing)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public object GetByName (string[] names)
+		public IEnumerable<Thing> GetByName (string[] names)
 		{
 			throw new NotImplementedException ();
 		}
-		public object GetAll ()
+		public IEnumerable<Thing> GetAll ()
 		{
 			throw new NotImplementedException ();
+		}
+		public void Dispose(){
 		}
 	}
 
