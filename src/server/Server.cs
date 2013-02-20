@@ -2,10 +2,12 @@ using System;
 using NLog;
 using NDesk.Options;
 using System.Collections.Generic;
+using ServiceStack.WebHost.Endpoints;
+using Funq;
 
 namespace Sioux.TechRadar
 {
-	public 	class Server : IDisposable
+	public 	class Server : AppHostHttpListenerBase, IDisposable
 	{
 		const int DefaultPort = 8888;
 
@@ -50,35 +52,27 @@ namespace Sioux.TechRadar
 			}
 		}
 
+
 		public int Port{ get; internal set; }
 		string Url{ get {
 				return "http://*:" + Port + "/";
 			}
 		}
-		public AppHost AppHost { get ; private set; }
 
-		public Server ()
+		public override void Configure(Container container)
 		{
-			Port =  8888;
-			AppHost = new AppHost();
-			AppHost.Init();
+
 		}
 
-		public void Start()
+		public Server(int port=8888): base("Sioux TechRadar Service", typeof(Things).Assembly) 
 		{
-			AppHost.Start(Url);
+			Port = port;
 		}
 
-		public void Stop()
+		public Server Start()
 		{
-			if (AppHost != null) AppHost.Stop();
-			AppHost.Dispose();
+			base.Start(Url);
+			return this;
 		}
-
-		public void Dispose()
-		{
-			Stop ();
-		}
-
 	}
 }

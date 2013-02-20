@@ -14,6 +14,13 @@ namespace Sioux.TechRadar
 			Things = new LinkedList<Thing>();
 		}
 
+		public Thing SetupMike()
+		{
+			var mike = new Thing(){Name="Mike"};
+			this.Things.AddFirst(mike);
+			return mike;
+		}
+
 
 		public void Dispose ()
 		{

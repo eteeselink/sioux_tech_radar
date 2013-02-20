@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="AppHost.cs" />
     <Compile Include="Things\Things.cs" />
     <Compile Include="Things\Thing.cs" />
     <Compile Include="Things\ThingsRepository.cs" />

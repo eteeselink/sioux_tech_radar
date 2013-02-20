@@ -4,6 +4,7 @@ using NUnit.Framework;
 using RestSharp;
 using System.Net;
 using Funq;
+using NLog;
 
 
 namespace Sioux.TechRadar
@@ -11,11 +12,14 @@ namespace Sioux.TechRadar
 	[TestFixture()]
 	public class ThingsTest
 	{
+
+		private static Logger logger = LogManager.GetLogger("ThingsTest");
+
 		[Test()]
 		public void TestServerConstruction ()
 		{
 			using (var testServer = new Server()) {
-				Assert.IsNotNull(testServer.AppHost);
+				Assert.IsNotNull(testServer.Container);
 				Assert.AreEqual(8888,testServer.Port);
 			}
 		}
@@ -26,8 +30,7 @@ namespace Sioux.TechRadar
 			using(var container = new Container())
 		    {
 				using (var fakeThings = new FakeThingsRepository()){
-					var mike = new Thing(){Name="Mike"};
-					fakeThings.Things.AddFirst(mike);
+					var mike = fakeThings.SetupMike();
 					container.Register<IThingsRepository>(fakeThings);
 
 					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
@@ -40,8 +43,7 @@ namespace Sioux.TechRadar
 		public void TestFunqChildContainer()
 		{
 			using (var fakeThings = new FakeThingsRepository()){
-				var mike = new Thing(){Name="Mike"};
-				fakeThings.Things.AddFirst(mike);
+				var mike = fakeThings.SetupMike();
 
 				using(var container = new Container())
 				{
@@ -57,20 +59,45 @@ namespace Sioux.TechRadar
 		}
 
 		[Test()]
+		public void TestReusingContainerFromServer()
+		{
+			using (var fakeThings = new FakeThingsRepository()) {
+
+				var mike = fakeThings.SetupMike();
+				
+				using (var server = new Server()){
+					var container = server.Container;
+					container.Register<IThingsRepository> (fakeThings);
+						
+					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
+					Assert.That(things.First(),Is.EqualTo(mike));
+
+					server.Start();
+				}
+			}
+		}
+
+		[Test()]
 		public void TestBasicRequest ()
 		{
-			using (var testServer = new Server()) {
-				testServer.Start();
+			using (var fakeThings = new FakeThingsRepository()) {
+				
+				var mike = fakeThings.SetupMike ();
 
-				var client = new RestClient("http://localhost:"+testServer.Port);
-				var request = new RestRequest("things/{name}", Method.GET);
-				request.AddUrlSegment("name", "Mike");
-				var response = client.Execute(request);
+				using (var testServer = new Server()) {
 
-				Assert.IsNotNullOrEmpty(response.Content);
-				Assert.AreEqual(HttpStatusCode.OK ,response.StatusCode);
+					testServer.Container.Register<IThingsRepository>(fakeThings);
+					testServer.Start();
+
+					var client = new RestClient ("http://localhost:" + testServer.Port);
+					var request = new RestRequest ("things/{name}", Method.GET);
+					request.AddUrlSegment ("name", mike.Name);
+					var response = client.Execute(request);
+
+					Assert.IsNotNullOrEmpty (response.Content);
+					Assert.AreEqual (HttpStatusCode.OK, response.StatusCode);
+				}
 			}
-	
 		}
 
 	}
