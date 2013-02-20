@@ -37,7 +37,7 @@ namespace Sioux.TechRadar
 		}
 
 		[Test()]
-		public void TestFunqSecondContainer()
+		public void TestFunqChildContainer()
 		{
 			using (var fakeThings = new FakeThingsRepository()){
 				var mike = new Thing(){Name="Mike"};
@@ -47,7 +47,7 @@ namespace Sioux.TechRadar
 				{
 					container.Register<IThingsRepository>(fakeThings);
 
-					using (var container2 = new Container())
+					using (var container2 = container.CreateChildContainer())
 					{
 						var things = container2.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
 						Assert.That(things.First(),Is.EqualTo(mike));
