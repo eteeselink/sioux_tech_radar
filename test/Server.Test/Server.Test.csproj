@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="ThingsTest.cs" />
     <Compile Include="FakeThingsRepository.cs" />
+    <Compile Include="FakeServer.cs" />
+    <Compile Include="ServerTest.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

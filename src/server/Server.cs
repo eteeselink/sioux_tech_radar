@@ -61,17 +61,19 @@ namespace Sioux.TechRadar
 
 		public override void Configure(Container container)
 		{
+			container.Register<IThingsRepository>(new ThingsRepository());
 
 		}
 
-		public Server(int port=8888): base("Sioux TechRadar Service", typeof(Things).Assembly) 
+		public Server(): base("Sioux TechRadar Service", typeof(Server).Assembly) 
 		{
-			Port = port;
+			Port = DefaultPort;
+			Init ();
 		}
 
 		public Server Start()
 		{
-			base.Start(Url);
+			Start(Url);
 			return this;
 		}
 	}

@@ -12,6 +12,7 @@
     <newfilesearch>OnLoadAutoInsert</newfilesearch>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <StartupObject>Sioux.TechRadar.Server</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -85,12 +86,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Content Include="Global.asax" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
     <None Include="x64\SQLite.Interop.dll" />
     <None Include="x86\SQLite.Interop.dll" />
+    <None Include="NLog.config" />
+    <None Include="NLog.xsd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

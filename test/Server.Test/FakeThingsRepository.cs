@@ -24,7 +24,7 @@ namespace Sioux.TechRadar
 
 		public void Dispose ()
 		{
-			Things.Clear();
+
 		}
 
 		public IEnumerable<Thing> Store (Thing thing)
