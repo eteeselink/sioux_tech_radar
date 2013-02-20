@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,6 +10,8 @@
     <RootNamespace>Sioux.TechRadar</RootNamespace>
     <AssemblyName>Server</AssemblyName>
     <newfilesearch>OnLoadAutoInsert</newfilesearch>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -55,12 +57,6 @@
     <Reference Include="ServiceStack.Logging.NLog">
       <HintPath>..\..\packages\ServiceStack.Logging.NLog.1.0.6.0\lib\net35\ServiceStack.Logging.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis">
-      <HintPath>..\..\packages\ServiceStack.Redis.3.9.37\lib\net35\ServiceStack.Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.9.37\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.9.37\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
@@ -97,7 +93,6 @@
     <None Include="x64\SQLite.Interop.dll" />
     <None Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Things\" />
-  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
