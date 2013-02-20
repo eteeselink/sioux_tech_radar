@@ -3,6 +3,7 @@ using ServiceStack.ServiceInterface;
 
 namespace Sioux.TechRadar
 {
+
 	public class ThingsService: Service
 	{
 		public IThingsRepository Repository { get; set; }  //Injected by IOC

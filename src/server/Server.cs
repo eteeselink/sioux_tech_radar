@@ -4,10 +4,11 @@ using NDesk.Options;
 using System.Collections.Generic;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
+using System.Runtime.InteropServices;
 
 namespace Sioux.TechRadar
 {
-	public 	class Server : AppHostHttpListenerBase, IDisposable
+	public 	class Server : AppHostHttpListenerBase
 	{
 		const int DefaultPort = 8888;
 

@@ -27,7 +27,7 @@ namespace Sioux.TechRadar
 		{
 			return things;
 		}
-		public void Dispose(){
+		public virtual void Dispose(){
 			things.Clear ();
 		}
 	}

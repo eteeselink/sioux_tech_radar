@@ -84,6 +84,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ThingsTest.cs" />
     <Compile Include="FakeThingsRepository.cs" />
     <Compile Include="FakeServer.cs" />

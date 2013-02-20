@@ -4,7 +4,8 @@ using Funq;
 
 namespace Sioux.TechRadar
 {
-	public class FakeServer : AppHostHttpListenerBase
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
+    public class FakeServer : AppHostHttpListenerBase
 	{
 		public const string BaseUri = "http://localhost:8000/";
 
