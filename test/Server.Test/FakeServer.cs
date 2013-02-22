@@ -26,6 +26,7 @@ namespace Sioux.TechRadar
 			Start (BaseUri);
 			return this;
 		}
+
 	}
 }
 

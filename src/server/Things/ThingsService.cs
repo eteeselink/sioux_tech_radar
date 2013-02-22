@@ -25,7 +25,7 @@ namespace Sioux.TechRadar
         public object Post(Thing thing)
 		{
 			if (Repository.GetByName (thing.Name).Count () == 1) {
-				return Repository.StoreNew (thing);			
+				return Repository.StoreUpdated (thing);			
 			}else {
 				throw new HttpError(System.Net.HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
 			}
