@@ -48,6 +48,10 @@ namespace Sioux.TechRadar
 		{
 			return  Things.Where( thing => names.Contains( thing.Name ));
 		}
+		public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
+		{
+			return Things.Where( thing => thing.Quadrant == quadrant);
+		}
 
 		public IEnumerable<Thing> GetAll ()
 		{

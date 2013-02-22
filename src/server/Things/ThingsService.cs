@@ -18,8 +18,14 @@ namespace Sioux.TechRadar
 			
 		public object Get (ThingsRequest request)
 		{
-			logger.Debug("got request for things {}",this.RequestContext.AbsoluteUri);		
-			return Repository.GetByName (request.Names);
+			logger.Debug ("got request for things {}", this.RequestContext.AbsoluteUri);		
+			if (request.Names != null ) {
+				return Repository.GetByName (request.Names);
+			}
+			if (request.Quadrant.HasValue) {
+				return Repository.GetByQuadrant( request.Quadrant.Value);
+			}
+			throw new HttpError(System.Net.HttpStatusCode.NotFound, "no things found");
 		}
 
         public object Post(Thing thing)

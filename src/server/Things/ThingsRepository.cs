@@ -26,6 +26,10 @@ namespace Sioux.TechRadar
 		{
 			throw new NotImplementedException ();
 		}
+		public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
+		{
+			throw new NotImplementedException ();
+		}
 		public IEnumerable<Thing> GetAll ()
 		{
 			throw new NotImplementedException ();

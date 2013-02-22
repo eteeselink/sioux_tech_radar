@@ -52,16 +52,36 @@ namespace Sioux.TechRadar
 			}
 		}
 
+		[Test()]
+		public void SelectyByQuadrant()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				var things = fs.FakeThingsRepos.Things;
+				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages});
+				things.AddFirst(new Thing(){Name="Mono", Quadrant=Quadrant.Platforms});
+				things.AddFirst(new Thing(){Name="C++", Quadrant =Quadrant.Languages});
+				
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					ThingsRequest req = new ThingsRequest(){Quadrant = Quadrant.Languages};
+					IEnumerable<Thing> res = client.Get(req);
+					
+					Assert.AreEqual(2, res.Count());					
+				}
+			}
+		}
+
+
+
         [Test()]
+		[ExpectedException(typeof(WebServiceException))]
         public void EmptyRequest()
         {
             using (FakeServer fs = new FakeServer().Start())
             {
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 	                ThingsRequest req = new ThingsRequest();
-	                IEnumerable<Thing> res = client.Get(req);
-
-	                Assert.AreEqual(0, res.Count());
+	                client.Get(req);
 				}
             }
         }

@@ -10,6 +10,7 @@ namespace Sioux.TechRadar
 		Thing StoreUpdated(Thing thing);
 		IEnumerable<Thing> GetByName (string[] names);	
 		IEnumerable<Thing> GetByName (string name);	
+		IEnumerable<Thing> GetByQuadrant (Quadrant quadrant);
 		IEnumerable<Thing> GetAll();
 	}
 }
