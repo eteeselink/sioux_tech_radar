@@ -3,6 +3,7 @@ using System.Linq;
 using ServiceStack.ServiceInterface;
 using NLog;
 using ServiceStack.Common.Web;
+using System.Collections.Generic;
 
 
 namespace Sioux.TechRadar
@@ -16,19 +17,30 @@ namespace Sioux.TechRadar
 		private static Logger logger = LogManager.GetLogger("ThingsService");
 		public IThingsRepository Repository { get; set; }  //Injected by IOC
 			
+		/// <summary>
+		/// handles any GET request for Things. 
+		/// </summary>
+		/// <param name="request">Request.</param>
 		public object Get (ThingsRequest request)
 		{
 			logger.Debug ("got request for things {}", this.RequestContext.AbsoluteUri);		
 			if (request.Names != null && request.Names.Length > 0) {
 				return Repository.GetByName (request.Names);
 			}
-			if (request.Quadrant.HasValue) {
-				return Repository.GetByQuadrant (request.Quadrant.Value);
+
+			IEnumerable<Thing> result = null;
+			if (request.Quadrant.HasValue) 
+			{
+				result = Repository.GetByQuadrant(request.Quadrant.Value);
 			}
 			if (request.Keywords != null && request.Keywords.Length > 0) {
-				return Repository.Search(request);
+				if (result == null){
+					result = Repository.Search(request);
+				}else{
+					result = result.Intersect(Repository.Search(request));
+				}
 			}
-			throw new HttpError(System.Net.HttpStatusCode.NotFound, "no things found");
+			return result ?? new List<Thing>();
 		}
 
         public object Post(Thing thing)

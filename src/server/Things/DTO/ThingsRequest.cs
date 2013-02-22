@@ -17,6 +17,11 @@ namespace Sioux.TechRadar
 		public Quadrant? Quadrant { get; set; }
 		public string[] Keywords { get; set; }
 
+		/// <summary>
+		/// any get url params are not url-encoded by the client... 
+		/// so we need this urlencode method that modifies this object and returns its own instance
+		/// </summary>
+		/// <returns>The encode names.</returns>
 		public ThingsRequest UrlEncodeNames()
 		{
 			Names = Names.Select( name => Uri.EscapeDataString(name)).ToArray();

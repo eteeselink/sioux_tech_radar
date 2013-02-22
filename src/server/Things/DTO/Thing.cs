@@ -19,6 +19,11 @@ namespace Sioux.TechRadar
 		public Quadrant Quadrant{ get; set; }
 
 		private char[] SplitChars = new char[]{',','.',' '};
+		/// <summary>
+		/// Checks if this thing is a possible result of a search with the given keywords.
+		/// </summary>
+		/// <returns><c>true</c>, if any aspect of this Thing is related to any of the keywords</returns>
+		/// <param name="keywords">Keywords.</param>
 		public bool SoundsKindaLike (string[] keywords)
 		{
 			var descriptionWords = Description.ToLower().Split(SplitChars).Union( Name.ToLower().Split(SplitChars));
