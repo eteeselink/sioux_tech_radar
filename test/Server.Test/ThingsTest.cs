@@ -67,19 +67,34 @@ namespace Sioux.TechRadar
         }
 
 		[Test()]
-		public void AddThing()
+		public void AddNewThing()
 		{
 			using (FakeServer fs = new FakeServer().Start())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
-
 					Thing result= client.Put(newThing);
-					Assert.That(result, Is.EqualTo(newThing);
+
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
+					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+					
+					Assert.AreEqual(1, res.Count());
 				}
 			}
 		}
-
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void AddNewThingIncorrectlyWithPost ()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					
+					Thing result= client.Post(newThing);
+				}
+			}
+		}
 	}
 }
 

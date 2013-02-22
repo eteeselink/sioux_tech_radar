@@ -32,12 +32,14 @@ namespace Sioux.TechRadar
 			Things.AddLast(thing);
 			return thing;
 		}
+		public IEnumerable<Thing> GetByName (string name)
+		{
+			return Things.Where(t => name == t.Name);
+		}
 
 		public IEnumerable<Thing> GetByName (string[] names)
 		{
-			var result =  Things.Where( thing => names.Contains( thing.Name ));
-			var count = result.Count();
-			return result;
+			return  Things.Where( thing => names.Contains( thing.Name ));
 		}
 
 		public IEnumerable<Thing> GetAll ()

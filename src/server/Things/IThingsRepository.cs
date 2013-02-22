@@ -8,6 +8,7 @@ namespace Sioux.TechRadar
 	{
 		Thing Store(Thing thing);
 		IEnumerable<Thing> GetByName (string[] names);	
+		IEnumerable<Thing> GetByName (string name);	
 		IEnumerable<Thing> GetAll();
 	}
 }
