@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using System.Net;
 using Funq;
-using NLog;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
 using System.Collections.Generic;

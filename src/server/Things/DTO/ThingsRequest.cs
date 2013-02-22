@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ServiceStack.ServiceHost;
-using NLog;
 
 namespace Sioux.TechRadar
 {
@@ -14,7 +13,6 @@ namespace Sioux.TechRadar
 	public class ThingsRequest : IReturn<List<Thing>>
 	{
 		public string[] Names{ get;  set; }
-		private static Logger log = LogManager.GetLogger("Server");
 	}
 }
 
