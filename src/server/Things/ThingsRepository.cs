@@ -17,9 +17,14 @@ namespace Sioux.TechRadar
 			things.AddLast(new Thing (){Name="1"});
 		}
 
-		public Thing Store(Thing thing)
+		public Thing StoreNew(Thing thing)
 		{
 			things.AddLast (thing);
+			return thing;
+		}
+		public Thing StoreUpdated(Thing thing)
+		{
+			things = things.Select( t => t.Name == thing.Name ? thing : t);
 			return thing;
 		}
 		public IEnumerable<Thing> GetByName (string name)

@@ -84,7 +84,7 @@ namespace Sioux.TechRadar
 		}
 		[Test()]
 		[ExpectedException(typeof(WebServiceException))]
-		public void AddNewThingIncorrectlyWithPost ()
+		public void UpdateNonExistingThing ()
 		{
 			using (FakeServer fs = new FakeServer().Start())
 			{
@@ -92,6 +92,45 @@ namespace Sioux.TechRadar
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
 					
 					Thing result= client.Post(newThing);
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void CreateExistingThing()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					
+					Thing result= client.Put(newThing);
+				}
+			}
+		}
+
+		[Test()]
+		public void UpdateThing()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="D", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
+
+					Thing result= client.Post(updatedThing);
+
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
+					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+					
+					Assert.AreEqual(1, res.Count());
+					Assert.That(result.Quadrant, Is.EqualTo(updatedThing.Quadrant));
+					Assert.That(result.Description, Is.EqualTo(updatedThing.Description));
 				}
 			}
 		}

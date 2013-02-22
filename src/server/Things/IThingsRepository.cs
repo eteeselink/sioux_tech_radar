@@ -6,7 +6,8 @@ namespace Sioux.TechRadar
 {
 	public interface IThingsRepository : IDisposable
 	{
-		Thing Store(Thing thing);
+		Thing StoreNew(Thing thing);
+		Thing StoreUpdated(Thing thing);
 		IEnumerable<Thing> GetByName (string[] names);	
 		IEnumerable<Thing> GetByName (string name);	
 		IEnumerable<Thing> GetAll();

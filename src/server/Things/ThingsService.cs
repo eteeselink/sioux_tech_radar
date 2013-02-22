@@ -25,7 +25,7 @@ namespace Sioux.TechRadar
         public object Post(Thing thing)
 		{
 			if (Repository.GetByName (thing.Name).Count () == 1) {
-				return Repository.Store (thing);			
+				return Repository.StoreNew (thing);			
 			}else {
 				throw new HttpError(System.Net.HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
 			}
@@ -35,7 +35,7 @@ namespace Sioux.TechRadar
 		{
 			if (Repository.GetByName (thing.Name).Count () == 0) 
 			{
-				return Repository.Store (thing);
+				return Repository.StoreNew (thing);
 			} else {
 				throw new HttpError(System.Net.HttpStatusCode.Conflict, "'"+thing.Name + "' already exists");
 			}
