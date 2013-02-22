@@ -82,7 +82,6 @@
     <Compile Include="Things\IThingsRepository.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Things\DTO\Thing.cs" />
-    <Compile Include="Things\DTO\Things.cs" />
     <Compile Include="Things\DTO\ThingsRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

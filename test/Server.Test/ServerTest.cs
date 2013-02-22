@@ -26,7 +26,7 @@ namespace Sioux.TechRadar
 					var mike = fakeThings.SetupFakeThing();
 					container.Register<IThingsRepository>(fakeThings);
 					
-					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
+					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"C#"});
 					Assert.That(things.First(),Is.EqualTo(mike));
 				}
 			}
@@ -44,7 +44,7 @@ namespace Sioux.TechRadar
 					
 					using (var container2 = container.CreateChildContainer())
 					{
-						var things = container2.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
+						var things = container2.Resolve<IThingsRepository>().GetByName(new string[]{"C#"});
 						Assert.That(things.First(),Is.EqualTo(mike));
 					}
 				}
@@ -62,7 +62,7 @@ namespace Sioux.TechRadar
 					var container = server.Container;
 					container.Register<IThingsRepository> (fakeThings);
 					
-					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
+					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"C#"});
 					Assert.That(things.First(),Is.EqualTo(mike));
 					
 					server.Start();

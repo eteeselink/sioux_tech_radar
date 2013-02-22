@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using RestSharp;
 using System.Net;
 using Funq;
 using NLog;
@@ -18,27 +17,29 @@ namespace Sioux.TechRadar
 		//private static Logger logger = LogManager.GetLogger ("ThingsTest");
 
         [Test()]
-        public void TestThingRequest()
+        public void SingleRequesByNametWithSingleAnswer()
         {
             using (FakeServer fs = new FakeServer().Start())
             {
-                Thing mike = new Thing("Mike");
-                fs.FakeThingsRepos.Things.AddFirst(mike);
+				Thing csharp = new Thing(){Name="C#"};
+				fs.FakeThingsRepos.Things.AddFirst(csharp);
+
                 JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
-                ThingsRequest req = new ThingsRequest(new string[] { "Mike", "Mike", "Not Mike" });
+				ThingsRequest req = new ThingsRequest(){Names = new string[] { csharp.Name }};
                 IEnumerable<Thing> res = client.Get(req);
+
                 Assert.AreEqual(1, res.Count());
-                Assert.That(res.First().Name, Is.EqualTo(mike.Name));
+				Assert.That(res.First().Name, Is.EqualTo(csharp.Name));
             }
         }
 
         [Test()]
-        public void TestEmptyThingRequest()
+        public void EmptyRequest()
         {
             using (FakeServer fs = new FakeServer().Start())
             {
                 JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
-                ThingsRequest req = new ThingsRequest(new string[] { });
+                ThingsRequest req = new ThingsRequest();
                 IEnumerable<Thing> res = client.Get(req);
                 Assert.AreEqual(0, res.Count());
             }

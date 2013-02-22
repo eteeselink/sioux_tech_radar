@@ -11,15 +11,15 @@ namespace Sioux.TechRadar
 	public class ThingsRepository : IThingsRepository
 	{
 
-		private static IEnumerable<Thing> things = things ?? new LinkedList<Thing>();
+		private static LinkedList<Thing> things = things ?? new LinkedList<Thing>();
 		public ThingsRepository()
 		{
-			things.Add (new Thing (){Name="1"});
+			things.AddLast(new Thing (){Name="1"});
 		}
 
 		public IEnumerable<Thing> Store(Thing thing)
 		{
-			things.Add (thing);
+			things.AddLast (thing);
 			return things;
 		}
 
