@@ -9,10 +9,9 @@ namespace Sioux.TechRadar
 	{
 		public const string BaseUri = "http://localhost:8000/";
 
-		public FakeServer (Action<FakeThingsRepository> construct): base("Service Setup Tests", typeof(Things).Assembly) 
+		public FakeServer (): base("Service Setup Tests", typeof(Things).Assembly) 
 		{
 			fakeThingsRepos = new FakeThingsRepository ();
-			construct (fakeThingsRepos);
 		}
 
 		public FakeThingsRepository fakeThingsRepos { get; set; }

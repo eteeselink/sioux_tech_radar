@@ -11,7 +11,7 @@ namespace Sioux.TechRadar
 	{
 		public string[] Names{ get; private set; }
 		private static Logger log = LogManager.GetLogger("Server");
-		public Things (params string[] names)
+		public Things (string[] names)
 		{
 			this.Names = names;
 			log.Debug ("constructing things with {}",names);
