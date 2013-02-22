@@ -1,5 +1,6 @@
 using System;
 using ServiceStack.ServiceInterface;
+using NLog;
 
 
 namespace Sioux.TechRadar
@@ -10,10 +11,12 @@ namespace Sioux.TechRadar
 	/// </summary>
 	public class ThingsService: Service
 	{
+		private static Logger logger = LogManager.GetLogger("ThingsService");
 		public IThingsRepository Repository { get; set; }  //Injected by IOC
 			
 		public object Get (ThingsRequest request)
 		{
+			logger.Debug("got request for things {}",this.RequestContext.AbsoluteUri);		
 			return Repository.GetByName (request.Names);
 		}
 

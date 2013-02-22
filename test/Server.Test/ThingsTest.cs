@@ -23,12 +23,13 @@ namespace Sioux.TechRadar
 				Thing csharp = new Thing(){Name="C#"};
 				fs.FakeThingsRepos.Things.AddFirst(csharp);
 
-                JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
-				ThingsRequest req = new ThingsRequest(){Names = new string[] { csharp.Name }};
-                IEnumerable<Thing> res = client.Get(req);
+                using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "VBS", csharp.Name }};
+	                IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 
-                Assert.AreEqual(1, res.Count());
-				Assert.That(res.First().Name, Is.EqualTo(csharp.Name));
+	                Assert.AreEqual(1, res.Count());
+					Assert.That(res.First().Name, Is.EqualTo(csharp.Name));
+				}
             }
         }
 
@@ -37,12 +38,16 @@ namespace Sioux.TechRadar
         {
             using (FakeServer fs = new FakeServer().Start())
             {
-                JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
-                ThingsRequest req = new ThingsRequest();
-                IEnumerable<Thing> res = client.Get(req);
-                Assert.AreEqual(0, res.Count());
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+	                ThingsRequest req = new ThingsRequest();
+	                IEnumerable<Thing> res = client.Get(req);
+
+	                Assert.AreEqual(0, res.Count());
+				}
             }
         }
+
+
 
 	}
 }

@@ -16,7 +16,7 @@ namespace Sioux.TechRadar
 
 		public Thing SetupFakeThing()
 		{
-			var csharp = new Thing(){Name="C#"};
+			var csharp = new Thing(){Name=@"C#"};
 			this.Things.AddFirst(csharp);
 			return csharp;
 		}
@@ -35,7 +35,9 @@ namespace Sioux.TechRadar
 
 		public IEnumerable<Thing> GetByName (string[] names)
 		{
-			return Things.Where( t => names.Contains(t.Name));
+			var result =  Things.Where( thing => names.Contains( thing.Name ));
+			var count = result.Count();
+			return result;
 		}
 
 		public IEnumerable<Thing> GetAll ()
