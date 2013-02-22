@@ -24,7 +24,7 @@ namespace Sioux.TechRadar
 				fs.FakeThingsRepos.Things.AddFirst(csharp);
 
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "VBS", csharp.Name }};
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "VBS?"," \0" , csharp.Name }};
 	                IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 
 	                Assert.AreEqual(1, res.Count());
