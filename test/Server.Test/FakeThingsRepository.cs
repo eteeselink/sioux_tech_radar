@@ -27,10 +27,10 @@ namespace Sioux.TechRadar
 
 		}
 
-		public IEnumerable<Thing> Store (Thing thing)
+		public Thing Store (Thing thing)
 		{
 			Things.AddLast(thing);
-			return Things;
+			return thing;
 		}
 
 		public IEnumerable<Thing> GetByName (string[] names)

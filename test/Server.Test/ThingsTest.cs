@@ -66,7 +66,19 @@ namespace Sioux.TechRadar
             }
         }
 
+		[Test()]
+		public void AddThing()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
 
+					Thing result= client.Put(newThing);
+					Assert.That(result, Is.EqualTo(newThing);
+				}
+			}
+		}
 
 	}
 }
