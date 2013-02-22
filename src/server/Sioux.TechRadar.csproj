@@ -77,13 +77,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Things\Things.cs" />
-    <Compile Include="Things\Thing.cs" />
     <Compile Include="Things\ThingsRepository.cs" />
-    <Compile Include="Things\ThingsRequest.cs" />
     <Compile Include="Things\ThingsService.cs" />
     <Compile Include="Things\IThingsRepository.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Things\DTO\Thing.cs" />
+    <Compile Include="Things\DTO\Things.cs" />
+    <Compile Include="Things\DTO\ThingsRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -95,4 +95,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <ItemGroup>
+    <Folder Include="Things\DTO\" />
+  </ItemGroup>
 </Project>
