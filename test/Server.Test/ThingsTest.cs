@@ -33,6 +33,25 @@ namespace Sioux.TechRadar
             }
         }
 
+		[Test()]
+		public void MultipleItemsInRequest()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				var things = fs.FakeThingsRepos.Things;
+				things.AddFirst(new Thing(){Name="C#"});
+				things.AddFirst(new Thing(){Name="Mono"});
+				things.AddFirst(new Thing(){Name="C++"});
+				
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "C#","Mono" , "C++" }};
+					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+					
+					Assert.AreEqual(3, res.Count());					
+				}
+			}
+		}
+
         [Test()]
         public void EmptyRequest()
         {
