@@ -52,7 +52,10 @@ namespace Sioux.TechRadar
 		{
 			return Things.Where( thing => thing.Quadrant == quadrant);
 		}
-
+		public IEnumerable<Thing> Search (ThingsRequest request)
+		{
+			return Things.Where( thing => thing.SoundsKindaLike(request.Keywords));
+		}
 		public IEnumerable<Thing> GetAll ()
 		{
 			return Things;

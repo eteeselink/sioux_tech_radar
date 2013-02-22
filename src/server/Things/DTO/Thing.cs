@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using ServiceStack.ServiceHost;
 
 namespace Sioux.TechRadar
@@ -16,6 +17,13 @@ namespace Sioux.TechRadar
 		public string Name{ get; set; }
 		public string Description{ get; set; }
 		public Quadrant Quadrant{ get; set; }
+
+		private char[] SplitChars = new char[]{',','.',' '};
+		public bool SoundsKindaLike (string[] keywords)
+		{
+			var descriptionWords = Description.ToLower().Split(SplitChars).Union( Name.ToLower().Split(SplitChars));
+			return keywords.Any( keyword => descriptionWords.Contains(keyword.ToLower()));
+		}
 	}
 
 	public enum Quadrant{

@@ -15,6 +15,7 @@ namespace Sioux.TechRadar
 	{
 		public string[] Names{ get;  set; }
 		public Quadrant? Quadrant { get; set; }
+		public string[] Keywords { get; set; }
 
 		public ThingsRequest UrlEncodeNames()
 		{

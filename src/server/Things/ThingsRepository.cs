@@ -30,6 +30,10 @@ namespace Sioux.TechRadar
 		{
 			throw new NotImplementedException ();
 		}
+		public IEnumerable<Thing> Search (ThingsRequest request)
+		{
+			throw new NotImplementedException ();
+		}
 		public IEnumerable<Thing> GetAll ()
 		{
 			throw new NotImplementedException ();

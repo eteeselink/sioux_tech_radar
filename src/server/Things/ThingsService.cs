@@ -19,11 +19,14 @@ namespace Sioux.TechRadar
 		public object Get (ThingsRequest request)
 		{
 			logger.Debug ("got request for things {}", this.RequestContext.AbsoluteUri);		
-			if (request.Names != null ) {
+			if (request.Names != null && request.Names.Length > 0) {
 				return Repository.GetByName (request.Names);
 			}
 			if (request.Quadrant.HasValue) {
-				return Repository.GetByQuadrant( request.Quadrant.Value);
+				return Repository.GetByQuadrant (request.Quadrant.Value);
+			}
+			if (request.Keywords != null && request.Keywords.Length > 0) {
+				return Repository.Search(request);
 			}
 			throw new HttpError(System.Net.HttpStatusCode.NotFound, "no things found");
 		}

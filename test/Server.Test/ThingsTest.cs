@@ -71,7 +71,24 @@ namespace Sioux.TechRadar
 			}
 		}
 
-
+		[Test()]
+		public void SelectByKeywordSearch()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				var things = fs.FakeThingsRepos.Things;
+				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
+				things.AddFirst(new Thing(){Name="Mono", Quadrant=Quadrant.Platforms, Description="an application platform by Microsoft"});
+				things.AddFirst(new Thing(){Name="C++", Quadrant =Quadrant.Languages, Description="an ancient language"});
+				
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					ThingsRequest req = new ThingsRequest(){Keywords = new string[]{"microsoft"}};
+					IEnumerable<Thing> res = client.Get(req);
+					
+					Assert.AreEqual(2, res.Count());					
+				}
+			}
+		}
 
         [Test()]
 		[ExpectedException(typeof(WebServiceException))]

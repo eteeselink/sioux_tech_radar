@@ -11,6 +11,7 @@ namespace Sioux.TechRadar
 		IEnumerable<Thing> GetByName (string[] names);	
 		IEnumerable<Thing> GetByName (string name);	
 		IEnumerable<Thing> GetByQuadrant (Quadrant quadrant);
+		IEnumerable<Thing> Search (ThingsRequest request);
 		IEnumerable<Thing> GetAll();
 	}
 }
