@@ -11,7 +11,10 @@ namespace Sioux.TechRadar
 	{
 		public string[] Names{ get; private set; }
 		private static Logger log = LogManager.GetLogger("Server");
-		public Things (params string[] names)
+
+		//the params keyword will throw scary IL generator exception on MONO for mac...:-(
+		//public Things (params string[] names)
+		public Things (string[] names)
 		{
 			this.Names = names;
 			log.Debug ("constructing things with {}",names);
