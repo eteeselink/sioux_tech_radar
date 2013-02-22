@@ -14,6 +14,11 @@ namespace Sioux.TechRadar
 		{
 			log.Debug ("constructing thing");
 		}
+        public Thing(string name)
+        {
+            this.Name = name;
+            log.Debug("constructing thing");
+        }
 
 		public string Name{ get; set; }
 		public string Description{ get; set; }
