@@ -80,6 +80,7 @@
     <Compile Include="Things\Things.cs" />
     <Compile Include="Things\Thing.cs" />
     <Compile Include="Things\ThingsRepository.cs" />
+    <Compile Include="Things\ThingsRequest.cs" />
     <Compile Include="Things\ThingsService.cs" />
     <Compile Include="Things\IThingsRepository.cs" />
     <Compile Include="Server.cs" />

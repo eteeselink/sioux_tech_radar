@@ -5,6 +5,9 @@ using RestSharp;
 using System.Net;
 using Funq;
 using NLog;
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.ServiceHost;
+using System.Collections.Generic;
 
 namespace Sioux.TechRadar
 {
@@ -30,6 +33,18 @@ namespace Sioux.TechRadar
 			}
 
 		}
+
+        [Test()]
+        public void TestBasicRequestJson()
+        {
+            FakeServer fs = new FakeServer(repos => {}).Start();
+            Thing mike = fs.fakeThingsRepos.SetupMike();
+            JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
+            ThingsRequest req = new ThingsRequest(new string[] {"Mike", "guido"});
+            IEnumerable<Thing> res = client.Get(req);
+            Assert.AreEqual(1, res.Count());
+            Assert.That(res.First().Name, Is.EqualTo(mike.Name));
+        }
 
 	}
 }

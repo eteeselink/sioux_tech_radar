@@ -1,6 +1,7 @@
 using System;
 using ServiceStack.ServiceInterface;
 
+
 namespace Sioux.TechRadar
 {
 
@@ -8,14 +9,14 @@ namespace Sioux.TechRadar
 	{
 		public IThingsRepository Repository { get; set; }  //Injected by IOC
 			
-		public object Get (Things request)
+		public object Get (ThingsRequest request)
 		{
 			return request.Names.Length == 0
 					? Repository.GetAll ()
 						: Repository.GetByName (request.Names);
 		}
 
-		public object Post (Thing thing)
+        public object Post(Thing thing)
 		{
 			return Repository.Store (thing);
 		}
