@@ -11,14 +11,14 @@ namespace Sioux.TechRadar
 
 		public FakeServer (): base("Service Setup Tests", typeof(Things).Assembly) 
 		{
-			fakeThingsRepos = new FakeThingsRepository ();
+			FakeThingsRepos = new FakeThingsRepository ();
 		}
 
-		public FakeThingsRepository fakeThingsRepos { get; set; }
+		public FakeThingsRepository FakeThingsRepos { get; set; }
 
 		public override void Configure(Container container)
 		{
-			container.Register<IThingsRepository> (fakeThingsRepos);			
+			container.Register<IThingsRepository> (FakeThingsRepos);			
 		}
 		public FakeServer Start()
 		{

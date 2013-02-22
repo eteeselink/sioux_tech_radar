@@ -23,7 +23,7 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().Start())
             {
                 Thing mike = new Thing("Mike");
-                fs.fakeThingsRepos.Things.AddFirst(mike);
+                fs.FakeThingsRepos.Things.AddFirst(mike);
                 JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
                 ThingsRequest req = new ThingsRequest(new string[] { "Mike", "Mike", "Not Mike" });
                 IEnumerable<Thing> res = client.Get(req);

@@ -14,11 +14,11 @@ namespace Sioux.TechRadar
 			Things = new LinkedList<Thing>();
 		}
 
-		public Thing SetupMike()
+		public Thing SetupFakeThing()
 		{
-			var mike = new Thing(){Name="Mike"};
-			this.Things.AddFirst(mike);
-			return mike;
+			var csharp = new Thing(){Name="C#"};
+			this.Things.AddFirst(csharp);
+			return csharp;
 		}
 
 

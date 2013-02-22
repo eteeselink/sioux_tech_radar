@@ -23,7 +23,7 @@ namespace Sioux.TechRadar
 			using(var container = new Container())
 			{
 				using (var fakeThings = new FakeThingsRepository()){
-					var mike = fakeThings.SetupMike();
+					var mike = fakeThings.SetupFakeThing();
 					container.Register<IThingsRepository>(fakeThings);
 					
 					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"Mike"});
@@ -36,7 +36,7 @@ namespace Sioux.TechRadar
 		public void TestFunqChildContainer()
 		{
 			using (var fakeThings = new FakeThingsRepository()){
-				var mike = fakeThings.SetupMike();
+				var mike = fakeThings.SetupFakeThing();
 				
 				using(var container = new Container())
 				{
@@ -56,7 +56,7 @@ namespace Sioux.TechRadar
 		{
 			using (var fakeThings = new FakeThingsRepository()) {
 				
-				var mike = fakeThings.SetupMike();
+				var mike = fakeThings.SetupFakeThing();
 				
 				using (var server = new Server()){
 					var container = server.Container;
