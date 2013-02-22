@@ -17,33 +17,31 @@ namespace Sioux.TechRadar
 
 		//private static Logger logger = LogManager.GetLogger ("ThingsTest");
 
-		[Test()]
-		public void TestBasicRequest ()
-		{
-			Thing mike = null;
-			using (var fakeServer = new FakeServer( (repos)=>{mike = repos.SetupMike();}).Start()) {
-
-				var client = new RestClient (FakeServer.BaseUri);
-				var request = new RestRequest ("things/{name}", Method.GET);
-				request.AddUrlSegment ("name", mike.Name);
-				var response = client.Execute (request);
-
-				Assert.IsNotNullOrEmpty (response.Content);
-				Assert.AreEqual (HttpStatusCode.OK, response.StatusCode);
-			}
-
-		}
+        [Test()]
+        public void TestThingRequest()
+        {
+            using (FakeServer fs = new FakeServer().Start())
+            {
+                Thing mike = new Thing("Mike");
+                fs.fakeThingsRepos.Things.AddFirst(mike);
+                JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
+                ThingsRequest req = new ThingsRequest(new string[] { "Mike", "Mike", "Not Mike" });
+                IEnumerable<Thing> res = client.Get(req);
+                Assert.AreEqual(1, res.Count());
+                Assert.That(res.First().Name, Is.EqualTo(mike.Name));
+            }
+        }
 
         [Test()]
-        public void TestBasicRequestJson()
+        public void TestEmptyThingRequest()
         {
-            FakeServer fs = new FakeServer(repos => {}).Start();
-            Thing mike = fs.fakeThingsRepos.SetupMike();
-            JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
-            ThingsRequest req = new ThingsRequest(new string[] {"Mike", "guido"});
-            IEnumerable<Thing> res = client.Get(req);
-            Assert.AreEqual(1, res.Count());
-            Assert.That(res.First().Name, Is.EqualTo(mike.Name));
+            using (FakeServer fs = new FakeServer().Start())
+            {
+                JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri);
+                ThingsRequest req = new ThingsRequest(new string[] { });
+                IEnumerable<Thing> res = client.Get(req);
+                Assert.AreEqual(0, res.Count());
+            }
         }
 
 	}
