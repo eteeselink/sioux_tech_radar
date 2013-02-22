@@ -10,37 +10,29 @@ namespace Sioux.TechRadar
 	/// </summary>
 	public class ThingsRepository : IThingsRepository
 	{
-
-		private static LinkedList<Thing> things = things ?? new LinkedList<Thing>();
-		public ThingsRepository()
-		{
-			things.AddLast(new Thing (){Name="1"});
-		}
-
 		public Thing StoreNew(Thing thing)
 		{
-			things.AddLast (thing);
-			return thing;
+			throw new NotImplementedException ();
 		}
 		public Thing StoreUpdated(Thing thing)
 		{
-			things = things.Select( t => t.Name == thing.Name ? thing : t);
-			return thing;
+			throw new NotImplementedException ();
 		}
 		public IEnumerable<Thing> GetByName (string name)
 		{
-			return things.Where(t => name == t.Name);
+			throw new NotImplementedException ();
 		}
 		public IEnumerable<Thing> GetByName (string[] names)
 		{
-			return things.Where(t => names.Contains(t.Name));
+			throw new NotImplementedException ();
 		}
 		public IEnumerable<Thing> GetAll ()
 		{
-			return things;
+			throw new NotImplementedException ();
 		}
-		public virtual void Dispose(){
-
+		public virtual void Dispose()
+		{
+			throw new NotImplementedException ();
 		}
 	}
 

@@ -34,8 +34,10 @@ namespace Sioux.TechRadar
 		}
 		public Thing StoreUpdated(Thing thing)
 		{
-			Things = Things.Select( t => t.Name == thing.Name ? thing : t);
-			return thing;
+			var oldThing = Things.Where (t => t.Name == thing.Name).First ();
+			oldThing.Description = thing.Description;
+			oldThing.Quadrant = thing.Quadrant;
+			return oldThing;
 		}
 		public IEnumerable<Thing> GetByName (string name)
 		{
