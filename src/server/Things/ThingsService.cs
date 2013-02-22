@@ -11,9 +11,7 @@ namespace Sioux.TechRadar
 			
 		public object Get (ThingsRequest request)
 		{
-			return request.Names.Length == 0
-					? Repository.GetAll ()
-						: Repository.GetByName (request.Names);
+			return Repository.GetByName (request.Names);
 		}
 
         public object Post(Thing thing)
