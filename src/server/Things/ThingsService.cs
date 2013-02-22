@@ -4,6 +4,7 @@ using ServiceStack.ServiceInterface;
 using NLog;
 using ServiceStack.Common.Web;
 using System.Collections.Generic;
+using System.Net;
 
 
 namespace Sioux.TechRadar
@@ -45,15 +46,23 @@ namespace Sioux.TechRadar
 
         public object Post(Thing thing)
 		{
+			if (String.IsNullOrWhiteSpace(thing.Name) 
+			    || thing.Quadrant == null
+			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
+
 			if (Repository.GetByName (thing.Name).Count () == 1) {
 				return Repository.StoreUpdated (thing);			
 			}else {
-				throw new HttpError(System.Net.HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
+				throw new HttpError(HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
 			}
 		}
 			
 		public object Put (Thing thing)
 		{
+			if (String.IsNullOrWhiteSpace(thing.Name) 
+			    || thing.Quadrant == null
+			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
+
 			if (Repository.GetByName (thing.Name).Count () == 0) 
 			{
 				return Repository.StoreNew (thing);

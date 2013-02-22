@@ -123,6 +123,19 @@ namespace Sioux.TechRadar
         }
 
 		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void AddEmptyThing()
+		{
+			using (FakeServer fs = new FakeServer().Start())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing();
+					Thing result= client.Put(newThing);
+				}
+			}
+		}
+
+		[Test()]
 		public void AddNewThing()
 		{
 			using (FakeServer fs = new FakeServer().Start())
