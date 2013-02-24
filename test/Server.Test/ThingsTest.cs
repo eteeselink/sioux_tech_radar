@@ -130,7 +130,7 @@ namespace Sioux.TechRadar
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing();
-					Thing result= client.Put(newThing);
+					client.Put(newThing);
 				}
 			}
 		}
@@ -142,7 +142,7 @@ namespace Sioux.TechRadar
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					Thing result= client.Put(newThing);
+					 client.Put(newThing);
 
 					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
@@ -160,7 +160,7 @@ namespace Sioux.TechRadar
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
 					
-					Thing result= client.Post(newThing);
+					client.Post(newThing);
 				}
 			}
 		}
@@ -176,7 +176,7 @@ namespace Sioux.TechRadar
 
 					fs.FakeThingsRepos.Things.AddLast(newThing);
 					
-					Thing result= client.Put(newThing);
+					 client.Put(newThing);
 				}
 			}
 		}
