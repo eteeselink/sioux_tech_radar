@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using ServiceStack.ServiceInterface;
 using System.Collections.Generic;
+using ServiceStack.OrmLite.Sqlite;
 
 namespace Sioux.TechRadar
 {
@@ -10,6 +10,10 @@ namespace Sioux.TechRadar
 	/// </summary>
 	public class ThingsRepository : IThingsRepository
 	{
+		public ThingsRepository ()
+		{
+
+		}
 		public Thing StoreNew(Thing thing)
 		{
 			throw new NotImplementedException ();
