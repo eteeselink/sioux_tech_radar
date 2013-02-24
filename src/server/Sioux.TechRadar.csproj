@@ -78,6 +78,8 @@
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\..\packages\ServiceStack.OrmLite.Sqlite.Mono.3.9.37\lib\net35\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Server.cs" />
     <Compile Include="Things\DTO\Thing.cs" />
     <Compile Include="Things\DTO\ThingsRequest.cs" />
+    <Compile Include="sqlite\SqLiteConnectionFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
