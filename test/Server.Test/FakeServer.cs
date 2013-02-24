@@ -12,21 +12,34 @@ namespace Sioux.TechRadar
 		public FakeServer (): base("Service Setup Tests", typeof(ThingsRequest).Assembly) 
 		{
 			FakeThingsRepos = new FakeThingsRepository ();
+			RealThingsRepos = new ThingsRepository(){ 
+				ConnectionFactory = new SqLiteConnectionFactory()
+			};
 		}
 
 		public FakeThingsRepository FakeThingsRepos { get; set; }
+		public ThingsRepository RealThingsRepos {get; set; }
+		public IThingsRepository UsedThingsRepos { get; set; }
 
 		public override void Configure(Container container)
 		{
-			container.Register<IThingsRepository> (FakeThingsRepos);			
+			container.Register<IThingsRepository> (UsedThingsRepos);			
 		}
-		public FakeServer Start()
+		public FakeServer StartWithFakeRepos()
 		{
+			UsedThingsRepos = FakeThingsRepos;
 			Init ();
 			Start (BaseUri);
 			return this;
 		}
 
+		public FakeServer StartWithRealRepos()
+		{
+			UsedThingsRepos = RealThingsRepos;
+			Init ();
+			Start (BaseUri);
+			return this;
+		}
 	}
 }
 

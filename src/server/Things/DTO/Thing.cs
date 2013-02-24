@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using ServiceStack.ServiceHost;
+using ServiceStack.DataAnnotations;
 
 namespace Sioux.TechRadar
 {
@@ -14,6 +15,7 @@ namespace Sioux.TechRadar
 	[Route("/things","PUT")] // create
 	public class Thing : IReturn<Thing>
 	{
+		[PrimaryKey]
 		public string Name{ get; set; }
 		public string Description{ get; set; }
 		public Quadrant Quadrant{ get; set; }

@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using ServiceStack.OrmLite.Sqlite;
+using ServiceStack.OrmLite;
+using MoreLinq;
 
 namespace Sioux.TechRadar
 {
@@ -10,39 +12,55 @@ namespace Sioux.TechRadar
 	/// </summary>
 	public class ThingsRepository : IThingsRepository
 	{
-		SqLiteConnectionFactory ConnectionFactory{get;set;}
+		internal SqLiteConnectionFactory ConnectionFactory{get;set;}
 
-		public Thing StoreNew(Thing thing)
+		public Thing StoreNew (Thing thing)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				connection.Insert(thing);
+			}
+			return thing;
 		}
 		public Thing StoreUpdated(Thing thing)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				connection.Update(thing);
+			}
+			return thing;
 		}
 		public IEnumerable<Thing> GetByName (string name)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				return connection.Select<Thing>("Name = {0}",name);
+			}
 		}
 		public IEnumerable<Thing> GetByName (string[] names)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				return connection.Select<Thing>("Name in ({0})", names.Aggregate((a,b) => a + ',' + b));
+			}
 		}
 		public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				return connection.Select<Thing>("Quadrant = {0}", quadrant);
+			}
 		}
 		public IEnumerable<Thing> Search (ThingsRequest request)
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				return connection.Select<Thing>().Where( thing => thing.SoundsKindaLike(request.Keywords));
+			}
 		}
 		public IEnumerable<Thing> GetAll ()
 		{
-			throw new NotImplementedException ();
+			using (var connection = ConnectionFactory.Connect()) {
+				return connection.Select<Thing>();
+			}
 		}
 		public virtual void Dispose()
 		{
-			throw new NotImplementedException ();
+			ConnectionFactory.Dispose();
 		}
 	}
 

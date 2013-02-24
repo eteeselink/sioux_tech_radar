@@ -18,7 +18,7 @@ namespace Sioux.TechRadar
         [Test()]
         public void SingleRequesByNametWithSingleAnswer()
         {
-            using (FakeServer fs = new FakeServer().Start())
+            using (FakeServer fs = new FakeServer().StartWithFakeRepos())
             {
 				Thing csharp = new Thing(){Name="C#"};
 				fs.FakeThingsRepos.Things.AddFirst(csharp);
@@ -36,7 +36,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void MultipleItemsInRequest()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
 				things.AddFirst(new Thing(){Name="C#"});
@@ -55,7 +55,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void SelectyByQuadrant()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
 				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages});
@@ -74,7 +74,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void SelectByKeywordSearch()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
 				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
@@ -93,7 +93,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void SelectByKeywordSearchAndQuadrant()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
 				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
@@ -112,7 +112,7 @@ namespace Sioux.TechRadar
         [Test()]
         public void EmptyRequest()
         {
-            using (FakeServer fs = new FakeServer().Start())
+            using (FakeServer fs = new FakeServer().StartWithFakeRepos())
             {
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 	                ThingsRequest req = new ThingsRequest();
@@ -126,7 +126,7 @@ namespace Sioux.TechRadar
 		[ExpectedException(typeof(WebServiceException))]
 		public void AddEmptyThing()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing();
@@ -138,7 +138,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void AddNewThing()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
@@ -155,7 +155,7 @@ namespace Sioux.TechRadar
 		[ExpectedException(typeof(WebServiceException))]
 		public void UpdateNonExistingThing ()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
@@ -169,7 +169,7 @@ namespace Sioux.TechRadar
 		[ExpectedException(typeof(WebServiceException))]
 		public void CreateExistingThing()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
@@ -184,7 +184,7 @@ namespace Sioux.TechRadar
 		[Test()]
 		public void UpdateThing()
 		{
-			using (FakeServer fs = new FakeServer().Start())
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};

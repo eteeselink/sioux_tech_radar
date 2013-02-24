@@ -1,10 +1,11 @@
 using System;
-using NLog;
 using NDesk.Options;
 using System.Collections.Generic;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using System.Runtime.InteropServices;
+using NLog;
+using ServiceStack.Logging;
 
 namespace Sioux.TechRadar
 {
@@ -12,7 +13,7 @@ namespace Sioux.TechRadar
 	{
 		const int DefaultPort = 8888;
 
-		private static Logger logger = LogManager.GetLogger("Server");
+		private static Logger logger = NLog.LogManager.GetLogger("Server");
 
 		static void ShowHelp (OptionSet p)
 		{
@@ -25,6 +26,8 @@ namespace Sioux.TechRadar
 
 		public static void Main (string[] args)
 		{
+			//ServiceStack.Logging.LogManager.LogFactory = new ServiceStack.Logging.NLogger.NLogFactory();
+
 			int port = DefaultPort;
 			bool help = false;
 			var opts = new OptionSet () {

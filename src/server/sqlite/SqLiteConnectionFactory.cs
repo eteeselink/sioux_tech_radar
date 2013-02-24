@@ -30,6 +30,9 @@ namespace Sioux.TechRadar
 			get {
 				if (ormLiteConnecdtionFactory == null) {
 					ormLiteConnecdtionFactory = new OrmLiteConnectionFactory(ConnectionString, SqliteDialect.Provider);
+					if (ConnectionString == ":memory:"){
+						ormLiteConnecdtionFactory.Run( db => db.CreateTableIfNotExists<Thing>());
+					}
 				}
 				return ormLiteConnecdtionFactory;
 			}

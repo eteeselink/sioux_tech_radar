@@ -96,6 +96,7 @@
     <Compile Include="FakeServer.cs" />
     <Compile Include="ServerTest.cs" />
     <Compile Include="SqliteTest.cs" />
+    <Compile Include="ThingsIntegrationTest.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
