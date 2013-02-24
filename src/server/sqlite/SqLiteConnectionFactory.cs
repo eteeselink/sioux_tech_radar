@@ -38,18 +38,14 @@ namespace Sioux.TechRadar
 			}
 		}
 
-		internal LinkedList<IDbConnection> CreatedConnections = new LinkedList<IDbConnection>();
 		public IDbConnection Connect ()
 		{
-			var connection = OrmLiteConnectionFactory.OpenDbConnection ();
-			CreatedConnections.AddLast(connection);
-			return connection;
+			return OrmLiteConnectionFactory.OpenDbConnection ();;
 		}
-
+	
 		public void Dispose ()
 		{
-			//note from the docs : An application can call Close more than one time without generating an exception
-			CreatedConnections.ForEach((connection)=>connection.Close());
+		
 		}
 
 	}

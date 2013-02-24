@@ -22,18 +22,6 @@ namespace Sioux.TechRadar
 			}
 		}
 
-		[Test]
-		public void FactoryConnectionCleanuperTest ()
-		{
-			using (var factory = new SqLiteConnectionFactory()){
-				// this should now be the default sqlite in memory 
-				using(var connection = factory.Connect()){
-					//use connection, bla bla.
-				}
-				//now connection was closed or disposed, but factory still has a reference
-				Assert.That(factory.CreatedConnections.Count, Is.EqualTo(1));
-			}
-		}
 	}
 }
 

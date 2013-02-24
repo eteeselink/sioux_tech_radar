@@ -10,10 +10,8 @@ namespace Sioux.TechRadar
 	/// </summary>
 	public class ThingsRepository : IThingsRepository
 	{
-		public ThingsRepository ()
-		{
+		SqLiteConnectionFactory ConnectionFactory{get;set;}
 
-		}
 		public Thing StoreNew(Thing thing)
 		{
 			throw new NotImplementedException ();
