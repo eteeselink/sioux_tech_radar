@@ -1,10 +1,13 @@
 using System;
 using System.Data;
+using System.Linq;
+using System.Collections.Generic;
 using ServiceStack.OrmLite;
+using MoreLinq;
 
 namespace Sioux.TechRadar
 {
-	public class SqLiteConnectionFactory
+	public class SqLiteConnectionFactory : IDisposable
 	{
 		public SqLiteConnectionFactory ()
 		{
@@ -35,10 +38,20 @@ namespace Sioux.TechRadar
 			}
 		}
 
+		private LinkedList<IDbConnection> CreatedConnections = new LinkedList<IDbConnection>();
 		public IDbConnection Connect ()
 		{
-			return ormLiteConnecdtionFactory.OpenDbConnection ();
+			var connection = OrmLiteConnectionFactory.OpenDbConnection ();
+			CreatedConnections.AddLast(connection);
+			return connection;
 		}
+
+		public void Dispose ()
+		{
+			//note from the docs : An application can call Close more than one time without generating an exception
+			CreatedConnections.ForEach((connection)=>connection.Close());
+		}
+
 	}
 }
 
