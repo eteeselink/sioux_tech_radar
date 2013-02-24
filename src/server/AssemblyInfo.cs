@@ -26,3 +26,4 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 [assembly: ComVisible(false)]
+[assembly: InternalsVisibleTo("Server.Test")]

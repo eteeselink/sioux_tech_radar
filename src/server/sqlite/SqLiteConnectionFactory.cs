@@ -38,7 +38,7 @@ namespace Sioux.TechRadar
 			}
 		}
 
-		private LinkedList<IDbConnection> CreatedConnections = new LinkedList<IDbConnection>();
+		internal LinkedList<IDbConnection> CreatedConnections = new LinkedList<IDbConnection>();
 		public IDbConnection Connect ()
 		{
 			var connection = OrmLiteConnectionFactory.OpenDbConnection ();
