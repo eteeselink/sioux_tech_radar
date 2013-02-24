@@ -47,7 +47,6 @@ namespace Sioux.TechRadar
         public object Post(Thing thing)
 		{
 			if (String.IsNullOrWhiteSpace(thing.Name) 
-			    || thing.Quadrant == null
 			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
 
 			if (Repository.GetByName (thing.Name).Count () == 1) {
@@ -60,7 +59,6 @@ namespace Sioux.TechRadar
 		public object Put (Thing thing)
 		{
 			if (String.IsNullOrWhiteSpace(thing.Name) 
-			    || thing.Quadrant == null
 			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
 
 			if (Repository.GetByName (thing.Name).Count () == 0) 
