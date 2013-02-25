@@ -1,7 +1,3 @@
-/// <reference path="structs.ts" />
-/// <reference path="view-model.ts" />
-/// <reference path="radar.ts" />
-/// <reference path="ext/jquery-1.8.d.ts" />
 var TechRadar;
 (function (TechRadar) {
     (function (Client) {
@@ -30,7 +26,6 @@ var TechRadar;
             return things;
         }
         function showTab(q) {
-            // remove earlier radars, if any.
             $('svg.radar').remove();
             $('div.thing-list').remove();
             var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];

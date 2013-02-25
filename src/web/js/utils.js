@@ -1,5 +1,3 @@
-/// base class for fake enums; searches the constructor object
-/// for a slow but functional toString implementation.
 var TechRadar;
 (function (TechRadar) {
     var Enum = (function () {

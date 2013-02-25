@@ -5,8 +5,7 @@ var TechRadar;
             function Guid() { }
             Guid.New = function New() {
                 var S4 = function () {
-                    return Math.floor(Math.random() * 65536).toString(/* 65536 */
-                    16);
+                    return Math.floor(Math.random() * 65536).toString(16);
                 };
                 return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
             }
