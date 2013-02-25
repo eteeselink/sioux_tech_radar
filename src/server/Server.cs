@@ -80,5 +80,11 @@ namespace Sioux.TechRadar
 			Start(Url);
 			return this;
 		}
+
+        protected override void ProcessRequest(System.Net.HttpListenerContext context)
+        {
+            // Console.WriteLine(context.Request.Url);
+            base.ProcessRequest(context);
+        }
 	}
 }

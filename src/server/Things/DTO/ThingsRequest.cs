@@ -9,8 +9,8 @@ namespace Sioux.TechRadar
 	/// Things is a request object that is used to request a List<Thing>.
 	/// It is not a response object.
 	/// </summary>
-	[Route("/things/search")] // get all
-	[Route("/things/{names}")] //get by name
+	[Route("/api/things/search")] // get all
+	[Route("/api/things/{names}")] //get by name
 	public class ThingsRequest : IReturn<List<Thing>>
 	{
 		public string[] Names{ get;  set; }
