@@ -30,9 +30,11 @@ namespace Sioux.TechRadar
 
 			int port = DefaultPort;
 			bool help = false;
+			string sqliteFile = null;
 			var opts = new OptionSet () {
 				{ "port=",      (int v) => port = v },
 				{ "h|?|help",   v => help = v != null },
+				{ "f|db|sqlitefile", v => sqliteFile = v },
 			};
 
 			try {
@@ -58,6 +60,8 @@ namespace Sioux.TechRadar
 
 
 		public int Port{ get; internal set; }
+		public string SqliteFile { get; internal set; }
+
 		string Url{ get {
 				return "http://*:" + Port + "/";
 			}
@@ -65,8 +69,17 @@ namespace Sioux.TechRadar
 
 		public override void Configure(Container container)
 		{
-			container.Register<IThingsRepository>(new ThingsRepository());
 
+			container.Register<IThingsRepository>(
+				new ThingsRepository(){ 
+					ConnectionFactory =  new SqLiteConnectionFactory(){ 
+						ConnectionString = SqliteFile
+					}
+				}
+			);
+			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 
+												MetadataRedirectPath = "api/metadata" });
+		
 		}
 
 		public Server(): base("Sioux TechRadar Service", typeof(Server).Assembly) 
@@ -83,7 +96,7 @@ namespace Sioux.TechRadar
 
         protected override void ProcessRequest(System.Net.HttpListenerContext context)
         {
-            // Console.WriteLine(context.Request.Url);
+            Console.WriteLine(context.Request.Url);
             base.ProcessRequest(context);
         }
 	}

@@ -67,6 +67,7 @@ namespace Sioux.TechRadar
 				return connection.Select<Thing>("Quadrant = {0}", quadrant);
 			}
 		}
+		//TODO: make this perform properly
 		public IEnumerable<Thing> Search (ThingsRequest request)
 		{
 			using (var connection = ConnectionFactory.Connect()) {
