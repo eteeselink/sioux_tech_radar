@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using ServiceStack.OrmLite.Sqlite;
 using ServiceStack.OrmLite;
 using MoreLinq;
+using NLog;
+using ServiceStack.Common.Web;
+using System.Net;
+using Shouldly;
 
 namespace Sioux.TechRadar
 {
@@ -13,20 +17,37 @@ namespace Sioux.TechRadar
 	public class ThingsRepository : IThingsRepository
 	{
 		internal SqLiteConnectionFactory ConnectionFactory{get;set;}
+		private static Logger logger = NLog.LogManager.GetLogger("ThingsRepository");
+
+		public ThingsRepository(){
+
+		}
 
 		public Thing StoreNew (Thing thing)
 		{
-			using (var connection = ConnectionFactory.Connect()) {
-				connection.Insert(thing);
+			try {
+				using (var connection = ConnectionFactory.Connect()) {
+					connection.TableExists("Thing").ShouldBe(true);
+					connection.Insert (thing);
+				}
+				return thing;
+			} catch (Exception e) {
+				logger.ErrorException("attempted to insert a new thing",e);
+				throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to insert thing");
 			}
-			return thing;
 		}
-		public Thing StoreUpdated(Thing thing)
+
+		public Thing StoreUpdated (Thing thing)
 		{
-			using (var connection = ConnectionFactory.Connect()) {
-				connection.Update(thing);
+			try {
+				using (var connection = ConnectionFactory.Connect()) {
+					connection.Update (thing);
+				}
+				return thing;
+			} catch (Exception e) {
+				logger.ErrorException("attempted to update a thing",e);
+				throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to update thing");
 			}
-			return thing;
 		}
 		public IEnumerable<Thing> GetByName (string name)
 		{

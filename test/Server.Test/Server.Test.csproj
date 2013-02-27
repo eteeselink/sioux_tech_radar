@@ -76,6 +76,9 @@
     <Reference Include="MoreLinq">
       <HintPath>..\..\packages\morelinq.1.0\lib\net35\MoreLinq.dll</HintPath>
     </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\packages\Shouldly.1.1.1.1\lib\35\Shouldly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\server\Sioux.TechRadar.csproj">
@@ -97,6 +100,7 @@
     <Compile Include="ServerTest.cs" />
     <Compile Include="SqliteTest.cs" />
     <Compile Include="ThingsIntegrationTest.cs" />
+    <Compile Include="SqLiteInMemoryFactory.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

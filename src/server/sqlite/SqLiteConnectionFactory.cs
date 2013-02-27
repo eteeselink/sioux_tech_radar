@@ -4,20 +4,18 @@ using System.Linq;
 using System.Collections.Generic;
 using ServiceStack.OrmLite;
 using MoreLinq;
+using Shouldly;
 
 namespace Sioux.TechRadar
 {
 	public class SqLiteConnectionFactory : IDisposable
 	{
-		public SqLiteConnectionFactory ()
-		{
-			ConnectionString = ":memory:";
-		}
+		public const string MemoryConnectionString = ":memory:";
 
 		private string connectionString;
 		public string ConnectionString {
 			get {
-				return connectionString ?? ":memory";
+				return connectionString ?? MemoryConnectionString;
 			} 
 			internal set{
 				connectionString = value;
@@ -30,9 +28,6 @@ namespace Sioux.TechRadar
 			get {
 				if (ormLiteConnecdtionFactory == null) {
 					ormLiteConnecdtionFactory = new OrmLiteConnectionFactory(ConnectionString, SqliteDialect.Provider);
-					if (ConnectionString == ":memory:"){
-						ormLiteConnecdtionFactory.Run( db => db.CreateTableIfNotExists<Thing>());
-					}
 				}
 				return ormLiteConnecdtionFactory;
 			}
@@ -41,9 +36,9 @@ namespace Sioux.TechRadar
 			}
 		}
 
-		public IDbConnection Connect ()
+		public virtual IDbConnection Connect ()
 		{
-			return OrmLiteConnectionFactory.OpenDbConnection ();;
+			return OrmLiteConnectionFactory.OpenDbConnection();
 		}
 	
 		public void Dispose ()

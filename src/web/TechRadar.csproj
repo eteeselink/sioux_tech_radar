@@ -7,7 +7,6 @@
     <ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <FileUpgradeFlags>
@@ -23,7 +22,6 @@
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <AssemblyName>TechRadar</AssemblyName>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\tech-radar.css">
@@ -130,7 +128,7 @@
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <Message Text="Compiling TypeScript files" />
-    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
-    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
+    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" />
+    <Exec Command="tsc$(TypeScriptSourceMap) @(TypeScriptCompile -&gt;'&quot;%(fullpath)&quot;', ' ')" IgnoreExitCode="true" />
   </Target>
 </Project>

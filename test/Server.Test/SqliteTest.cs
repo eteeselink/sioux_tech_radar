@@ -15,7 +15,7 @@ namespace Sioux.TechRadar
 				using(var connection = factory.Connect()){
 
 					Assert.That(connection.ConnectionString, Is.EqualTo(factory.ConnectionString));
-					Assert.That(connection.ConnectionString, Is.EqualTo(":memory:"));
+					Assert.That(connection.ConnectionString, Is.EqualTo(SqLiteConnectionFactory.MemoryConnectionString));
 
 					Assert.That(connection.Database, Is.Not.Null);
 				}

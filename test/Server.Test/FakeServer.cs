@@ -1,6 +1,7 @@
 using System;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
+using ServiceStack.OrmLite;
 
 namespace Sioux.TechRadar
 {
@@ -12,8 +13,8 @@ namespace Sioux.TechRadar
 		public FakeServer (): base("Service Setup Tests", typeof(ThingsRequest).Assembly) 
 		{
 			FakeThingsRepos = new FakeThingsRepository ();
-			RealThingsRepos = new ThingsRepository(){ 
-				ConnectionFactory = new SqLiteConnectionFactory()
+ 			RealThingsRepos = new ThingsRepository(){ 
+				ConnectionFactory = new SqLiteInMemoryFactory ()
 			};
 		}
 
