@@ -14,7 +14,8 @@ namespace Sioux.TechRadar
 		{
 			FakeThingsRepos = new FakeThingsRepository ();
  			RealThingsRepos = new ThingsRepository(){ 
-				ConnectionFactory = new SqLiteInMemoryFactory ()
+				//ConnectionFactory = new SqLiteInMemoryFactory ()
+				ConnectionFactory = new TempSQLiteFactory()
 			};
 		}
 

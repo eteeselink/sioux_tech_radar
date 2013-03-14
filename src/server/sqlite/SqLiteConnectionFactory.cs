@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using ServiceStack.OrmLite;
 using MoreLinq;
 using Shouldly;
+using System.Data.SQLite;
+using System.IO;
 
 namespace Sioux.TechRadar
 {
@@ -35,10 +37,22 @@ namespace Sioux.TechRadar
 				ormLiteConnecdtionFactory = value;
 			}
 		}
-
+		/// <summary>
+		/// Creates a new DB connection, which is auto disposed
+		/// </summary>
 		public virtual IDbConnection Connect ()
 		{
 			return OrmLiteConnectionFactory.OpenDbConnection();
+		}
+
+		/// <summary>
+		/// Ensures the SQLite file exists.
+		/// </summary>
+		public void EnsureFileExists ()
+		{
+			if (!File.Exists (ConnectionString)) {
+				SQLiteConnection.CreateFile(ConnectionString);
+			}
 		}
 	
 		public void Dispose ()

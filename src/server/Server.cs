@@ -51,6 +51,7 @@ namespace Sioux.TechRadar
 				return;
 			}
 
+
 			using (var server = new Server(){Port = port }) {
 				server.Start();
 				logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
@@ -69,12 +70,14 @@ namespace Sioux.TechRadar
 
 		public override void Configure(Container container)
 		{
+			var factory = new SqLiteConnectionFactory(){ 
+				ConnectionString = SqliteFile
+			};
+			factory.EnsureFileExists ();
 
 			container.Register<IThingsRepository>(
 				new ThingsRepository(){ 
-					ConnectionFactory =  new SqLiteConnectionFactory(){ 
-						ConnectionString = SqliteFile
-					}
+					ConnectionFactory =  factory
 				}
 			);
 			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 

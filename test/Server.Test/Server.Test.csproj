@@ -79,6 +79,12 @@
     <Reference Include="Shouldly">
       <HintPath>..\..\packages\Shouldly.1.1.1.1\lib\35\Shouldly.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\server\Sioux.TechRadar.csproj">
@@ -91,6 +97,8 @@
     <None Include="sqlite\x64\sqlite3.dll" />
     <None Include="sqlite\x86\sqlite3.dll" />
     <None Include="sqlite\x86\sqlite3.exe" />
+    <None Include="x86\SQLite.Interop.dll" />
+    <None Include="x64\SQLite.Interop.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -101,6 +109,8 @@
     <Compile Include="SqliteTest.cs" />
     <Compile Include="ThingsIntegrationTest.cs" />
     <Compile Include="SqLiteInMemoryFactory.cs" />
+    <Compile Include="TempSQLiteFactory.cs" />
+    <Compile Include="TempFile.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
