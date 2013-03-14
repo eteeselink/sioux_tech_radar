@@ -30,11 +30,11 @@ namespace Sioux.TechRadar
 
 			int port = DefaultPort;
 			bool help = false;
-			string sqliteFile = null;
+			string sqliteFile = "tempDB.sqlite";
 			var opts = new OptionSet () {
 				{ "port=",      (int v) => port = v },
 				{ "h|?|help",   v => help = v != null },
-				{ "f|db|sqlitefile", v => sqliteFile = v },
+				{ "sqlitefile=", v => sqliteFile = v },
 			};
 
 			try {
@@ -52,13 +52,13 @@ namespace Sioux.TechRadar
 			}
 
 
-			using (var server = new Server(){Port = port }) {
+			using (var server = new Server(){Port = port, SqliteFile = sqliteFile }) {
 				server.Start();
 				logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
 				Console.ReadKey();
 			}
 		}
-
+	
 
 		public int Port{ get; internal set; }
 		public string SqliteFile { get; internal set; }
@@ -73,7 +73,6 @@ namespace Sioux.TechRadar
 			var factory = new SqLiteConnectionFactory(){ 
 				ConnectionString = SqliteFile
 			};
-			factory.EnsureFileExists ();
 
 			container.Register<IThingsRepository>(
 				new ThingsRepository(){ 
@@ -87,12 +86,12 @@ namespace Sioux.TechRadar
 
 		public Server(): base("Sioux TechRadar Service", typeof(Server).Assembly) 
 		{
-			Port = DefaultPort;
-			Init ();
+			Port = DefaultPort;		
 		}
 
 		public Server Start()
 		{
+			Init ();
 			Start(Url);
 			return this;
 		}

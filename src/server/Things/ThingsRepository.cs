@@ -20,7 +20,9 @@ namespace Sioux.TechRadar
 		private static Logger logger = NLog.LogManager.GetLogger("ThingsRepository");
 
 		public ThingsRepository(){
-
+			using (var db = ConnectionFactory.Connect()){
+				db.CreateTableIfNotExists<Thing> ();
+			}
 		}
 
 		public Thing StoreNew (Thing thing)

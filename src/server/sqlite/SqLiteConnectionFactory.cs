@@ -14,6 +14,12 @@ namespace Sioux.TechRadar
 	{
 		public const string MemoryConnectionString = ":memory:";
 
+		public SqLiteConnectionFactory(){
+			AutodDisposeConnection = false;
+			ConnectionString = MemoryConnectionString;
+		} 
+
+		public bool AutodDisposeConnection{get;set;}
 		private string connectionString;
 		public string ConnectionString {
 			get {
@@ -21,7 +27,12 @@ namespace Sioux.TechRadar
 			} 
 			internal set{
 				connectionString = value;
-				//TODO: check if it is a file, and if the file exists
+
+				if ( connectionString != null && connectionString != MemoryConnectionString ) {
+					AutodDisposeConnection = true;
+					EnsureFileExists();
+				}
+				
 			}
 		}
 
@@ -29,7 +40,7 @@ namespace Sioux.TechRadar
 		public OrmLiteConnectionFactory OrmLiteConnectionFactory {
 			get {
 				if (ormLiteConnecdtionFactory == null) {
-					ormLiteConnecdtionFactory = new OrmLiteConnectionFactory(ConnectionString, SqliteDialect.Provider);
+					ormLiteConnecdtionFactory = new OrmLiteConnectionFactory(ConnectionString, AutodDisposeConnection, SqliteDialect.Provider);	
 				}
 				return ormLiteConnecdtionFactory;
 			}
@@ -41,7 +52,7 @@ namespace Sioux.TechRadar
 		/// Creates a new DB connection, which is auto disposed
 		/// </summary>
 		public virtual IDbConnection Connect ()
-		{
+		{		
 			return OrmLiteConnectionFactory.OpenDbConnection();
 		}
 
@@ -50,7 +61,8 @@ namespace Sioux.TechRadar
 		/// </summary>
 		public void EnsureFileExists ()
 		{
-			if (!File.Exists (ConnectionString)) {
+			if (!ConnectionString.Equals(MemoryConnectionString) 
+			    	&&!File.Exists (ConnectionString)) {
 				SQLiteConnection.CreateFile(ConnectionString);
 			}
 		}
