@@ -77,7 +77,7 @@ namespace Sioux.TechRadar
 			container.Register<IThingsRepository>(
 				new ThingsRepository(){ 
 					ConnectionFactory =  factory
-				}
+				}.EnsureTablesExist()
 			);
 			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 
 												MetadataRedirectPath = "api/metadata" });

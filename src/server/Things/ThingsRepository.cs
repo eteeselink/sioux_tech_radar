@@ -19,10 +19,12 @@ namespace Sioux.TechRadar
 		internal SqLiteConnectionFactory ConnectionFactory{get;set;}
 		private static Logger logger = NLog.LogManager.GetLogger("ThingsRepository");
 
-		public ThingsRepository(){
+		public ThingsRepository EnsureTablesExist()
+		{
 			using (var db = ConnectionFactory.Connect()){
 				db.CreateTableIfNotExists<Thing> ();
 			}
+			return this;
 		}
 
 		public Thing StoreNew (Thing thing)

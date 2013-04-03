@@ -26,7 +26,8 @@ namespace Sioux.TechRadar
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
 					client.Put(newThing);					
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};					
+					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 					
 					res.Count().ShouldBe(1);
 					res.First().Description.ShouldBe(newThing.Description);

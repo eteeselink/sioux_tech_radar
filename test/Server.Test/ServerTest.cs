@@ -64,8 +64,7 @@ namespace Sioux.TechRadar
 					
 					var things = container.Resolve<IThingsRepository>().GetByName(new string[]{"C#"});
 					Assert.That(things.First(),Is.EqualTo(mike));
-					
-					server.Start();
+
 				}
 			}
 		}	
