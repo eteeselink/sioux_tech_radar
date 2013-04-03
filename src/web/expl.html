@@ -1,32 +1,154 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8"> 
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Sioux Technology Radar</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">-->
+    <!--<link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />-->
     <link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
     <style>
     /* todo: move to LESS */
-    .expl H1,
-    .expl H2
+    h1
     {
       font-family: 'Share Tech', sans-serif;
       letter-spacing: 0.3ex;
+      font-size: 48pt;
+    }
+
+    body
+    {
+      text-align: center;
+      font-size: 23pt;
     }
     
-    .expl H1
+    p, h2
     {
-      font-size: 48pt;
+      display: block;
+      font-family: 'Raleway', sans-serif;
+    }
+    
+    
+    h2
+    {
+      font-size: 30pt;
+      font-weight: normal;
+      max-width: 800px;
+      margin: 80px auto;
+    }
+    
+    p
+    {
+      max-width: 900px;
+      text-align: left;
+      margin: 80px auto 40px auto;
+    }
+    
+    body, html
+    {
+      height: 100%;
+      min-height: 100%;
+    }
+    
+    div.panel
+    {
+      padding: 50px;
+      min-height: 80%;
+    }
+    
+    div#intro
+    {
+      background: #FFF0CC;
+      color: #000
+    }
+    
+    div#watis
+    {
+      background: #CCFFFC;
+      color: #000
+    }
+    
+    div.rel
+    {
+      position: relative;
+      height: 800px;
+      max-width: 868px;
+      margin: 0 auto;
+    }
+    
+    img#thoughtworks
+    {
+      position: absolute;
+      top: -232px;
+      clip: rect(232px, 657px, 708px, 188px);
     }
     </style>
   </head>
-  <body class="expl">  
-    <h1>Sioux Technology Radar</h1>
-  
-    De Sioux Technology Radar wordt een 
-  
+  <body class="expl"> 
+    <div class="panel" id="intro">
+      <img src="img/logo_trans_900.png"/>
+    
+      <h2>Hoi! Leuk dat je meedoet met het voorspellen van de toekomst.</h2>
+      <p>
+        We gaan met z'n allen bepalen welke technologieën, aanpakken en tools de toekomst hebben.<br/>
+        Welke programmeeromgeving gaat de wereld veranderen?<br/>
+        Welke taal kun je écht niet meer zien?<br/>
+        Doen we volgend jaar nog Scrum, of is er iets nog beters onder de zon?
+      </p>
+    </div>
+    <div class="panel" id="watis">
+      <p>
+        Een Technology Radar is een plaatje waarop je in één oogopslag kunt zien waarheen wij
+        denken dat het naar toe gaat in de softwarewereld.
+      </p>
+      <p>
+        Het is bedacht door de firma <a href="http://www.thoughtworks.com/insights">Thoughtworks</a>. 
+        Hun laatste Technology Radar ziet er zo uit:
+      </p>
+      <div class="rel">
+        <img id="thoughtworks" src="img/thoughtworks_radar_oct12.png"/>
+      </div>
+    </div>
     <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    
+      // integer linear interpolation. `now` must be between 0 and 1.
+      function ilerp(from, to, now)
+      {
+        return parseInt(from + ((to - from) * now));
+      }
+      
+      // `el` must be a jQuery selection. `from` and `to` must be 
+      // arrays of four pixel clip values.
+      function animClip(el, from, to)
+      {
+        // custom step function animate
+        $({val:0.0}).animate({val:1.0}, {
+            step: function(now, tween) {
+              el.css('clip', 'rect('
+                + ilerp(from[0], to[0], now) + 'px, '
+                + ilerp(from[1], to[1], now) + 'px, '
+                + ilerp(from[2], to[2], now) + 'px, '
+                + ilerp(from[3], to[3], now) + 'px)');
+            } 
+          });
+      }
+      
+      $(function() {
+        var entire = [0, 868, 942, 0];
+        var clipped = [232, 657, 708, 188];
+        
+        $("img#thoughtworks")
+          .mouseover(function() {
+            console.log(1);
+            animClip($(this), clipped, entire);
+          })
+          .mouseout(function() {
+            animClip($(this), entire, clipped);
+          });
+      });
+  </script>
   </body>
 </html>
