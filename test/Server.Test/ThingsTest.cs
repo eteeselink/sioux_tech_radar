@@ -142,7 +142,7 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Description="Not C++", Quadrant=Quadrant.Languages};
 					 client.Put(newThing);
 
 					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
@@ -152,6 +152,7 @@ namespace Sioux.TechRadar
 				}
 			}
 		}
+
 		[Test()]
 		[ExpectedException(typeof(WebServiceException))]
 		public void UpdateNonExistingThing ()
@@ -181,6 +182,8 @@ namespace Sioux.TechRadar
 				}
 			}
 		}
+
+
 
 		[Test()]
 		public void UpdateThingDescription()
