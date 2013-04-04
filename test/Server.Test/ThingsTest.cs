@@ -15,6 +15,7 @@ namespace Sioux.TechRadar
 
 		//private static Logger logger = LogManager.GetLogger ("ThingsTest");
 
+
         [Test()]
         public void SingleRequesByNametWithSingleAnswer()
         {
@@ -182,7 +183,7 @@ namespace Sioux.TechRadar
 		}
 
 		[Test()]
-		public void UpdateThing()
+		public void UpdateThingDescription()
 		{
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
@@ -200,6 +201,57 @@ namespace Sioux.TechRadar
 					Assert.AreEqual(1, res.Count());
 					Assert.That(result.Quadrant, Is.EqualTo(updatedThing.Quadrant));
 					Assert.That(result.Description, Is.EqualTo(updatedThing.Description));
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfTitleShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="F#NET", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="F#NET", Title="F#", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					Thing result= client.Post(updatedThing);
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfNameShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="F#NET", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="F#", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					Thing result= client.Post(updatedThing);
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfQuadrantShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="F#NET", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="F#NET", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Platforms};
+					
+					Thing result= client.Post(updatedThing);
 				}
 			}
 		}
