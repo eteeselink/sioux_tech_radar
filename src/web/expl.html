@@ -11,16 +11,25 @@
     <style>
     /* todo: move to LESS */
     h1
-    {
+    {    
       font-family: 'Share Tech', sans-serif;
+    }
+    
+    h1
+    {
       letter-spacing: 0.3ex;
       font-size: 48pt;
+    }
+    
+    small
+    {
+      font-size: 10pt;
     }
 
     body
     {
       text-align: center;
-      font-size: 23pt;
+      font-size: 20pt;
     }
     
     p, h2
@@ -35,7 +44,7 @@
       font-size: 30pt;
       font-weight: normal;
       max-width: 800px;
-      margin: 80px auto;
+      margin: 40px auto 80px auto;
     }
     
     p
@@ -49,32 +58,41 @@
     {
       height: 100%;
       min-height: 100%;
+      margin: 0;
     }
     
     div.panel
     {
-      padding: 50px;
+      padding: 40px 50px 50px 50px;
       min-height: 80%;
+      margin: 0;
     }
     
     div#intro
     {
       background: #FFF0CC;
-      color: #000
+      color: #000;
     }
     
     div#watis
     {
       background: #CCFFFC;
-      color: #000
+      color: #000;
     }
     
-    div.rel
+    div#sioux
+    {
+      background: url('img/sioux_logo.png') center no-repeat #FFE1D1;
+      color: #000;
+    }
+    
+    div#thoughtworks_container
     {
       position: relative;
       height: 800px;
       max-width: 868px;
       margin: 0 auto;
+      margin-bottom: -310px;
     }
     
     img#thoughtworks
@@ -82,6 +100,12 @@
       position: absolute;
       top: -232px;
       clip: rect(232px, 657px, 708px, 188px);
+      left: 0px;
+    }
+    
+    img
+    {
+      border: 0;
     }
     </style>
   </head>
@@ -91,9 +115,9 @@
     
       <h2>Hoi! Leuk dat je meedoet met het voorspellen van de toekomst.</h2>
       <p>
-        We gaan met z'n allen bepalen welke technologieën, aanpakken en tools de toekomst hebben.<br/>
-        Welke programmeeromgeving gaat de wereld veranderen?<br/>
-        Welke taal kun je écht niet meer zien?<br/>
+        We gaan met z'n allen bepalen welke technologieën, aanpakken en tools de toekomst hebben.<br/><br/>
+        Welke programmeeromgeving gaat de wereld veranderen?<br/><br/>
+        Welke taal kun je écht niet meer zien?<br/><br/>
         Doen we volgend jaar nog Scrum, of is er iets nog beters onder de zon?
       </p>
     </div>
@@ -103,12 +127,17 @@
         denken dat het naar toe gaat in de softwarewereld.
       </p>
       <p>
-        Het is bedacht door de firma <a href="http://www.thoughtworks.com/insights">Thoughtworks</a>. 
-        Hun laatste Technology Radar ziet er zo uit:
+        Het is bedacht door de firma <a href="http://www.thoughtworks.com">Thoughtworks</a>. 
+        Hun laatste Technology Radar</a> ziet er zo uit:
+        <small>(overheen muizen voor groter, klikken voor de toelichting)</small>
       </p>
-      <div class="rel">
-        <img id="thoughtworks" src="img/thoughtworks_radar_oct12.png"/>
+      <div id="thoughtworks_container">
+        <a href="http://thoughtworks.fileburst.com/assets/technology-radar-october-2012.pdf"><img id="thoughtworks" src="img/thoughtworks_radar_oct12.png"/></a>
       </div>
+      <p>Thoughtworks maakt vooral webapplicaties, en hun Technology Radar reflecteert dat.</p>
+    </div>
+    <div class="panel" id="sioux">
+      <h2>En wij dan?</h2>
     </div>
     <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
