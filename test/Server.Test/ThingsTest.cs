@@ -144,13 +144,13 @@ namespace Sioux.TechRadar
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					 client.Put(newThing);
+					var existingThing = client.Put(newThing);
+					existingThing.Name.ShouldBe("d");
 
 					ThingsRequest req = new ThingsRequest(){ Names = new string[] { "d" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
-					
-					Assert.AreEqual(1, res.Count());
 
+					res.Count().ShouldBe(1);
 					res.First().Name.ShouldBe("d");
 				}
 			}

@@ -32,6 +32,13 @@ namespace Sioux.TechRadar
 			try {
 				using (var connection = ConnectionFactory.Connect()) {
 					connection.TableExists("Thing").ShouldBe(true);
+					// we want the name to be a lowercase variant without dots, or comma's
+					thing.Name = thing.Title
+						.ToLower()
+						.Replace(" ","")
+						.Replace(",","")
+						.Replace(".","");
+
 					connection.Insert (thing);
 				}
 				return thing;

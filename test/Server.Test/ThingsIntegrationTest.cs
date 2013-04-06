@@ -37,6 +37,7 @@ namespace Sioux.TechRadar
 		}
 
 
+
 		[Test()]
 		public void UpdateThing()
 		{
@@ -44,9 +45,9 @@ namespace Sioux.TechRadar
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					fs.RealThingsRepos.StoreNew(newThing);
+					var updatedThing = fs.RealThingsRepos.StoreNew(newThing);
 
-					var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
+					updatedThing.Description += ", whatever";
 					Thing result= client.Post(updatedThing);
 
 					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
