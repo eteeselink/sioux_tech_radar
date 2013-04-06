@@ -24,9 +24,9 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithRealRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
 					client.Put(newThing);					
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};					
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};					
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 					
 					res.Count().ShouldBe(1);
@@ -43,13 +43,13 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithRealRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
 					fs.RealThingsRepos.StoreNew(newThing);
 
-					var updatedThing = new Thing(){ Name="D", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
+					var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
 					Thing result= client.Post(updatedThing);
 
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 					
 					res.Count().ShouldBe(1);
