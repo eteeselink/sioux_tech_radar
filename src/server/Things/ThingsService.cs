@@ -20,6 +20,7 @@ namespace Sioux.TechRadar
 			
 		/// <summary>
 		/// handles any GET request for Things. 
+		/// This will only retrieve data.
 		/// </summary>
 		/// <param name="request">Request.</param>
 		public object Get (ThingsRequest request)
@@ -44,21 +45,39 @@ namespace Sioux.TechRadar
 			return result ?? new List<Thing>();
 		}
 
+		/// <summary>
+		/// This will update a Thing
+		/// </summary>
+		/// <param name="thing">Thing.</param>
         public object Post(Thing thing)
 		{
 			if (String.IsNullOrWhiteSpace(thing.Name) 
-			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
+			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest,"Thing was not complete");
 
-			if (Repository.GetByName (thing.Name).Count () == 1) {
-				return Repository.StoreUpdated (thing);			
+			Thing existingThing = Repository.GetByName (thing.Name).FirstOrDefault();
+
+			//verify update is valid
+			if (existingThing != null) {
+				if (existingThing.Quadrant != thing.Quadrant 
+				    || existingThing.Title != thing.Title)
+				{
+					throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
+				}
 			}else {
 				throw new HttpError(HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
 			}
+
+			return Repository.StoreUpdated (thing);
 		}
-			
+
+		/// <summary>
+		/// This will create a new Thing
+		/// 
+		/// </summary>
+		/// <param name="thing">Thing.</param>
 		public object Put (Thing thing)
 		{
-			if (String.IsNullOrWhiteSpace(thing.Name) 
+			if (String.IsNullOrWhiteSpace(thing.Title) 
 			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
 
 			if (Repository.GetByName (thing.Name).Count () == 0) 

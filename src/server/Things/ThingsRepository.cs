@@ -45,7 +45,7 @@ namespace Sioux.TechRadar
 		{
 			try {
 				using (var connection = ConnectionFactory.Connect()) {
-					connection.Update (thing);
+					connection.UpdateOnly( thing, t => t.Description);
 				}
 				return thing;
 			} catch (Exception e) {
