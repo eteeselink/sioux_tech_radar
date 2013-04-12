@@ -80,8 +80,9 @@ namespace Sioux.TechRadar
 			if (String.IsNullOrWhiteSpace(thing.Title) 
 			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
 
-			if (Repository.GetByName (thing.Name).Count () == 0) 
+			if (thing.Name == null || Repository.GetByName (thing.Name).Count () == 0) 
 			{
+				thing.Name = thing.Title.ToLower().Replace(",","").Replace(".","").Replace("-","");
 				return Repository.StoreNew (thing);
 			} else {
 				throw new HttpError(System.Net.HttpStatusCode.Conflict, "'"+thing.Name + "' already exists");
