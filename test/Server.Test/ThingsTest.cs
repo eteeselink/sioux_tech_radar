@@ -6,6 +6,7 @@ using Funq;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
 using System.Collections.Generic;
+using Shouldly;
 
 namespace Sioux.TechRadar
 {
@@ -15,12 +16,13 @@ namespace Sioux.TechRadar
 
 		//private static Logger logger = LogManager.GetLogger ("ThingsTest");
 
+
         [Test()]
         public void SingleRequesByNametWithSingleAnswer()
         {
             using (FakeServer fs = new FakeServer().StartWithFakeRepos())
             {
-				Thing csharp = new Thing(){Name="C#"};
+				Thing csharp = new Thing(){Name="c#"};
 				fs.FakeThingsRepos.Things.AddFirst(csharp);
 
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
@@ -39,15 +41,15 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
-				things.AddFirst(new Thing(){Name="C#"});
-				things.AddFirst(new Thing(){Name="Mono"});
-				things.AddFirst(new Thing(){Name="C++"});
+				things.AddFirst(new Thing(){Name="c#"});
+				things.AddFirst(new Thing(){Name="mono"});
+				things.AddFirst(new Thing(){Name="c++"});
 				
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "C#","Mono" , "C++" }};
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "C#","mono" , "c++" }}; // notice that C# should be c#
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 					
-					Assert.AreEqual(3, res.Count());					
+					Assert.AreEqual(2, res.Count());					
 				}
 			}
 		}
@@ -58,9 +60,9 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
-				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages});
-				things.AddFirst(new Thing(){Name="Mono", Quadrant=Quadrant.Platforms});
-				things.AddFirst(new Thing(){Name="C++", Quadrant =Quadrant.Languages});
+				things.AddFirst(new Thing(){Name="c#", Quadrant=Quadrant.Languages});
+				things.AddFirst(new Thing(){Name="mono", Quadrant=Quadrant.Platforms});
+				things.AddFirst(new Thing(){Name="c++", Quadrant =Quadrant.Languages});
 				
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					ThingsRequest req = new ThingsRequest(){Quadrant = Quadrant.Languages};
@@ -77,9 +79,9 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
-				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
-				things.AddFirst(new Thing(){Name="Mono", Quadrant=Quadrant.Platforms, Description="an application platform by Microsoft"});
-				things.AddFirst(new Thing(){Name="C++", Quadrant =Quadrant.Languages, Description="an ancient language"});
+				things.AddFirst(new Thing(){Name="c#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
+				things.AddFirst(new Thing(){Name="mono", Quadrant=Quadrant.Platforms, Description="an application platform by Microsoft"});
+				things.AddFirst(new Thing(){Name="c++", Quadrant =Quadrant.Languages, Description="an ancient language"});
 				
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					ThingsRequest req = new ThingsRequest(){Keywords = new string[]{"microsoft"}};
@@ -96,9 +98,9 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				var things = fs.FakeThingsRepos.Things;
-				things.AddFirst(new Thing(){Name="C#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
-				things.AddFirst(new Thing(){Name="Mono", Quadrant=Quadrant.Platforms, Description="an application platform by Microsoft"});
-				things.AddFirst(new Thing(){Name="C++", Quadrant =Quadrant.Languages, Description="an ancient language"});
+				things.AddFirst(new Thing(){Name="c#", Quadrant=Quadrant.Languages, Description="a Java like language from Microsoft" });
+				things.AddFirst(new Thing(){Name="mono", Quadrant=Quadrant.Platforms, Description="an application platform by Microsoft"});
+				things.AddFirst(new Thing(){Name="c++", Quadrant =Quadrant.Languages, Description="an ancient language"});
 				
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					ThingsRequest req = new ThingsRequest(){Keywords = new string[]{"microsoft"}, Quadrant = Quadrant.Languages};
@@ -141,16 +143,19 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					 client.Put(newThing);
+					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var existingThing = client.Put(newThing);
+					existingThing.Name.ShouldBe("d");
 
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
+					ThingsRequest req = new ThingsRequest(){ Names = new string[] { "d" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
-					
-					Assert.AreEqual(1, res.Count());
+
+					res.Count().ShouldBe(1);
+					res.First().Name.ShouldBe("d");
 				}
 			}
 		}
+
 		[Test()]
 		[ExpectedException(typeof(WebServiceException))]
 		public void UpdateNonExistingThing ()
@@ -158,7 +163,7 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Name="d", Description="Not C++", Quadrant=Quadrant.Languages};
 					
 					client.Post(newThing);
 				}
@@ -172,7 +177,7 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Name="d", Description="Not C++", Quadrant=Quadrant.Languages};
 
 					fs.FakeThingsRepos.Things.AddLast(newThing);
 					
@@ -181,25 +186,78 @@ namespace Sioux.TechRadar
 			}
 		}
 
+
+
 		[Test()]
-		public void UpdateThing()
+		public void UpdateThingDescription()
 		{
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Name="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var newThing = new Thing(){ Name="d", Description="Not C++", Quadrant=Quadrant.Languages};
 
 					fs.FakeThingsRepos.Things.AddLast(newThing);
-					var updatedThing = new Thing(){ Name="D", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
+					var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
 
 					Thing result= client.Post(updatedThing);
 
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "D" }};
+					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 					
 					Assert.AreEqual(1, res.Count());
 					Assert.That(result.Quadrant, Is.EqualTo(updatedThing.Quadrant));
 					Assert.That(result.Description, Is.EqualTo(updatedThing.Description));
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfTitleShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="f#net", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="f#net", Title="F#", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					Thing result= client.Post(updatedThing);
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfNameShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="f#net", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="f#", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					Thing result= client.Post(updatedThing);
+				}
+			}
+		}
+
+		[Test()]
+		[ExpectedException(typeof(WebServiceException))]
+		public void UpdateOfQuadrantShouldFail()
+		{
+			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
+			{
+				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+					var newThing = new Thing(){ Name="f#net", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
+					
+					fs.FakeThingsRepos.Things.AddLast(newThing);
+					var updatedThing = new Thing(){ Name="f#net", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Platforms};
+					
+					Thing result= client.Post(updatedThing);
 				}
 			}
 		}
