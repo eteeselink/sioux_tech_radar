@@ -37,7 +37,8 @@ JSON zelf en Relax NG. Best aardig, toch?
 
 ### Aannames die volgen uit bovenstaande:
 
-* Things hebben geen id, alleen een title
+* Things hebben geen id, alleen een title (wat betreft de API; de DB mag ze best een id geven 
+  als dat fijn is)
 * Things zijn immutable, muv veld "desc"
 
 
