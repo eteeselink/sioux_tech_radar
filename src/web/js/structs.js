@@ -29,5 +29,7 @@ var TechRadar;
         Client.Polar = Polar;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+
 //@ sourceMappingURL=structs.js.map

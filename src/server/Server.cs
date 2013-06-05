@@ -7,6 +7,10 @@ using System.Runtime.InteropServices;
 using NLog;
 using ServiceStack.Logging;
 
+//GE
+using ServiceStack.ServiceClient.Web;
+using System.Net;
+
 namespace Sioux.TechRadar
 {
 	public 	class Server : AppHostHttpListenerBase
@@ -51,20 +55,24 @@ namespace Sioux.TechRadar
 				return;
 			}
 
+            Console.WriteLine("Server running..");
 
-			using (var server = new Server(){Port = port, SqliteFile = sqliteFile }) {
-				server.Start();
-				logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
-				Console.ReadKey();
-			}
+
+            using (var server = new Server() { Port = port, SqliteFile = sqliteFile })
+            {
+                server.Start();
+                logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
+                Console.ReadKey();
+            }
 		}
+
 	
 
 		public int Port{ get; internal set; }
 		public string SqliteFile { get; internal set; }
 
 		string Url{ get {
-				return "http://*:" + Port + "/";
+				return "http://+:" + Port + "/";
 			}
 		}
 
@@ -74,11 +82,21 @@ namespace Sioux.TechRadar
 				ConnectionString = SqliteFile
 			};
 
-			container.Register<IThingsRepository>(
-				new ThingsRepository(){ 
-					ConnectionFactory =  factory
-				}.EnsureTablesExist()
-			);
+            //GE TEMP
+            var thingsrepository = new ThingsRepository()
+            {
+                ConnectionFactory = factory
+            };
+            thingsrepository.EnsureTablesExist();
+            IEnumerable<Thing> result = null;
+            //result = thingsrepository.GetAll();
+
+//GE orig code : 
+//			container.Register<IThingsRepository>(
+//				new ThingsRepository(){ 
+//					ConnectionFactory =  factory
+//			    }.EnsureTablesExist()
+//			);
 			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 
 												MetadataRedirectPath = "api/metadata" });
 		

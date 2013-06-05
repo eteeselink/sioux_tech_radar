@@ -11,6 +11,7 @@ namespace Sioux.TechRadar
 	/// A thing can be request when it is PUT or POSTed, i.e. updated or added.
 	/// A thing is in most cases a response object.
 	/// </summary>
+    // TODO: POST should be for Create, and PUT for update. Also change in service.
 	[Route("/api/things/{name}","POST")] // update
 	[Route("/api/things","PUT")] // create
 	public class Thing : IReturn<Thing>

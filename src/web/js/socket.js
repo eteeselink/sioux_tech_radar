@@ -53,5 +53,7 @@ var TechRadar;
         Client.Bus = Bus;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+
 //@ sourceMappingURL=socket.js.map

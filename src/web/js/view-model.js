@@ -2,7 +2,7 @@ var __extends = this.__extends || function (d, b) {
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
-};
+}
 var TechRadar;
 (function (TechRadar) {
     (function (Client) {
@@ -75,5 +75,7 @@ var TechRadar;
         Client.Thing = Thing;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+
 //@ sourceMappingURL=view-model.js.map

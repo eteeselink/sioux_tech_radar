@@ -13,7 +13,7 @@ namespace Sioux.TechRadar
 	[Route("/api/things/{names}")] //get by name
 	public class ThingsRequest : IReturn<List<Thing>>
 	{
-		public string[] Names{ get;  set; }
+		public string[] Names { get; set; }
 		public Quadrant? Quadrant { get; set; }
 		public string[] Keywords { get; set; }
 

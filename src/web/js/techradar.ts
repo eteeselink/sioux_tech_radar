@@ -11,18 +11,18 @@ module TechRadar.Client {
 
   function getThings() {
     var things = [
-      new Thing("C++", Quadrant.Languages, 0.9),
-      new Thing("Scala", Quadrant.Languages, 0.6),
-      new Thing("TypeScript", Quadrant.Languages, 0.7),
-      new Thing("C#", Quadrant.Languages, 0.1),
-      new Thing("APL", Quadrant.Languages, 0.8),
-      new Thing("Continuous Integration", Quadrant.Techniques, 0.8),
-      new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5),
-      new Thing("NCrunch", Quadrant.Tools, 0.5),
-      new Thing("Git", Quadrant.Tools, 0.6),
+    new Thing("C++", Quadrant.Languages, 0.9),
+    //  new Thing("Scala", Quadrant.Languages, 0.6),
+    //  new Thing("TypeScript", Quadrant.Languages, 0.7),
+    //  new Thing("C##", Quadrant.Languages, 0.8),
+    //  new Thing("APL", Quadrant.Languages, 0.8),
+    //  new Thing("Continuous Integration", Quadrant.Techniques, 0.8),
+    //  new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5),
+    //  new Thing("NCrunch", Quadrant.Tools, 0.5),
+    //  new Thing("Git", Quadrant.Tools, 0.6),
     ];
 
-    d3.range(60).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], 
+    d3.range(5).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], 
       random(0.1, 1.0))) });
 
     return things;

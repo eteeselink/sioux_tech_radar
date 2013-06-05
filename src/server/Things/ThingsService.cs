@@ -23,7 +23,7 @@ namespace Sioux.TechRadar
 		/// This will only retrieve data.
 		/// </summary>
 		/// <param name="request">Request.</param>
-		public object Get (ThingsRequest request)
+		public IEnumerable<Thing> Get (ThingsRequest request)
 		{
 			logger.Debug ("got request for things {}", this.RequestContext.AbsoluteUri);		
 			if (request.Names != null && request.Names.Length > 0) {

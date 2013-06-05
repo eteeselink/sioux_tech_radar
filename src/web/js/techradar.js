@@ -10,18 +10,10 @@ var TechRadar;
         function getThings() {
             var things = [
                 new Client.Thing("C++", Client.Quadrant.Languages, 0.9), 
-                new Client.Thing("Scala", Client.Quadrant.Languages, 0.6), 
-                new Client.Thing("TypeScript", Client.Quadrant.Languages, 0.7), 
-                new Client.Thing("C#", Client.Quadrant.Languages, 0.1), 
-                new Client.Thing("APL", Client.Quadrant.Languages, 0.8), 
-                new Client.Thing("Continuous Integration", Client.Quadrant.Techniques, 0.8), 
-                new Client.Thing("CodeSourcery GCC", Client.Quadrant.Platforms, 0.5), 
-                new Client.Thing("NCrunch", Client.Quadrant.Tools, 0.5), 
-                new Client.Thing("Git", Client.Quadrant.Tools, 0.6), 
                 
             ];
-            d3.range(60).forEach(function (i) {
-                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1.0)));
+            d3.range(5).forEach(function (i) {
+                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1)));
             });
             return things;
         }
@@ -74,5 +66,7 @@ var TechRadar;
         Client.Start = Start;
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+
 //@ sourceMappingURL=techradar.js.map

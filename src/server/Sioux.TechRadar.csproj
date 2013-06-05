@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <Commandlineparameters>-sqlitefile=database.sqlite</Commandlineparameters>
     <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -109,9 +110,11 @@
     <None Include="sqlite\x86\sqlite3.dll" />
     <None Include="sqlite\x86\sqlite3.exe" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
-    <Folder Include="Things\DTO\" />
+    <Content Include="sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <ItemGroup />
 </Project>

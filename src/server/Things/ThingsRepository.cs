@@ -21,9 +21,32 @@ namespace Sioux.TechRadar
 
 		public ThingsRepository EnsureTablesExist()
 		{
-			using (var db = ConnectionFactory.Connect()){
-				db.CreateTableIfNotExists<Thing> ();
-			}
+            using (var db = ConnectionFactory.Connect())
+            {
+                db.CreateTableIfNotExists<Thing>();
+
+                ////Fill some hardcoded entries (temp code)
+                //var csharp = new Thing() { Title = "C#" };
+                //csharp.Name = csharp.Title
+                //            .ToLower()
+                //            .Replace(" ", "")
+                //            .Replace(",", "")
+                //            .Replace(".", "");
+
+                //db.Insert(csharp);
+
+                //var ansic = new Thing() { Title = @"C" };
+                //ansic.Name = ansic.Title
+                //            .ToLower()
+                //            .Replace(" ", "")
+                //            .Replace(",", "")
+                //            .Replace(".", "");
+
+                //db.Insert(ansic);
+
+
+                //end temp code
+            }
 			return this;
 		}
 
