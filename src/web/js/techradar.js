@@ -8,12 +8,17 @@ var TechRadar;
             Client.Quadrant.Platforms
         ];
         function getThings() {
-            var things = [
-                new Client.Thing("C++", Client.Quadrant.Languages, 0.9), 
-                
-            ];
-            d3.range(5).forEach(function (i) {
-                things.push(new Client.Thing(i.toString(), quadrants[i % 4], TechRadar.random(0.1, 1)));
+            var things = [];
+            $.ajaxSetup({
+                async: false
+            });
+            $.getJSON("http://localhost:54321/api/things/search/").done(function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    things.push(new Client.Thing(data[i].Title, quadrants[i % 4], TechRadar.random(0.1, 1)));
+                }
+            });
+            $.ajaxSetup({
+                async: true
             });
             return things;
         }
@@ -69,4 +74,3 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
-//@ sourceMappingURL=techradar.js.map

@@ -32,4 +32,3 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
-//@ sourceMappingURL=structs.js.map

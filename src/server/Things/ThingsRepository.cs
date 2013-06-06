@@ -26,26 +26,24 @@ namespace Sioux.TechRadar
                 db.CreateTableIfNotExists<Thing>();
 
                 ////Fill some hardcoded entries (temp code)
-                //var csharp = new Thing() { Title = "C#" };
-                //csharp.Name = csharp.Title
-                //            .ToLower()
-                //            .Replace(" ", "")
-                //            .Replace(",", "")
-                //            .Replace(".", "");
 
-                //db.Insert(csharp);
+                IEnumerable<Thing> result = null;
+                result = GetAll();
+                if (result.Count() == 0)
+                {
+                    //data if database is empty
+                    
+                    var thingToInsert = new Thing() { Title = @"C" };
+                    thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
+                    thingToInsert.Quadrant = Quadrant.Languages;
+                    db.Insert(thingToInsert);
 
-                //var ansic = new Thing() { Title = @"C" };
-                //ansic.Name = ansic.Title
-                //            .ToLower()
-                //            .Replace(" ", "")
-                //            .Replace(",", "")
-                //            .Replace(".", "");
-
-                //db.Insert(ansic);
-
-
-                //end temp code
+                    
+                    thingToInsert = new Thing() { Title = @"Scala" };
+                    thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
+                    thingToInsert.Quadrant = Quadrant.Languages;
+                    db.Insert(thingToInsert);
+                }
             }
 			return this;
 		}

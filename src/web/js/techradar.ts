@@ -10,9 +10,10 @@ module TechRadar.Client {
   var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
 
   function getThings() {
+      
     var things = [
-    new Thing("C++", Quadrant.Languages, 0.9),
-    //  new Thing("Scala", Quadrant.Languages, 0.6),
+    //  new Thing("C++", Quadrant.Languages, 0.9),
+    //  new Thing("Scal2", Quadrant.Languages, 0.6),
     //  new Thing("TypeScript", Quadrant.Languages, 0.7),
     //  new Thing("C##", Quadrant.Languages, 0.8),
     //  new Thing("APL", Quadrant.Languages, 0.8),
@@ -22,8 +23,26 @@ module TechRadar.Client {
     //  new Thing("Git", Quadrant.Tools, 0.6),
     ];
 
-    d3.range(5).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], 
-      random(0.1, 1.0))) });
+    $.ajaxSetup({
+        async: false
+    });
+
+    $.getJSON("http://localhost:54321/api/things/search/")
+      .done(function(data) {
+          for (var i=0;i<data.length;i++)
+          {
+              //TODO : quadrant and goodness - Why data[i].quadrant doesn't work ?
+//                things.push(new Thing(data[i].Title, data[i].quadrant.toNumber(), random(0.1, 1.0))) ;
+              things.push(new Thing(data[i].Title, quadrants[i % 4], random(0.1, 1.0))) ;
+          }
+    });
+
+    $.ajaxSetup({
+        async: true
+    });
+
+    //d3.range(5).forEach(function (i) { things.push(new Thing(i.toString(), quadrants[i % 4], 
+    //  random(0.1, 1.0))) });
 
     return things;
   }
@@ -45,7 +64,8 @@ module TechRadar.Client {
     radar.addThings(things);
 
     if (quad !== null) {
-      showList(things, quad, radar);
+
+     showList(things, quad, radar);
     }
   }
 
@@ -58,7 +78,6 @@ module TechRadar.Client {
     });
 
     container.find('.btn').click(function(ev) {
-
       var thing = things.filter(t => t.name == $(this).data('thing'));
       if (!$(this).hasClass('active')) {
         radar.addThings(thing);

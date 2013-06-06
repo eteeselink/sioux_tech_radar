@@ -82,21 +82,11 @@ namespace Sioux.TechRadar
 				ConnectionString = SqliteFile
 			};
 
-            //GE TEMP
-            var thingsrepository = new ThingsRepository()
-            {
-                ConnectionFactory = factory
-            };
-            thingsrepository.EnsureTablesExist();
-            IEnumerable<Thing> result = null;
-            //result = thingsrepository.GetAll();
-
-//GE orig code : 
-//			container.Register<IThingsRepository>(
-//				new ThingsRepository(){ 
-//					ConnectionFactory =  factory
-//			    }.EnsureTablesExist()
-//			);
+			container.Register<IThingsRepository>(
+				new ThingsRepository(){ 
+					ConnectionFactory =  factory
+			    }.EnsureTablesExist()
+			);
 			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 
 												MetadataRedirectPath = "api/metadata" });
 		
@@ -117,6 +107,7 @@ namespace Sioux.TechRadar
         protected override void ProcessRequest(System.Net.HttpListenerContext context)
         {
             Console.WriteLine(context.Request.Url);
+
             base.ProcessRequest(context);
         }
 	}

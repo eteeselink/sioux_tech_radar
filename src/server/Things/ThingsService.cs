@@ -35,13 +35,25 @@ namespace Sioux.TechRadar
 			{
 				result = Repository.GetByQuadrant(request.Quadrant.Value);
 			}
-			if (request.Keywords != null && request.Keywords.Length > 0) {
-				if (result == null){
-					result = Repository.Search(request);
-				}else{
-					result = result.Intersect(Repository.Search(request));
-				}
-			}
+            if (request.Keywords != null && request.Keywords.Length > 0)
+            {
+                if (result == null)
+                {
+                    result = Repository.Search(request);
+                }
+                else
+                {
+                    result = result.Intersect(Repository.Search(request));
+                }
+            }
+            else
+            {
+                if (result == null)
+                {
+                    // all request members empty -> search all.
+                    result = Repository.GetAll();
+                }
+            }
 			return result ?? new List<Thing>();
 		}
 
@@ -77,6 +89,7 @@ namespace Sioux.TechRadar
 		/// <param name="thing">Thing.</param>
 		public object Put (Thing thing)
 		{
+            Console.WriteLine("Put received");
 			if (String.IsNullOrWhiteSpace(thing.Title) 
 			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
 
