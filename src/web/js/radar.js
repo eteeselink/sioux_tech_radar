@@ -20,6 +20,17 @@ var TechRadar;
                 });
                 this.restart();
             };
+            Radar.prototype.addOpinion = function (opinion) {
+                this.things.push(opinion);
+                this.restart();
+            };
+            Radar.prototype.removeOpinion = function (opinion) {
+                var index_opinion = this.things.indexOf(opinion);
+                console.log("removing opinion from radar ; " + opinion.name + opinion.goodness + opinion.quadrant + opinion);
+                console.log("index : " + index_opinion + "  length (before remove) = " + this.things.length);
+                this.things.splice(index_opinion, 1);
+                this.restart();
+            };
             Radar.prototype.createSvg = function (auxClasses, margin) {
                 var svg = d3.select("body").append("svg").attr("class", "radar " + auxClasses).attr("width", this.diameter * (this.quadrant ? 1.5 : 2)).attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
                 if(this.quadrant) {
@@ -64,6 +75,10 @@ var TechRadar;
                     return thing.name;
                 });
                 this.force.start();
+                console.log("end of restart, things on radar : ");
+                this.things.forEach(function (thing) {
+                    return console.log(", " + thing.name);
+                });
             };
             Radar.prototype.tick = function (e) {
                 var _this = this;

@@ -11,6 +11,8 @@ module TechRadar.Client {
 
   function getThings() {
       
+    //TODO : thingsinfocus as class variables ? Also quadrant ?
+
     var things = [
     //  new Thing("C++", Quadrant.Languages, 0.9),
     //  new Thing("Scal2", Quadrant.Languages, 0.6),
@@ -49,6 +51,7 @@ module TechRadar.Client {
 
   function showTab(q: string) {
 
+      console.log("showTab : " + q);
     // remove earlier radars, if any.
     $('svg.radar').remove();
     $('div.thing-list').remove();
@@ -60,14 +63,45 @@ module TechRadar.Client {
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
 
-    var things = getThings();
-    radar.addThings(things);
-
     if (quad !== null) {
-
-     showList(things, quad, radar);
+        showList(getThings(), quad, radar);
     }
   }
+
+  function addThing(thingname: string, quadrant: Quadrant) {
+        var newThing = new Thing(thingname, quadrant, random(0.1, 1.0));
+
+        $.ajax({
+            url: "http://localhost:54321/api/things/",
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(newThing),
+            dataType: 'json'
+        }).done(function (data) { console.log("ajax (addThing) OK")});
+  }
+    
+  function addOpinion(thingname: string, things: Thing[], radar: Radar){
+    var things_matched = things.filter(t => t.name == thingname);
+    if (things_matched.length != 1) {
+            alert("Amount of things matched to button unexpected : " + things_matched.length);
+          }
+    if (thingname.length > 0) {
+        radar.addOpinion(things_matched[0]);
+    }
+      console.log("added opinion : " + things_matched[0].name + ", goodness: " + things_matched[0].goodness 
+          + ", quadrant:  " + things_matched[0].quadrant)
+  }
+
+  function removeOpinion(thingname: string, things: Thing[], radar: Radar){
+    var things_matched = things.filter(t => t.name == thingname);
+    if (things_matched.length != 1) {
+            alert("Amount of things matched to button unexpected : " + things_matched.length);
+          }
+    if (thingname.length > 0) {
+        radar.removeOpinion(things_matched[0]);
+    }
+  }
+
 
   function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {
     var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
@@ -78,12 +112,32 @@ module TechRadar.Client {
     });
 
     container.find('.btn').click(function(ev) {
-      var thing = things.filter(t => t.name == $(this).data('thing'));
-      if (!$(this).hasClass('active')) {
-        radar.addThings(thing);
-      } else {
-        //radar.removeThings(thing.map(t => t.name));
-      }
+        var thingname = $(this).data('thing'); 
+        //thingname.concat($(this).data('thing'));
+
+
+        console.log($(this).data('thing'));
+        console.log("button pressed, name = " + thingname);
+
+        if (!$(this).hasClass('active')) {
+            addOpinion(thingname, things, radar);
+            //if (thingname.length > 0) {
+
+            //    radar.addOppinion(thingname, things);    
+        }
+        else {
+              removeOpinion(thingname, things, radar);
+        }
+        console.log("processed (added or removed opinion) : " + thingname);
+    });
+
+
+    //Section for adding a thing.
+    container.append('<button class="addbtn">' + 'ADD' + '</button>');
+    container.append('title: <input type="text" id="title">');
+
+    container.find('.addbtn').click(function (ev) {
+        addThing($("#title").val(), quadrant);
     });
     $('body').append(container);
   }
@@ -98,6 +152,5 @@ module TechRadar.Client {
     showTab($('li.active a[data-toggle="tab"]').data('q'));
     return this;
   }
-
 }
 

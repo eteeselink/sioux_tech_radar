@@ -23,6 +23,7 @@ var TechRadar;
             return things;
         }
         function showTab(q) {
+            console.log("showTab : " + q);
             $('svg.radar').remove();
             $('div.thing-list').remove();
             var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];
@@ -31,10 +32,43 @@ var TechRadar;
                 classes += " single-quadrant";
             }
             var radar = new Client.Radar(500, quad, (quad !== null), classes);
-            var things = getThings();
-            radar.addThings(things);
             if(quad !== null) {
-                showList(things, quad, radar);
+                showList(getThings(), quad, radar);
+            }
+        }
+        function addThing(thingname, quadrant) {
+            var newThing = new Client.Thing(thingname, quadrant, TechRadar.random(0.1, 1));
+            $.ajax({
+                url: "http://localhost:54321/api/things/",
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(newThing),
+                dataType: 'json'
+            }).done(function (data) {
+                console.log("ajax (addThing) OK");
+            });
+        }
+        function addOpinion(thingname, things, radar) {
+            var things_matched = things.filter(function (t) {
+                return t.name == thingname;
+            });
+            if(things_matched.length != 1) {
+                alert("Amount of things matched to button unexpected : " + things_matched.length);
+            }
+            if(thingname.length > 0) {
+                radar.addOpinion(things_matched[0]);
+            }
+            console.log("added opinion : " + things_matched[0].name + ", goodness: " + things_matched[0].goodness + ", quadrant:  " + things_matched[0].quadrant);
+        }
+        function removeOpinion(thingname, things, radar) {
+            var things_matched = things.filter(function (t) {
+                return t.name == thingname;
+            });
+            if(things_matched.length != 1) {
+                alert("Amount of things matched to button unexpected : " + things_matched.length);
+            }
+            if(thingname.length > 0) {
+                radar.removeOpinion(things_matched[0]);
             }
         }
         function showList(things, quadrant, radar) {
@@ -47,14 +81,20 @@ var TechRadar;
                 container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.name + '</button>');
             });
             container.find('.btn').click(function (ev) {
-                var _this = this;
-                var thing = things.filter(function (t) {
-                    return t.name == $(_this).data('thing');
-                });
+                var thingname = $(this).data('thing');
+                console.log($(this).data('thing'));
+                console.log("button pressed, name = " + thingname);
                 if(!$(this).hasClass('active')) {
-                    radar.addThings(thing);
+                    addOpinion(thingname, things, radar);
                 } else {
+                    removeOpinion(thingname, things, radar);
                 }
+                console.log("processed (added or removed opinion) : " + thingname);
+            });
+            container.append('<button class="addbtn">' + 'ADD' + '</button>');
+            container.append('title: <input type="text" id="title">');
+            container.find('.addbtn').click(function (ev) {
+                addThing($("#title").val(), quadrant);
             });
             $('body').append(container);
         }

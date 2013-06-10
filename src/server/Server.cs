@@ -107,7 +107,6 @@ namespace Sioux.TechRadar
         protected override void ProcessRequest(System.Net.HttpListenerContext context)
         {
             Console.WriteLine(context.Request.Url);
-
             base.ProcessRequest(context);
         }
 	}

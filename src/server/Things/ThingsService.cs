@@ -9,32 +9,35 @@ using System.Net;
 
 namespace Sioux.TechRadar
 {
-	/// <summary>
-	/// Things service is automatically used by servicestack to handle the requests from the client.
-	/// Servicestack will automatically determine which routes are possible by the attributes in the DTO's
-	/// </summary>
-	public class ThingsService: Service
-	{
-		private static Logger logger = LogManager.GetLogger("ThingsService");
-		public IThingsRepository Repository { get; set; }  //Injected by IOC
-			
-		/// <summary>
-		/// handles any GET request for Things. 
-		/// This will only retrieve data.
-		/// </summary>
-		/// <param name="request">Request.</param>
-		public IEnumerable<Thing> Get (ThingsRequest request)
-		{
-			logger.Debug ("got request for things {}", this.RequestContext.AbsoluteUri);		
-			if (request.Names != null && request.Names.Length > 0) {
-				return Repository.GetByName (request.Names);
-			}
+    /// <summary>
+    /// Things service is automatically used by servicestack to handle the requests from the client.
+    /// Servicestack will automatically determine which routes are possible by the attributes in the DTO's
+    /// </summary>
+    public class ThingsService : Service
+    {
+        private static Logger logger = LogManager.GetLogger("ThingsService");
+        public IThingsRepository Repository { get; set; }  //Injected by IOC
 
-			IEnumerable<Thing> result = null;
-			if (request.Quadrant.HasValue) 
-			{
-				result = Repository.GetByQuadrant(request.Quadrant.Value);
-			}
+        /// <summary>
+        /// handles any GET request for Things. 
+        /// This will only retrieve data.
+        /// </summary>
+        /// <param name="request">Request.</param>
+        public IEnumerable<Thing> Get(ThingsRequest request)
+        {
+            Console.WriteLine("Get received");
+
+            logger.Debug("got request for things {}", this.RequestContext.AbsoluteUri);
+            if (request.Names != null && request.Names.Length > 0)
+            {
+                return Repository.GetByName(request.Names);
+            }
+
+            IEnumerable<Thing> result = null;
+            if (request.Quadrant.HasValue)
+            {
+                result = Repository.GetByQuadrant(request.Quadrant.Value);
+            }
             if (request.Keywords != null && request.Keywords.Length > 0)
             {
                 if (result == null)
@@ -54,57 +57,69 @@ namespace Sioux.TechRadar
                     result = Repository.GetAll();
                 }
             }
-			return result ?? new List<Thing>();
-		}
+            return result ?? new List<Thing>();
+        }
 
-		/// <summary>
-		/// This will update a Thing
-		/// </summary>
-		/// <param name="thing">Thing.</param>
+        /// <summary>
+        /// This will update a Thing
+        /// </summary>
+        /// <param name="thing">Thing.</param>
         public object Post(Thing thing)
-		{
-			if (String.IsNullOrWhiteSpace(thing.Name) 
-			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest,"Thing was not complete");
+        {
 
-			Thing existingThing = Repository.GetByName (thing.Name).FirstOrDefault();
+            Console.WriteLine("Post received");
 
-			//verify update is valid
-			if (existingThing != null) {
-				if (existingThing.Quadrant != thing.Quadrant 
-				    || existingThing.Title != thing.Title)
-				{
-					throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
-				}
-			}else {
-				throw new HttpError(HttpStatusCode.NotFound, "'"+thing.Name + "' does not exist yet");
-			}
+            if (String.IsNullOrWhiteSpace(thing.Name)
+                || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest, "Thing was not complete");
 
-			return Repository.StoreUpdated (thing);
-		}
+            Thing existingThing = Repository.GetByName(thing.Name).FirstOrDefault();
 
-		/// <summary>
-		/// This will create a new Thing
-		/// 
-		/// </summary>
-		/// <param name="thing">Thing.</param>
-		public object Put (Thing thing)
-		{
-            Console.WriteLine("Put received");
-			if (String.IsNullOrWhiteSpace(thing.Title) 
-			    || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.NotAcceptable,"Thing was not complete");
+            //verify update is valid
+            if (existingThing != null)
+            {
+                if (existingThing.Quadrant != thing.Quadrant
+                    || existingThing.Title != thing.Title)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
+                }
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "'" + thing.Name + "' does not exist yet");
+            }
 
-			if (thing.Name == null || Repository.GetByName (thing.Name).Count () == 0) 
-			{
-				thing.Name = thing.Title.ToLower().Replace(",","").Replace(".","").Replace("-","");
-				return Repository.StoreNew (thing);
-			} else {
-				throw new HttpError(System.Net.HttpStatusCode.Conflict, "'"+thing.Name + "' already exists");
-			}
+            return Repository.StoreUpdated(thing);
+        }
 
-		}
+        /// <summary>
+        /// This will create a new Thing
+        /// 
+        /// </summary>
+        /// <param name="thing">Thing.</param>
+        public object Put(Thing thing)
+        //       public object Put (ThingsRequest thing)
+        {
+            Console.WriteLine("Put received thing string = " + thing.ToString());
 
-		//not needed?
-		//public void Delete(Thing thing):
-	}
+            //TODO Temporary workaround  -> Title should be filled in and name is derived from it. Not available yet in typescript code.
+            thing.Title = thing.Name;
+
+            if (String.IsNullOrWhiteSpace(thing.Title)
+               ) throw new HttpError(HttpStatusCode.NotAcceptable, "Thing was not complete");
+
+            if (thing.Name == null || Repository.GetByName(thing.Name).Count() == 0)
+            {
+                thing.Name = thing.Title.ToLower().Replace(",", "").Replace(".", "").Replace("-", "");
+                return Repository.StoreNew(thing);
+            }
+            else
+            {
+                throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists");
+            }
+        }
+
+        //not needed?
+        //public void Delete(Thing thing):
+    }
 }
 

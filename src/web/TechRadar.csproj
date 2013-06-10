@@ -79,6 +79,9 @@
     <Content Include="js\techradar.js.map">
       <DependentUpon>techradar.ts</DependentUpon>
     </Content>
+    <Content Include="js\techradar.min.js.map">
+      <DependentUpon>techradar.js</DependentUpon>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

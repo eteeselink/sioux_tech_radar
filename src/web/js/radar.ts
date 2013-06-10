@@ -42,6 +42,20 @@ module TechRadar.Client{
       this.restart();
     }
 
+    public addOpinion(opinion: Thing) {
+      this.things.push(opinion);
+      this.restart();
+    }
+         
+    public removeOpinion(opinion: Thing) {
+
+        var index_opinion = this.things.indexOf(opinion);
+        console.log("removing opinion from radar ; " + opinion.name + opinion.goodness + opinion.quadrant + opinion);
+        console.log("index : " + index_opinion + "  length (before remove) = " + this.things.length);
+        this.things.splice(index_opinion, 1);
+        this.restart();
+    }
+
     //public removeThings(names: string[]) {
     //  var deleteIds = this.things
     //    .filter(thing => names.indexOf(name)
@@ -118,8 +132,12 @@ module TechRadar.Client{
     /// `this.things` changes.
     private restart() {
 
+      //alert("things in restart : " + this.things);
+
       var circles = this.svg.selectAll("circle.thing")
           .data(this.things);
+
+      //alert("circles : " + circles);
 
       // append elements to the enter set (= the set of newly created elements)
       circles.enter().append("circle")
@@ -138,6 +156,9 @@ module TechRadar.Client{
         .text((thing: Thing) => thing.name);
 
       this.force.start();
+
+      console.log("end of restart, things on radar : ");
+      this.things.forEach(thing => console.log(", " + thing.name));
     }
 
 
