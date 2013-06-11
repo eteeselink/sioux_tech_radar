@@ -33,7 +33,7 @@ namespace Sioux.TechRadar
             }
         }
 
-        object IOpinionsRepository.StoreUpdated(Opinion opinion)
+        public object StoreUpdated(Opinion opinion)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Sioux.TechRadar
             }
         }
 
-        object IOpinionsRepository.StoreNew(Opinion opinion)
+        public object StoreNew(Opinion opinion)
         {
             try
             {
@@ -65,6 +65,17 @@ namespace Sioux.TechRadar
             {
                 logger.ErrorException("attempted to insert a new opinion", e);
                 throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to insert opinion");
+            }
+        }
+
+        public void Delete(string name)
+        {
+            Opinion opinion = this.GetByName(name).First();
+            if (opinion == null) throw new HttpError(HttpStatusCode.NotFound, "exception while trying to delete opinion");
+            using (var connection = ConnectionFactory.Connect())
+            {
+
+                connection.Delete(opinion);
             }
         }
 

@@ -13,10 +13,10 @@ namespace Sioux.TechRadar
         private static Logger logger = LogManager.GetLogger("OpinionsService");
         public IOpinionsRepository Repository { get; set; }  //Injected by IOC
 
-        public IEnumerable<Opinion> Get(String name)
+        public IEnumerable<Opinion> Get(Opinion opinion)
         {
-            Console.WriteLine("Get received opinion string = " + name);
-            return Repository.GetByName(name);
+            Console.WriteLine("Get received opinion string = " + opinion.thingName);
+            return Repository.GetByName(opinion.thingName);
         }
 
         public object Post(Opinion opinion)
@@ -29,6 +29,11 @@ namespace Sioux.TechRadar
         {
             Console.WriteLine("Put received opinion string = " + opinion.ToString());
             return Repository.StoreNew(opinion);       
+        }
+
+        public void Delete(Opinion opinion){
+            Console.WriteLine("Delete received opinion string = " + opinion.thingName);
+            Repository.Delete(opinion.thingName);
         }
     }
 }

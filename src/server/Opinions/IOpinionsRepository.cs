@@ -7,10 +7,12 @@ namespace Sioux.TechRadar
 {
     public interface IOpinionsRepository : IDisposable
     {
-        IEnumerable<Opinion> GetByName(string name);
+         IEnumerable<Opinion> GetByName(string name);
 
-        object StoreUpdated(Opinion opinion);
+         object StoreUpdated(Opinion opinion);
 
-        object StoreNew(Opinion opinion);
+         object StoreNew(Opinion opinion);
+
+         void Delete(string name);
     }
 }

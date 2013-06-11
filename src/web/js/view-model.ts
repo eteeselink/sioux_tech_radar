@@ -65,9 +65,8 @@ module TechRadar.Client{
 
     public deleteOpinion() {
     	console.log("ajax (deleteOpinion) called");
-    	return;
     	$.ajax({
-    		url: "http://localhost:54321/api/opinions/" + name,
+    		url: "http://localhost:54321/api/opinions/" + this.name,
     		type: 'DELETE',
     		contentType: 'application/json',
     		dataType: 'json'
@@ -76,13 +75,12 @@ module TechRadar.Client{
 
     public updateOpinion() {
     	console.log("ajax (updateOpinion) called");
-    	return;
-    	var opinion: Object = {
+    	var opinion = {
     		name: this.name,
-    		goodness: this.goodness
+    		goodness: this.goodness()
     	}
     	$.ajax({
-    		url: "http://localhost:54321/api/opinions/" + name,
+    		url: "http://localhost:54321/api/opinions/" + opinion.name,
     		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
@@ -92,10 +90,9 @@ module TechRadar.Client{
    
     public storeNewOpinion() {
     	console.log("ajax (storeNewOpinion) called");
-    	return;
     	var opinion: Object = {
     		name: this.name,
-    		goodness: this.goodness
+    		goodness: this.goodness()
     	}
     	$.ajax({
     		url: "http://localhost:54321/api/opinions/" ,
