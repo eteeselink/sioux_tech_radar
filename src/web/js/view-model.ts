@@ -55,7 +55,7 @@ module TechRadar.Client{
 
     private notifyServer() {
     	var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
-    	if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.1)
+    	if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.05)
     	{
     		return;
     	}
@@ -76,11 +76,11 @@ module TechRadar.Client{
     public updateOpinion() {
     	console.log("ajax (updateOpinion) called");
     	var opinion = {
-    		name: this.name,
+    		thingName: this.name,
     		goodness: this.goodness()
     	}
     	$.ajax({
-    		url: "http://localhost:54321/api/opinions/" + opinion.name,
+    		url: "http://localhost:54321/api/opinions/" + opinion.thingName,
     		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
@@ -91,7 +91,7 @@ module TechRadar.Client{
     public storeNewOpinion() {
     	console.log("ajax (storeNewOpinion) called");
     	var opinion: Object = {
-    		name: this.name,
+    		thingName: this.name,
     		goodness: this.goodness()
     	}
     	$.ajax({
