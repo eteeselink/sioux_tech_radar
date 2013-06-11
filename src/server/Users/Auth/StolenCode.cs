@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sioux.TechRadar.Auth
+namespace Sioux.TechRadar.Users.Auth
 {
     public static class StolenCode
     {

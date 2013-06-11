@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace Sioux.TechRadar.Auth
+namespace Sioux.TechRadar.Users.Auth
 {
     class SiouxExchangeServer
     {
