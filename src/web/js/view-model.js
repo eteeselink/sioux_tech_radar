@@ -79,4 +79,3 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
-//@ sourceMappingURL=view-model.js.map

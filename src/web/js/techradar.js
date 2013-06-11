@@ -86,8 +86,6 @@ var TechRadar;
             });
             container.find('.btn').click(function (ev) {
                 var thingname = $(this).data('thing');
-                console.log($(this).data('thing'));
-                console.log("button pressed, name = " + thingname);
                 if(!$(this).hasClass('active')) {
                     addOpinion(thingname, things, radar);
                 } else {
@@ -118,4 +116,3 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
-//@ sourceMappingURL=techradar.js.map

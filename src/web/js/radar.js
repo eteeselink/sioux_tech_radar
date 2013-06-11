@@ -78,10 +78,6 @@ var TechRadar;
                     return thing.name;
                 });
                 this.force.start();
-                console.log("end of restart, things on radar : ");
-                this.things.forEach(function (thing) {
-                    return console.log(", " + thing.name);
-                });
             };
             Radar.prototype.tick = function (e) {
                 var _this = this;
@@ -146,4 +142,3 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
-//@ sourceMappingURL=radar.js.map

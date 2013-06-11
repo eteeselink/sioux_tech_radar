@@ -25,6 +25,7 @@ module TechRadar.Client {
           for (var i=0;i<data.length;i++)
           {
               //TODO : right quadrant and goodness 
+
               console.log("GetJSON quadrant : " + data[i].quadrant);
               things.push(new Thing(data[i].Title, i % 4, quadrants[i % 4], random(0.1, 1.0)));
           }
@@ -55,6 +56,8 @@ module TechRadar.Client {
         showList(getThings(), parseInt(q, 10), quad, radar);
     }
   }
+
+
 
 
   function addThing(thingname: string, quadrantnum: number, quadrant: Quadrant) {
@@ -107,17 +110,9 @@ module TechRadar.Client {
 
     container.find('.btn').click(function(ev) {
         var thingname = $(this).data('thing'); 
-        //thingname.concat($(this).data('thing'));
-
-
-        console.log($(this).data('thing'));
-        console.log("button pressed, name = " + thingname);
 
         if (!$(this).hasClass('active')) {
             addOpinion(thingname, things, radar);
-            //if (thingname.length > 0) {
-
-            //    radar.addOppinion(thingname, things);    
         }
         else {
               removeOpinion(thingname, things, radar);

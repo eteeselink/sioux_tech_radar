@@ -148,9 +148,6 @@ module TechRadar.Client{
 	 
 
       this.force.start();
-
-      console.log("end of restart, things on radar : ");
-      this.things.forEach(thing => console.log(", " + thing.name));
     }
 
 
