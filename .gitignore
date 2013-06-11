@@ -36,6 +36,9 @@ x64/
 *.vspscc
 *.vssscc
 .builds
+\src\web\js\*.js
+\src\web\js\*.js.map
+
 
 # Visual C++ cache files
 ipch/
@@ -118,3 +121,13 @@ UpgradeLog*.XML
 
 
 !/lib
+src/web/js/main.js.map
+src/web/js/radar.js
+src/web/js/radar.js.map
+src/web/js/socket.js.map
+src/web/js/structs.js
+src/web/js/structs.js.map
+src/web/js/techradar.js
+src/web/js/techradar.js.map
+src/web/js/utils.js
+src/web/js/view-model.js.map
