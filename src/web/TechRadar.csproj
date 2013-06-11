@@ -31,6 +31,7 @@
     <Content Include="css\tech-radar.min.css">
       <DependentUpon>tech-radar.less</DependentUpon>
     </Content>
+    <Content Include="expl.html" />
     <Content Include="index.html" />
     <TypeScriptCompile Include="js\main.ts" />
     <Content Include="js\radar.js">

@@ -1,183 +1,182 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"> 
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <title>Sioux Technology Radar</title>
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">-->
-    <!--<link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />-->
-    <link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
-    <style>
-    /* todo: move to LESS */
-    h1
-    {    
-      font-family: 'Share Tech', sans-serif;
-    }
-    
-    h1
-    {
-      letter-spacing: 0.3ex;
-      font-size: 48pt;
-    }
-    
-    small
-    {
-      font-size: 10pt;
-    }
-
-    body
-    {
-      text-align: center;
-      font-size: 20pt;
-    }
-    
-    p, h2
-    {
-      display: block;
-      font-family: 'Raleway', sans-serif;
-    }
-    
-    
-    h2
-    {
-      font-size: 30pt;
-      font-weight: normal;
-      max-width: 800px;
-      margin: 40px auto 80px auto;
-    }
-    
-    p
-    {
-      max-width: 900px;
-      text-align: left;
-      margin: 80px auto 40px auto;
-    }
-    
-    body, html
-    {
-      height: 100%;
-      min-height: 100%;
-      margin: 0;
-    }
-    
-    div.panel
-    {
-      padding: 40px 50px 50px 50px;
-      min-height: 80%;
-      margin: 0;
-    }
-    
-    div#intro
-    {
-      background: #FFF0CC;
-      color: #000;
-    }
-    
-    div#watis
-    {
-      background: #CCFFFC;
-      color: #000;
-    }
-    
-    div#sioux
-    {
-      background: url('img/sioux_logo.png') center no-repeat #FFE1D1;
-      color: #000;
-    }
-    
-    div#thoughtworks_container
-    {
-      position: relative;
-      height: 800px;
-      max-width: 868px;
-      margin: 0 auto;
-      margin-bottom: -310px;
-    }
-    
-    img#thoughtworks
-    {
-      position: absolute;
-      top: -232px;
-      clip: rect(232px, 657px, 708px, 188px);
-      left: 0px;
-    }
-    
-    img
-    {
-      border: 0;
-    }
-    </style>
-  </head>
-  <body class="expl"> 
-    <div class="panel" id="intro">
-      <img src="img/logo_trans_900.png"/>
-    
-      <h2>Hoi! Leuk dat je meedoet met het voorspellen van de toekomst.</h2>
-      <p>
-        We gaan met z'n allen bepalen welke technologieën, aanpakken en tools de toekomst hebben.<br/><br/>
-        Welke programmeeromgeving gaat de wereld veranderen?<br/><br/>
-        Welke taal kun je écht niet meer zien?<br/><br/>
-        Doen we volgend jaar nog Scrum, of is er iets nog beters onder de zon?
-      </p>
-    </div>
-    <div class="panel" id="watis">
-      <p>
-        Een Technology Radar is een plaatje waarop je in één oogopslag kunt zien waarheen wij
-        denken dat het naar toe gaat in de softwarewereld.
-      </p>
-      <p>
-        Het is bedacht door de firma <a href="http://www.thoughtworks.com">Thoughtworks</a>. 
-        Hun laatste Technology Radar</a> ziet er zo uit:
-        <small>(overheen muizen voor groter, klikken voor de toelichting)</small>
-      </p>
-      <div id="thoughtworks_container">
-        <a href="http://thoughtworks.fileburst.com/assets/technology-radar-october-2012.pdf"><img id="thoughtworks" src="img/thoughtworks_radar_oct12.png"/></a>
-      </div>
-      <p>Thoughtworks maakt vooral webapplicaties, en hun Technology Radar reflecteert dat.</p>
-    </div>
-    <div class="panel" id="sioux">
-      <h2>En wij dan?</h2>
-    </div>
-    <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
-    <script type="text/javascript">
-    
-      // integer linear interpolation. `now` must be between 0 and 1.
-      function ilerp(from, to, now)
-      {
-        return parseInt(from + ((to - from) * now));
-      }
-      
-      // `el` must be a jQuery selection. `from` and `to` must be 
-      // arrays of four pixel clip values.
-      function animClip(el, from, to)
-      {
-        // custom step function animate
-        $({val:0.0}).animate({val:1.0}, {
-            step: function(now, tween) {
-              el.css('clip', 'rect('
-                + ilerp(from[0], to[0], now) + 'px, '
-                + ilerp(from[1], to[1], now) + 'px, '
-                + ilerp(from[2], to[2], now) + 'px, '
-                + ilerp(from[3], to[3], now) + 'px)');
-            } 
-          });
-      }
-      
-      $(function() {
-        var entire = [0, 868, 942, 0];
-        var clipped = [232, 657, 708, 188];
+    <head>
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <title>Sioux Technology Radar</title>
+        <!--<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">-->
+        <!--<link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />-->
+        <link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
+        <style>
+        /* todo: move to LESS */
+        h1
+        {    
+            font-family: 'Share Tech', sans-serif;
+        }
         
-        $("img#thoughtworks")
-          .mouseover(function() {
-            console.log(1);
-            animClip($(this), clipped, entire);
-          })
-          .mouseout(function() {
-            animClip($(this), entire, clipped);
-          });
-      });
-  </script>
-  </body>
+        h1
+        {
+            letter-spacing: 0.3ex;
+            font-size: 48pt;
+        }
+        
+        small
+        {
+            font-size: 10pt;
+        }
+
+        body
+        {
+            text-align: center;
+            font-size: 20pt;
+        }
+        
+        p, h2
+        {
+            display: block;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        
+        h2
+        {
+            font-size: 30pt;
+            font-weight: normal;
+            max-width: 800px;
+            margin: 40px auto 80px auto;
+        }
+        
+        p
+        {
+            max-width: 900px;
+            text-align: left;
+            margin: 80px auto 40px auto;
+        }
+        
+        body, html
+        {
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+        }
+        
+        div.panel
+        {
+            padding: 40px 50px 50px 50px;
+            min-height: 80%;
+            margin: 0;
+        }
+        
+        div#intro
+        {
+            background: #FFF0CC;
+            color: #000;
+        }
+        
+        div#watis
+        {
+            background: #CCFFFC;
+            color: #000;
+        }
+        
+        div#sioux
+        {
+            background: url('img/sioux_logo.png') center no-repeat #FFE1D1;
+            color: #000;
+        }
+        
+        div#thoughtworks_container
+        {
+            position: relative;
+            height: 800px;
+            max-width: 868px;
+            margin: 0 auto;
+            margin-bottom: -310px;
+        }
+        
+        img#thoughtworks
+        {
+            position: absolute;
+            top: -232px;
+            clip: rect(232px, 657px, 708px, 188px);
+            left: 0px;
+        }
+        
+        img
+        {
+            border: 0;
+        }
+        </style>
+    </head>
+    <body class="expl"> 
+        <div class="panel" id="intro">
+            <img src="img/logo_trans_900.png"/>
+        
+            <h2>Hoi! Leuk dat je meedoet met het voorspellen van de toekomst.</h2>
+            <p>
+                We gaan met z'n allen bepalen welke technologieën, aanpakken en tools de toekomst hebben.<br/><br/>
+                Welke programmeeromgeving gaat de wereld veranderen?<br/><br/>
+                Welke taal kun je écht niet meer zien?<br/><br/>
+                Doen we volgend jaar nog Scrum, of is er iets nog beters onder de zon?
+            </p>
+        </div>
+        <div class="panel" id="watis">
+            <p>
+                Een Technology Radar is een plaatje waarop je in één oogopslag kunt zien waarheen wij
+                denken dat het naar toe gaat in de softwarewereld.
+            </p>
+            <p>
+                Het is bedacht door de firma <a href="http://www.thoughtworks.com">Thoughtworks</a>. 
+                Hun laatste Technology Radar</a> ziet er zo uit:
+                <small>(overheen muizen voor groter, klikken voor de toelichting)</small>
+            </p>
+            <div id="thoughtworks_container">
+                <a href="http://thoughtworks.fileburst.com/assets/technology-radar-october-2012.pdf"><img id="thoughtworks" src="img/thoughtworks_radar_oct12.png"/></a>
+            </div>
+            <p>Thoughtworks maakt vooral webapplicaties, en hun Technology Radar reflecteert dat.</p>
+        </div>
+        <div class="panel" id="sioux">
+            <h2>En wij dan?</h2>
+            Sioux
+        </div>
+        <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
+        <script type="text/javascript">
+
+            // integer linear interpolation. `now` must be between 0 and 1.
+            function ilerp(from, to, now) {
+                return parseInt(from + ((to - from) * now));
+            }
+
+            // `el` must be a jQuery selection. `from` and `to` must be 
+            // arrays of four pixel clip values.
+            function animClip(el, from, to) {
+                // custom step function animate
+                $({ val: 0.0 }).animate({ val: 1.0 }, {
+                    step: function (now, tween) {
+                        el.css('clip', 'rect('
+                            + ilerp(from[0], to[0], now) + 'px, '
+                            + ilerp(from[1], to[1], now) + 'px, '
+                            + ilerp(from[2], to[2], now) + 'px, '
+                            + ilerp(from[3], to[3], now) + 'px)');
+                    }
+                });
+            }
+
+            $(function () {
+                var entire = [0, 868, 942, 0];
+                var clipped = [232, 657, 708, 188];
+
+                $("img#thoughtworks")
+                    .mouseover(function () {
+                        console.log(1);
+                        animClip($(this), clipped, entire);
+                    })
+                    .mouseout(function () {
+                        animClip($(this), entire, clipped);
+                    });
+            });
+    </script>
+    </body>
 </html>
