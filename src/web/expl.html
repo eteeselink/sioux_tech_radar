@@ -35,9 +35,23 @@
         p, h2
         {
             display: block;
-            font-family: 'Raleway', sans-serif;
         }
         
+        p, h2, table
+        {
+            font-family: 'Raleway', sans-serif;
+        }
+
+        table
+        {
+            border: 1px solid black;
+            padding: 10px;            
+        }
+        table td
+        {
+            padding: 5px;
+            font-size: 70%;
+        }
         
         h2
         {
@@ -47,7 +61,7 @@
             margin: 40px auto 80px auto;
         }
         
-        p
+        p, table
         {
             max-width: 900px;
             text-align: left;
@@ -77,6 +91,18 @@
         div#watis
         {
             background: #CCFFFC;
+            color: #000;
+        }
+
+        div#survey
+        {
+            background: #EEFFDD;
+            color: #000;
+        }
+
+        div#login
+        {
+            background: #FFFFFF;
             color: #000;
         }
         
@@ -141,11 +167,54 @@
             <p>
                 Bij Sioux maken we vooral technische software, en geen webapplicaties. <br /><br />
                 <img src="img/phenom.jpg" style="border: 1px solid black; display: block; margin: 0px auto 40px auto; box-shadow: 3px 3px 3px #888;" />
-                Hoe zou zo'n Technology Radar er voor ons uitzien? Dat gaan we samen uitvogelen!
+                Hoe zou zo'n Technology Radar er voor ons uitzien? 
+                Dat zoeken we uit, door samen met alle Siouxers een eigen Technology Radar te tekenen.
             </p>
         </div>
         <div class="panel" id="survey">
-
+            <p>
+                Elk kwadrant in de radar hoort bij één categorie. Er zijn vier categorieën:
+                Technieken - Tools - Platformen - Frameworks
+                <br /><br />
+                Een kwadrant ziet er ongeveer zo uit:
+                <br /><br />
+                <span style="display: block; margin: 0px auto 40px auto;  border: 1px solid black; width: 400px; height: 400px; text-align: center; font-size: xx-small">[plaatje]</span>
+                
+                In elk kwadrant mag je 5 stippen neerzetten. Elke stip hoort bij één ding, zoals een programmeertaal of een methodiek.
+                <br /><br />
+                Stel, je hebt een sterke mening over Python.
+                Hoe dichter je de Python-stip bij de oorsprong zet, 
+                hoe meer je vindt dat we echt veel met Python moeten doen.
+                Als je de stip juist helemaal aan de rand zet, 
+                geef je aan dat je vindt dat Python waardeloos is, 
+                of dat het (nog) niet volwassen genoeg is om te gebruiken.
+                Als je wilt kun je je mening kort toelichten.
+                <br /><br />
+                Als iedereen zijn mening heeft gegeven, 
+                vatten we dat samen in een mooi document,
+                dat we binnen Sioux rondsturen.
+                Zo helpen we elkaar met het op de hoogte blijven van de ontwikkeling.
+                
+            </p>
+        </div>
+        <div class="panel" id="login">
+            <h2>Klaar?</h2>
+            <p>Log in met je Sioux-gegevens.</p>
+            <form>
+                <table>
+                    <tr>
+                        <td>Gebruikersnaam</td>
+                        <td><input type="text" id="username" /></td>
+                    </tr>
+                    <tr>
+                        <td>Wachtwoord</td>
+                        <td><input type="password" id="password" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center"><input type="button" id="btnLogin" value="Beginnen" style="font-size: xx-large; padding: 5px 15px;"/></td>
+                    </tr>
+                </table>
+            </form>            
         </div>
         <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
