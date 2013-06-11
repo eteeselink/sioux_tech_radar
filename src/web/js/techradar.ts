@@ -24,10 +24,14 @@ module TechRadar.Client {
       .done(function(data) {
           for (var i=0;i<data.length;i++)
           {
-              //TODO : right quadrant and goodness 
+              var quadrant = data[i].Quadrantid.toString();
+              var quadrantid;
+              if (quadrant == "Techniques") quadrantid = 0;
+              else if (quadrant == "Tools") quadrantid = 1;
+              else if (quadrant == "Languages") quadrantid = 2;
+              else if (quadrant == "Platforms") quadrantid = 3;
 
-              console.log("GetJSON quadrant : " + data[i].quadrant);
-              things.push(new Thing(data[i].Title, i % 4, quadrants[i % 4], random(0.1, 1.0)));
+              things.push(new Thing(data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));
           }
     });
 

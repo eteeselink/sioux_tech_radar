@@ -14,8 +14,24 @@ var TechRadar;
             });
             $.getJSON("http://localhost:54321/api/things/search/").done(function (data) {
                 for(var i = 0; i < data.length; i++) {
-                    console.log("GetJSON quadrant : " + data[i].quadrant);
-                    things.push(new Client.Thing(data[i].Title, i % 4, quadrants[i % 4], TechRadar.random(0.1, 1)));
+                    var quadrant = data[i].Quadrantid.toString();
+                    var quadrantid;
+                    if(quadrant == "Techniques") {
+                        quadrantid = 0;
+                    } else {
+                        if(quadrant == "Tools") {
+                            quadrantid = 1;
+                        } else {
+                            if(quadrant == "Languages") {
+                                quadrantid = 2;
+                            } else {
+                                if(quadrant == "Platforms") {
+                                    quadrantid = 3;
+                                }
+                            }
+                        }
+                    }
+                    things.push(new Client.Thing(data[i].Title, quadrantid, quadrants[quadrantid], TechRadar.random(0.1, 1)));
                 }
             });
             $.ajaxSetup({
