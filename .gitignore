@@ -132,3 +132,5 @@ src/web/js/utils.js
 src/web/js/utils.js.map
 src/web/js/view-model.js
 src/web/js/view-model.js.map
+src/web/js/main.min.js
+src/web/js/techradar.min.js
