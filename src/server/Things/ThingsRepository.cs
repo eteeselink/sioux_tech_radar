@@ -7,7 +7,7 @@ using MoreLinq;
 using NLog;
 using ServiceStack.Common.Web;
 using System.Net;
-using Shouldly;
+
 
 namespace Sioux.TechRadar
 {
@@ -57,7 +57,7 @@ namespace Sioux.TechRadar
         {
             try {
                 using (var connection = connectionFactory.Connect()) {
-                    connection.TableExists("Thing").ShouldBe(true);
+                    
                     // we want the name to be a lowercase variant without dots, or comma's
                     thing.Name = thing.Title
                         .ToLower()

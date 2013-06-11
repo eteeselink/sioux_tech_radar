@@ -7,7 +7,6 @@ using MoreLinq;
 using NLog;
 using ServiceStack.Common.Web;
 using System.Net;
-using Shouldly;
 
 namespace Sioux.TechRadar
 {
@@ -61,7 +60,6 @@ namespace Sioux.TechRadar
             {
                 using (var connection = connectionFactory.Connect())
                 {
-                    connection.TableExists("Opinion").ShouldBe(true);
                     connection.Insert(opinion);
                 }
                 return opinion;

@@ -91,9 +91,6 @@
     <Reference Include="MoreLinq">
       <HintPath>..\..\packages\morelinq.1.0\lib\net35\MoreLinq.dll</HintPath>
     </Reference>
-    <Reference Include="Shouldly">
-      <HintPath>..\..\packages\Shouldly.1.1.1.1\lib\35\Shouldly.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
