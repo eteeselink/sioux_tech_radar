@@ -59,7 +59,7 @@ module TechRadar.Client{
     	}
     	$.ajax({
     		url: "http://localhost:54321/api/opinions/"+name,
-    		type: 'PUT',
+    		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
     		dataType: 'json'
