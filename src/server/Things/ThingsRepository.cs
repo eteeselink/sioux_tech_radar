@@ -16,12 +16,18 @@ namespace Sioux.TechRadar
     /// </summary>
     public class ThingsRepository : IThingsRepository
     {
-        internal SqLiteConnectionFactory ConnectionFactory{get;set;}
+        private readonly SqLiteConnectionFactory connectionFactory;
         private static Logger logger = NLog.LogManager.GetLogger("ThingsRepository");
 
-        public ThingsRepository EnsureTablesExist()
+        public ThingsRepository(SqLiteConnectionFactory factory)
         {
-            using (var db = ConnectionFactory.Connect())
+            connectionFactory = factory;
+            EnsureTablesExist();
+        }
+
+        private void EnsureTablesExist()
+        {
+            using (var db = connectionFactory.Connect())
             {
                 db.CreateTableIfNotExists<Thing>();
 
@@ -45,13 +51,12 @@ namespace Sioux.TechRadar
                     db.Insert(thingToInsert);
                 }
             }
-            return this;
         }
 
         public Thing StoreNew (Thing thing)
         {
             try {
-                using (var connection = ConnectionFactory.Connect()) {
+                using (var connection = connectionFactory.Connect()) {
                     connection.TableExists("Thing").ShouldBe(true);
                     // we want the name to be a lowercase variant without dots, or comma's
                     thing.Name = thing.Title
@@ -72,7 +77,7 @@ namespace Sioux.TechRadar
         public Thing StoreUpdated (Thing thing)
         {
             try {
-                using (var connection = ConnectionFactory.Connect()) {
+                using (var connection = connectionFactory.Connect()) {
                     connection.UpdateOnly( thing, t => t.Description);
                 }
                 return thing;
@@ -83,32 +88,32 @@ namespace Sioux.TechRadar
         }
         public IEnumerable<Thing> GetByName (string name)
         {
-            using (var connection = ConnectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>("Name = {0}",name);
             }
         }
         public IEnumerable<Thing> GetByName (string[] names)
         {
-            using (var connection = ConnectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>("Name in ({0})", names.Aggregate((a,b) => a + ',' + b));
             }
         }
         public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
         {
-            using (var connection = ConnectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>("Quadrant = {0}", quadrant);
             }
         }
         //TODO: make this perform properly
         public IEnumerable<Thing> Search (ThingsRequest request)
         {
-            using (var connection = ConnectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>().Where( thing => thing.SoundsKindaLike(request.Keywords));
             }
         }
         public IEnumerable<Thing> GetAll ()
         {
-            using (var connection = ConnectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>();
             }
         }

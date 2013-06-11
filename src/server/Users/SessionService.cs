@@ -17,5 +17,11 @@ namespace Sioux.TechRadar.Users
         {
 
         }
+
+        // FIXME, how to route to "/api/session" ?
+        public void Delete()
+        {
+
+        }
     }
 }

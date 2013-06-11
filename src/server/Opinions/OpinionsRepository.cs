@@ -13,21 +13,26 @@ namespace Sioux.TechRadar
 {
     public class OpinionsRepository: IOpinionsRepository
     {
-        internal SqLiteConnectionFactory ConnectionFactory { get; set; }
+        private readonly SqLiteConnectionFactory connectionFactory;
         private static Logger logger = NLog.LogManager.GetLogger("OpinionsRepository");
 
-        public OpinionsRepository EnsureTablesExist()
+        public OpinionsRepository(SqLiteConnectionFactory factory)
         {
-            using (var db = ConnectionFactory.Connect())
+            connectionFactory = factory;
+            EnsureTablesExist();
+        }
+
+        private void EnsureTablesExist()
+        {
+            using (var db = connectionFactory.Connect())
             {
                 db.CreateTableIfNotExists<Opinion>();
             }
-            return this;
         }
 
         public IEnumerable<Opinion> GetByName(string name)
         {
-            using (var connection = ConnectionFactory.Connect())
+            using (var connection = connectionFactory.Connect())
             {
                 return connection.Select<Opinion>("thingName = {0}", name);
             }
@@ -37,7 +42,7 @@ namespace Sioux.TechRadar
         {
             try
             {
-                using (var connection = ConnectionFactory.Connect())
+                using (var connection = connectionFactory.Connect())
                 {
                     connection.UpdateOnly(opinion,o => o.goodness);
                 }
@@ -54,7 +59,7 @@ namespace Sioux.TechRadar
         {
             try
             {
-                using (var connection = ConnectionFactory.Connect())
+                using (var connection = connectionFactory.Connect())
                 {
                     connection.TableExists("Opinion").ShouldBe(true);
                     connection.Insert(opinion);
@@ -72,7 +77,7 @@ namespace Sioux.TechRadar
         {
             Opinion opinion = this.GetByName(name).First();
             if (opinion == null) throw new HttpError(HttpStatusCode.NotFound, "exception while trying to delete opinion");
-            using (var connection = ConnectionFactory.Connect())
+            using (var connection = connectionFactory.Connect())
             {
 
                 connection.Delete(opinion);

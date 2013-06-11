@@ -13,10 +13,7 @@ namespace Sioux.TechRadar
 		public FakeServer (): base("Service Setup Tests", typeof(ThingsRequest).Assembly) 
 		{
 			FakeThingsRepos = new FakeThingsRepository ();
- 			RealThingsRepos = new ThingsRepository(){ 
-				//ConnectionFactory = new SqLiteInMemoryFactory ()
-				ConnectionFactory = new TempSQLiteFactory()
-			}.EnsureTablesExist();
+ 			RealThingsRepos = new ThingsRepository(new TempSQLiteFactory());
 		}
 
 		public FakeThingsRepository FakeThingsRepos { get; set; }

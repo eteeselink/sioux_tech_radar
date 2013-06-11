@@ -14,10 +14,8 @@ namespace Sioux.TechRadar
         [Test]
         public void CanCreateOrGetUsersWithoutExceptions()
         {
-            var repos = new UsersRepository()
-            {
-                ConnectionFactory = new TempSQLiteFactory()
-            };
+            var repos = new UsersRepository(new TempSQLiteFactory());
+
             var user = repos.GetOrCreateUser("George");
             user.Username.ShouldBe("George");
 

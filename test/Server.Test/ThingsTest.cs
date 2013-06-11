@@ -26,7 +26,7 @@ namespace Sioux.TechRadar
 				fs.FakeThingsRepos.Things.AddFirst(csharp);
 
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "VBS?"," \0" , csharp.Name }};
+                    ThingsRequest req = new ThingsRequest() { Names = new string[] { "VBS?", "Yes", csharp.Name } };
 	                IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 
 	                Assert.AreEqual(1, res.Count());
@@ -132,7 +132,7 @@ namespace Sioux.TechRadar
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing();
-					client.Put(newThing);
+					client.Post(newThing);
 				}
 			}
 		}
@@ -143,8 +143,8 @@ namespace Sioux.TechRadar
 			using (FakeServer fs = new FakeServer().StartWithFakeRepos())
 			{
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					var existingThing = client.Put(newThing);
+					var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+					var existingThing = client.Post(newThing);
 					existingThing.Name.ShouldBe("d");
 
 					ThingsRequest req = new ThingsRequest(){ Names = new string[] { "d" }};
@@ -165,7 +165,7 @@ namespace Sioux.TechRadar
 				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
 					var newThing = new Thing(){ Name="d", Description="Not C++", Quadrant=Quadrant.Languages};
 					
-					client.Post(newThing);
+					client.Put(newThing);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ namespace Sioux.TechRadar
 
 					fs.FakeThingsRepos.Things.AddLast(newThing);
 					
-					 client.Put(newThing);
+					 client.Post(newThing);
 				}
 			}
 		}
@@ -199,7 +199,7 @@ namespace Sioux.TechRadar
 					fs.FakeThingsRepos.Things.AddLast(newThing);
 					var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same", Quadrant=Quadrant.Languages};
 
-					Thing result= client.Post(updatedThing);
+					Thing result= client.Put(updatedThing);
 
 					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
 					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
@@ -240,7 +240,7 @@ namespace Sioux.TechRadar
 					fs.FakeThingsRepos.Things.AddLast(newThing);
 					var updatedThing = new Thing(){ Name="f#", Title="F# .NET", Description="something functional", Quadrant=Quadrant.Languages};
 					
-					Thing result= client.Post(updatedThing);
+					Thing result= client.Put(updatedThing);
 				}
 			}
 		}

@@ -10,16 +10,21 @@ namespace Sioux.TechRadar.Users
 {
     public class UsersRepository : IUsersRepository
     {
-        internal SqLiteConnectionFactory ConnectionFactory { get; set; }
+        internal SqLiteConnectionFactory ConnectionFactory { get; private set; }
         private static Logger logger = NLog.LogManager.GetLogger("UsersRepository");
 
-        public UsersRepository EnsureTablesExist()
+        public UsersRepository(SqLiteConnectionFactory factory)
+        {
+            ConnectionFactory = factory;
+            EnsureTablesExist();
+        }
+
+        public void EnsureTablesExist()
         {
             using (var db = ConnectionFactory.Connect())
             {
                 db.CreateTableIfNotExists<User>();
             }
-            return this;
         }
 
         public User GetOrCreateUser(string username)

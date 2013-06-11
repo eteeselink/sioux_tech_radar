@@ -10,55 +10,55 @@ using Shouldly;
 
 namespace Sioux.TechRadar
 {
-	[TestFixture()]
-	public class ThingsIntegrationTest
-	{
+    [TestFixture()]
+    public class ThingsIntegrationTest
+    {
 
-		//private static Logger logger = LogManager.GetLogger ("ThingsTest");
+        //private static Logger logger = LogManager.GetLogger ("ThingsTest");
 
        
 
-		[Test()]
-		public void AddNewThing()
-		{
-			using (FakeServer fs = new FakeServer().StartWithRealRepos())
-			{
-				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					client.Put(newThing);					
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};					
-					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
-					
-					res.Count().ShouldBe(1);
-					res.First().Description.ShouldBe(newThing.Description);
-					res.First().Quadrant.ShouldBe(newThing.Quadrant);
-				}
-			}
-		}
+        [Test()]
+        public void AddNewThing()
+        {
+            using (FakeServer fs = new FakeServer().StartWithRealRepos())
+            {
+                using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+                    var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+                    client.Post(newThing);					
+                    ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};					
+                    IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+                    
+                    res.Count().ShouldBe(1);
+                    res.First().Description.ShouldBe(newThing.Description);
+                    res.First().Quadrant.ShouldBe(newThing.Quadrant);
+                }
+            }
+        }
 
 
 
-		[Test()]
-		public void UpdateThing()
-		{
-			using (FakeServer fs = new FakeServer().StartWithRealRepos())
-			{
-				using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-					var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
-					var updatedThing = fs.RealThingsRepos.StoreNew(newThing);
+        [Test()]
+        public void UpdateThing()
+        {
+            using (FakeServer fs = new FakeServer().StartWithRealRepos())
+            {
+                using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
+                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+                    var updatedThing = fs.RealThingsRepos.StoreNew(newThing);
 
-					updatedThing.Description += ", whatever";
-					Thing result= client.Post(updatedThing);
+                    updatedThing.Description += ", whatever";
+                    Thing result= client.Put(updatedThing);
 
-					ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
-					IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
-					
-					res.Count().ShouldBe(1);
-					result.Quadrant.ShouldBe(updatedThing.Quadrant);
-					result.Description.ShouldBe(updatedThing.Description);
-				}
-			}
-		}
-	}
+                    ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
+                    IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+                    
+                    res.Count().ShouldBe(1);
+                    result.Quadrant.ShouldBe(updatedThing.Quadrant);
+                    result.Description.ShouldBe(updatedThing.Description);
+                }
+            }
+        }
+    }
 }
 
