@@ -46,10 +46,10 @@ var TechRadar;
             };
             Radar.prototype.drawBackground = function (axisLengthFactor) {
                 this.drawLabeledCircle("Doen!", 0.47, Radar.radius * 0.4);
-                this.drawLabeledCircle("Proberen", 0.4, Radar.radius * 0.7);
+                this.drawLabeledCircle("Proberen", 0.40, Radar.radius * 0.7);
                 this.drawCenteredCircle(Radar.radius * 0.85);
                 this.drawLabeledCircle("Experimenteren", 0.53, Radar.radius * 0.86);
-                this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1);
+                this.drawLabeledCircle("Afblijven", 0.27, Radar.radius * 1.0);
                 var axislen = Radar.radius * axisLengthFactor;
                 this.drawLine(0, axislen, 0, -axislen);
                 this.drawLine(axislen, 0, -axislen, 0);
@@ -66,8 +66,11 @@ var TechRadar;
             };
             Radar.prototype.restart = function () {
                 var circles = this.svg.selectAll("circle.thing").data(this.things);
+                var textThings = this.svg.selectAll("text.thing").data(this.things);
+                circles.exit().remove();
+                textThings.exit().remove();
                 circles.enter().append("circle").attr("class", "thing").attr("r", 4).call(this.force.drag);
-                this.svg.selectAll("text.thing").data(this.things).enter().append("text").attr("class", "thing").attr("dx", function (thing) {
+                textThings.enter().append("text").attr("class", "thing").attr("dx", function (thing) {
                     return (thing.quadrant.isLeft() ? -1 : 1) * 12;
                 }).attr("dy", 4).attr("text-anchor", function (thing) {
                     return thing.quadrant.isLeft() ? "end" : "start";
@@ -140,6 +143,4 @@ var TechRadar;
         Client.Radar = Radar;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-

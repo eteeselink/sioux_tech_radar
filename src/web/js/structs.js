@@ -17,7 +17,7 @@ var TechRadar;
             Polar.fromPoint = function fromPoint(x, y) {
                 y = -y;
                 return new Polar(Math.sqrt(x * x + y * y), Math.atan2(y, x));
-            }
+            };
             Polar.prototype.x = function () {
                 return this.r * Math.cos(this.phi);
             };
@@ -29,6 +29,4 @@ var TechRadar;
         Client.Polar = Polar;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-

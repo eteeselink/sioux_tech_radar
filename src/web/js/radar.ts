@@ -132,12 +132,12 @@ module TechRadar.Client{
     /// `this.things` changes.
     private restart() {
 
-      //alert("things in restart : " + this.things);
-
-      var circles = this.svg.selectAll("circle.thing")
-          .data(this.things);
-
-      //alert("circles : " + circles);
+    	var circles = this.svg.selectAll("circle.thing").data(this.things);
+    	var textThings = this.svg.selectAll("text.thing").data(this.things);
+        
+      //remove all circles with no data attached.
+    	circles.exit().remove();
+    	textThings.exit().remove();
 
       // append elements to the enter set (= the set of newly created elements)
       circles.enter().append("circle")
@@ -145,15 +145,14 @@ module TechRadar.Client{
         .attr("r", 4)
         .call(this.force.drag);
 
-      this.svg.selectAll("text.thing")
-        .data(this.things)
-        .enter()
+      textThings.enter()
         .append("text")
         .attr("class", "thing")
         .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? -1 : 1) * 12)
         .attr("dy", 4)
         .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start")
-        .text((thing: Thing) => thing.name);
+		.text((thing: Thing) => thing.name);
+	 
 
       this.force.start();
 
