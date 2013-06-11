@@ -39,7 +39,8 @@ module TechRadar.Client{
   export class Thing extends D3Node {
     constructor(
       public name: string,
-      public quadrant: Quadrant,
+      public quadrantnum: number, //double information about quadrant 
+      public quadrant: Quadrant,  //   -> to be refactored out
       goodness: number,   // between 0.0 and 1.0; closer to zero is better
     ) {
       super(null, null);
@@ -48,8 +49,6 @@ module TechRadar.Client{
       var phi = quadrant.angle + random(0.01, 0.02);
       this.polar = new Polar(r, phi);
       this.updateXY();
-
-      
     }
    
     private setupListener(){

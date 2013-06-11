@@ -26,3 +26,4 @@ var TechRadar;
     }
     TechRadar.cap = cap;
 })(TechRadar || (TechRadar = {}));
+

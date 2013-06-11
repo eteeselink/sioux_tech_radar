@@ -14,7 +14,8 @@ var TechRadar;
             });
             $.getJSON("http://localhost:54321/api/things/search/").done(function (data) {
                 for(var i = 0; i < data.length; i++) {
-                    things.push(new Client.Thing(data[i].Title, quadrants[i % 4], TechRadar.random(0.1, 1.0)));
+                    console.log("GetJSON quadrant : " + data[i].quadrant);
+                    things.push(new Client.Thing(data[i].Title, i % 4, quadrants[i % 4], TechRadar.random(0.1, 1)));
                 }
             });
             $.ajaxSetup({
@@ -33,11 +34,14 @@ var TechRadar;
             }
             var radar = new Client.Radar(500, quad, (quad !== null), classes);
             if(quad !== null) {
-                showList(getThings(), quad, radar);
+                showList(getThings(), parseInt(q, 10), quad, radar);
             }
         }
-        function addThing(thingname, quadrant) {
-            var newThing = new Client.Thing(thingname, quadrant, TechRadar.random(0.1, 1.0));
+        function addThing(thingname, quadrantnum, quadrant) {
+            var newThing = new Client.Thing(thingname, quadrantnum, quadrant, TechRadar.random(0.1, 1));
+            var dataforjson = JSON.stringify(newThing);
+            console.log("dataforjson : ");
+            console.log(dataforjson);
             $.ajax({
                 url: "http://localhost:54321/api/things/",
                 type: 'PUT',
@@ -71,7 +75,7 @@ var TechRadar;
                 radar.removeOpinion(things_matched[0]);
             }
         }
-        function showList(things, quadrant, radar) {
+        function showList(things, quadrantnum, quadrant, radar) {
             var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
             var container = $('<div class="btn-group btn-group-vertical thing-list ' + contClass + '" data-toggle="buttons-checkbox">');
             var selectedThings = things.filter(function (t) {
@@ -94,7 +98,7 @@ var TechRadar;
             container.append('<button class="addbtn">' + 'ADD' + '</button>');
             container.append('title: <input type="text" id="title">');
             container.find('.addbtn').click(function (ev) {
-                addThing($("#title").val(), quadrant);
+                addThing($("#title").val(), quadrantnum, quadrant);
             });
             $('body').append(container);
         }
@@ -111,4 +115,6 @@ var TechRadar;
         Client.Start = Start;
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+

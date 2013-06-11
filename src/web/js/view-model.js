@@ -2,7 +2,7 @@ var __extends = this.__extends || function (d, b) {
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
-};
+}
 var TechRadar;
 (function (TechRadar) {
     (function (Client) {
@@ -36,9 +36,10 @@ var TechRadar;
         Client.Quadrant = Quadrant;        
         var Thing = (function (_super) {
             __extends(Thing, _super);
-            function Thing(name, quadrant, goodness) {
+            function Thing(name, quadrantnum, quadrant, goodness) {
                         _super.call(this, null, null);
                 this.name = name;
+                this.quadrantnum = quadrantnum;
                 this.quadrant = quadrant;
                 var r = goodness * Client.Radar.radius;
                 var phi = quadrant.angle + TechRadar.random(0.01, 0.02);
@@ -75,4 +76,6 @@ var TechRadar;
         Client.Thing = Thing;        
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
+
 })(TechRadar || (TechRadar = {}));
+
