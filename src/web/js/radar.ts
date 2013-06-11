@@ -143,7 +143,7 @@ module TechRadar.Client{
         .attr("dy", 4)
         .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start");
 
-      textThings.text(function (thing: Thing) { console.log(thing); return thing.name; });
+      textThings.text((thing: Thing) => thing.name);
      
       this.force.start();
     }
