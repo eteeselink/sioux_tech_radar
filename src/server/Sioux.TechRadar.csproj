@@ -105,6 +105,9 @@
     <Compile Include="Server.cs" />
     <Compile Include="Things\DTO\Thing.cs" />
     <Compile Include="Things\DTO\ThingsRequest.cs" />
+    <Compile Include="Opinions\OpinionsService.cs" />
+    <Compile Include="Opinions\IOpinionsRepository.cs" />
+    <Compile Include="Opinions\DTO\Opinion.cs" />
     <Compile Include="sqlite\SqLiteConnectionFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

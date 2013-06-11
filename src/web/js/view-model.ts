@@ -63,6 +63,7 @@ module TechRadar.Client{
     		name: this.name,
     		goodness: this.goodness
     	}
+    	return; // rest interface not done yet
     	$.ajax({
     		url: "http://localhost:54321/api/opinions/"+name,
     		type: 'POST',
