@@ -51,8 +51,14 @@ module TechRadar.Client{
       this.updateXY();
     }
 
+    private previousGoodness = goodness;
 
     private notifyServer() {
+    	if (Math.abs(this.previousGoodness - this.goodness) <= 0.01)
+    	{
+    		return;
+    	}
+    	this.previousGoodness = this.goodness;
     	var opinion: Object = {
     		name: this.name,
     		goodness: this.goodness

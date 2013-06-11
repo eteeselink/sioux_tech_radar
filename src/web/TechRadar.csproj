@@ -34,6 +34,12 @@
     <Content Include="expl.html" />
     <Content Include="index.html" />
     <TypeScriptCompile Include="js\main.ts" />
+    <Content Include="js\main.js">
+      <DependentUpon>main.ts</DependentUpon>
+    </Content>
+    <Content Include="js\main.min.js">
+      <DependentUpon>main.ts</DependentUpon>
+    </Content>
     <Content Include="js\radar.js">
       <DependentUpon>radar.ts</DependentUpon>
     </Content>
