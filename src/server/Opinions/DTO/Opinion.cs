@@ -13,6 +13,6 @@ namespace Sioux.TechRadar{
     public class Opinion : IReturn<Opinion>
     {
         public String thingName{ get; set; }
-        public int goodness { get; set; }
+        public Double goodness { get; set; }
     }
 }
