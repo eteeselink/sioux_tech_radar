@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sioux.TechRadar
 {
-	public interface IThingsRepository : IDisposable
+	public interface IThingsRepository
 	{
 		Thing StoreNew(Thing thing);
 		Thing StoreUpdated(Thing thing);

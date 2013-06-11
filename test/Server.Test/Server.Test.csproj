@@ -111,6 +111,7 @@
     <Compile Include="SqLiteInMemoryFactory.cs" />
     <Compile Include="TempSQLiteFactory.cs" />
     <Compile Include="TempFile.cs" />
+    <Compile Include="UsersTest.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

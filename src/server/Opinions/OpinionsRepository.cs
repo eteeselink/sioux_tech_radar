@@ -78,10 +78,5 @@ namespace Sioux.TechRadar
                 connection.Delete(opinion);
             }
         }
-
-        public virtual void Dispose()
-        {
-            ConnectionFactory.Dispose();
-        }
     }
 }

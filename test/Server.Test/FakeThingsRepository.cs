@@ -22,11 +22,6 @@ namespace Sioux.TechRadar
 		}
 
 
-		public void Dispose ()
-		{
-
-		}
-
 		public Thing StoreNew (Thing thing)
 		{
 			Things.AddLast(thing);

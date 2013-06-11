@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Sioux.TechRadar
 {
-    public interface IOpinionsRepository : IDisposable
+    public interface IOpinionsRepository
     {
          IEnumerable<Opinion> GetByName(string name);
 
