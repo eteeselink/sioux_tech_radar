@@ -1,7 +1,7 @@
 /// <reference path="structs.ts" />
 /// <reference path="radar.ts" />
 /// <reference path="utils.ts" />
-
+/// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar.Client{
   var deg45 = Math.PI / 4;
@@ -50,19 +50,22 @@ module TechRadar.Client{
       this.polar = new Polar(r, phi);
       this.updateXY();
     }
-   
-    private setupListener(){
-    //  var socket = Bus.Thing();
-    //  socket.on(name, (data:any)=>{
-    //    console.log("yay got("+name+") data "+JSON.stringify(data));
-    //  });
-    //  socket.emit("register", name);
-    }
-    private notifyServer(){
-    //  var socket = Bus.Thing();
-    //  socket.emit(name, this.goodness());
-    }
 
+
+    private notifyServer() {
+    	var opinion: Object = {
+    		name: this.name,
+    		goodness: this.goodness
+    	}
+    	$.ajax({
+    		url: "http://localhost:54321/api/opinions/"+name,
+    		type: 'PUT',
+    		contentType: 'application/json',
+    		data: JSON.stringify(opinion),
+    		dataType: 'json'
+    	}).done(function (data) { console.log("ajax (updateOpinion) OK") });
+    }
+   
 
     public polar: Polar;
     public prevPolar: Polar;
