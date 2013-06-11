@@ -14,7 +14,7 @@ var TechRadar;
             });
             $.getJSON("http://localhost:54321/api/things/search/").done(function (data) {
                 for(var i = 0; i < data.length; i++) {
-                    things.push(new Client.Thing(data[i].Title, quadrants[i % 4], TechRadar.random(0.1, 1)));
+                    things.push(new Client.Thing(data[i].Title, quadrants[i % 4], TechRadar.random(0.1, 1.0)));
                 }
             });
             $.ajaxSetup({
@@ -37,7 +37,7 @@ var TechRadar;
             }
         }
         function addThing(thingname, quadrant) {
-            var newThing = new Client.Thing(thingname, quadrant, TechRadar.random(0.1, 1));
+            var newThing = new Client.Thing(thingname, quadrant, TechRadar.random(0.1, 1.0));
             $.ajax({
                 url: "http://localhost:54321/api/things/",
                 type: 'PUT',
@@ -111,6 +111,4 @@ var TechRadar;
         Client.Start = Start;
     })(TechRadar.Client || (TechRadar.Client = {}));
     var Client = TechRadar.Client;
-
 })(TechRadar || (TechRadar = {}));
-

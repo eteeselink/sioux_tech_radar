@@ -13,17 +13,7 @@ module TechRadar.Client {
       
     //TODO : thingsinfocus as class variables ? Also quadrant ?
 
-    var things = [
-    //  new Thing("C++", Quadrant.Languages, 0.9),
-    //  new Thing("Scal2", Quadrant.Languages, 0.6),
-    //  new Thing("TypeScript", Quadrant.Languages, 0.7),
-    //  new Thing("C##", Quadrant.Languages, 0.8),
-    //  new Thing("APL", Quadrant.Languages, 0.8),
-    //  new Thing("Continuous Integration", Quadrant.Techniques, 0.8),
-    //  new Thing("CodeSourcery GCC", Quadrant.Platforms, 0.5),
-    //  new Thing("NCrunch", Quadrant.Tools, 0.5),
-    //  new Thing("Git", Quadrant.Tools, 0.6),
-    ];
+    var things = [];
 
     $.ajaxSetup({
         async: false

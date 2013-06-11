@@ -56,13 +56,6 @@ module TechRadar.Client{
         this.restart();
     }
 
-    //public removeThings(names: string[]) {
-    //  var deleteIds = this.things
-    //    .filter(thing => names.indexOf(name)
-    //    thing.
-    //  });
-    //}
-
     private createSvg(auxClasses: string, margin: number) {
 
       // single quadrant: make the svg 1.5x wider that specified to accommodate
