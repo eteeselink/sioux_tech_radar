@@ -97,8 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Auth\SiouxExchangeServer.cs" />
-    <Compile Include="Auth\StolenCode.cs" />
+    <Compile Include="Users\Auth\SiouxExchangeServer.cs" />
+    <Compile Include="Users\Auth\StolenCode.cs" />
     <Compile Include="Opinions\OpinionsRepository.cs" />
     <Compile Include="Things\ThingsRepository.cs" />
     <Compile Include="Things\ThingsService.cs" />
@@ -110,8 +110,10 @@
     <Compile Include="Opinions\IOpinionsRepository.cs" />
     <Compile Include="Opinions\DTO\Opinion.cs" />
     <Compile Include="sqlite\SqLiteConnectionFactory.cs" />
+    <Compile Include="Users\DTO\SessionRequest.cs" />
     <Compile Include="Users\DTO\User.cs" />
     <Compile Include="Users\IUsersRepository.cs" />
+    <Compile Include="Users\SessionService.cs" />
     <Compile Include="Users\UsersRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
