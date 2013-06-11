@@ -99,6 +99,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Auth\SiouxExchangeServer.cs" />
     <Compile Include="Auth\StolenCode.cs" />
+    <Compile Include="Opinions\OpinionsRepository.cs" />
     <Compile Include="Things\ThingsRepository.cs" />
     <Compile Include="Things\ThingsService.cs" />
     <Compile Include="Things\IThingsRepository.cs" />

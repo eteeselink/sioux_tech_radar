@@ -5,7 +5,6 @@ using NLog;
 using ServiceStack.Common.Web;
 using System.Collections.Generic;
 using System.Net;
-using Sioux.TechRadar.Opinions;
 
 namespace Sioux.TechRadar
 {
@@ -13,6 +12,12 @@ namespace Sioux.TechRadar
     {
         private static Logger logger = LogManager.GetLogger("OpinionsService");
         public IOpinionsRepository Repository { get; set; }  //Injected by IOC
+
+        public IEnumerable<Opinion> Get(String name)
+        {
+            Console.WriteLine("Get received opinion string = " + name);
+            return Repository.GetByName(name);
+        }
 
         public object Post(Opinion opinion)
         {

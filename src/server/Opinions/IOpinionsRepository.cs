@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sioux.TechRadar.Opinions
+namespace Sioux.TechRadar
 {
-    public class IOpinionsRepository
+    public interface IOpinionsRepository : IDisposable
     {
-        public object StoreUpdated(Opinion opinion)
-        {
-            throw new NotImplementedException();
-        }
+        IEnumerable<Opinion> GetByName(string name);
 
-        public object StoreNew(Opinion opinion)
-        {
-            throw new NotImplementedException();
-        }
+        object StoreUpdated(Opinion opinion);
+
+        object StoreNew(Opinion opinion);
     }
 }

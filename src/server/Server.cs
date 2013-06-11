@@ -11,6 +11,7 @@ using ServiceStack.Logging;
 using ServiceStack.ServiceClient.Web;
 using System.Net;
 
+
 namespace Sioux.TechRadar
 {
 	public 	class Server : AppHostHttpListenerBase
@@ -87,6 +88,12 @@ namespace Sioux.TechRadar
 					ConnectionFactory =  factory
 			    }.EnsureTablesExist()
 			);
+            container.Register<IOpinionsRepository>(
+                new OpinionsRepository()
+                {
+                    ConnectionFactory = factory
+                }.EnsureTablesExist()
+            );
 			SetConfig(new EndpointHostConfig { ServiceStackHandlerFactoryPath = "api", 
 												MetadataRedirectPath = "api/metadata" });
 		
