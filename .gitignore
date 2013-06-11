@@ -121,6 +121,7 @@ UpgradeLog*.XML
 src/web/js/main.js
 src/web/js/main.js.map
 src/web/js/radar.js
+src/web/js/radar.min.js
 src/web/js/radar.js.map
 src/web/js/socket.js
 src/web/js/socket.js.map

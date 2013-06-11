@@ -89,8 +89,6 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.addOpinion(things_matched[0]);
     }
-      console.log("added opinion : " + things_matched[0].name + ", goodness: " + things_matched[0].goodness 
-          + ", quadrant:  " + things_matched[0].quadrant)
   }
 
   function removeOpinion(thingname: string, things: Thing[], radar: Radar){
@@ -121,7 +119,6 @@ module TechRadar.Client {
         else {
               removeOpinion(thingname, things, radar);
         }
-        console.log("processed (added or removed opinion) : " + thingname);
     });
 
 
@@ -129,7 +126,8 @@ module TechRadar.Client {
     container.append('<button class="addbtn">' + 'ADD' + '</button>');
     container.append('title: <input type="text" id="title">');
 
-    container.find('.addbtn').click(function (ev) {
+    container.find('.addbtn').click(function (ev)
+     {
         addThing($("#title").val(), quadrantnum, quadrant);
     });
     $('body').append(container);

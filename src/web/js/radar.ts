@@ -50,8 +50,6 @@ module TechRadar.Client{
     public removeOpinion(opinion: Thing) {
 
         var index_opinion = this.things.indexOf(opinion);
-        console.log("removing opinion from radar ; " + opinion.name + opinion.goodness + opinion.quadrant + opinion);
-        console.log("index : " + index_opinion + "  length (before remove) = " + this.things.length);
         this.things.splice(index_opinion, 1);
         this.restart();
     }
