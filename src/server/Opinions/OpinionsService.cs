@@ -19,15 +19,15 @@ namespace Sioux.TechRadar
             return Repository.GetByName(opinion.thingName);
         }
 
-        public object Post(Opinion opinion)
-        {
-            Console.WriteLine("Post received opinion string = " + opinion.ToString());
-            return Repository.StoreUpdated(opinion);
-        }
-
         public object Put(Opinion opinion)
         {
             Console.WriteLine("Put received opinion string = " + opinion.ToString());
+            return Repository.StoreUpdated(opinion);
+        }
+
+        public object Post(Opinion opinion)
+        {
+            Console.WriteLine("Post received opinion string = " + opinion.ToString());
             return Repository.StoreNew(opinion);       
         }
 

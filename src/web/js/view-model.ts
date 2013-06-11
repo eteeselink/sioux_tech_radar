@@ -81,7 +81,7 @@ module TechRadar.Client{
     	}
     	$.ajax({
     		url: "http://localhost:54321/api/opinions/" + opinion.thingName,
-    		type: 'POST',
+    		type: 'PUT',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
     		dataType: 'json'
@@ -96,7 +96,7 @@ module TechRadar.Client{
     	}
     	$.ajax({
     		url: "http://localhost:54321/api/opinions/" ,
-    		type: 'PUT',
+    		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
     		dataType: 'json'

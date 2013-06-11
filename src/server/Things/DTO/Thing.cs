@@ -12,12 +12,13 @@ namespace Sioux.TechRadar
     /// A thing is in most cases a response object.
     /// </summary>
     // TODO: POST should be for Create, and PUT for update. Also change in service.
-    [Route("/api/things/{name}","POST")] // update
-    [Route("/api/things","PUT")] // create
-    public class Thing : IReturn<Thing>
-    {
-        [PrimaryKey]
-        public string Name{ get; set; }
+
+	[Route("/api/things/{name}","PUT")] // update
+	[Route("/api/things","POST")] // create
+	public class Thing : IReturn<Thing>
+	{
+		[PrimaryKey]
+		public string Name{ get; set; }
         public Quadrant Quadrantid { get; set; }
         public Quadrant Quadrant { get; set; }   //TODO double quadrant information -> refactor out.
         public string Title { get; set; }

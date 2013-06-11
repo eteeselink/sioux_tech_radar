@@ -64,10 +64,10 @@ namespace Sioux.TechRadar
         /// This will update a Thing
         /// </summary>
         /// <param name="thing">Thing.</param>
-        public object Post(Thing thing)
+        public object Put(Thing thing)
         {
 
-            Console.WriteLine("Post received");
+            Console.WriteLine("Put received");
 
             if (String.IsNullOrWhiteSpace(thing.Name)
                 || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest, "Thing was not complete");
@@ -96,9 +96,9 @@ namespace Sioux.TechRadar
         /// 
         /// </summary>
         /// <param name="thing">Thing.</param>
-        public object Put(Thing thing)
+        public object Post(Thing thing)
         {
-            Console.WriteLine("Put received thing string = " + thing.ToString());
+            Console.WriteLine("Post received thing string = " + thing.ToString());
 
             //TODO Temporary workaround  -> Title should be filled in and name is derived from it. Not available yet in typescript code.
             thing.Title = thing.Name;
