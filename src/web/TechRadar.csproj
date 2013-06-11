@@ -49,7 +49,6 @@
     <Content Include="js\radar.min.js">
       <DependentUpon>radar.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="js\socket.ts" />
     <Content Include="js\structs.js">
       <DependentUpon>structs.ts</DependentUpon>
     </Content>
@@ -88,6 +87,9 @@
     </Content>
     <Content Include="js\techradar.min.js.map">
       <DependentUpon>techradar.js</DependentUpon>
+    </Content>
+    <Content Include="js\main.js.map">
+      <DependentUpon>main.ts</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
