@@ -35,13 +35,13 @@ namespace Sioux.TechRadar
                     
                     var thingToInsert = new Thing() { Title = @"C" };
                     thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
-                    thingToInsert.Quadrant = Quadrant.Languages;
+                    thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
 
                     
                     thingToInsert = new Thing() { Title = @"Scala" };
                     thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
-                    thingToInsert.Quadrant = Quadrant.Languages;
+                    thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
                 }
             }

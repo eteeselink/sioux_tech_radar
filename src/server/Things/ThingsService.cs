@@ -77,7 +77,7 @@ namespace Sioux.TechRadar
             //verify update is valid
             if (existingThing != null)
             {
-                if (existingThing.Quadrant != thing.Quadrant
+                if (existingThing.Quadrantid != thing.Quadrantid
                     || existingThing.Title != thing.Title)
                 {
                     throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
@@ -97,7 +97,6 @@ namespace Sioux.TechRadar
         /// </summary>
         /// <param name="thing">Thing.</param>
         public object Put(Thing thing)
-        //       public object Put (ThingsRequest thing)
         {
             Console.WriteLine("Put received thing string = " + thing.ToString());
 

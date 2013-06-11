@@ -39,7 +39,7 @@ module TechRadar.Client{
   export class Thing extends D3Node {
     constructor(
       public name: string,
-      public quadrantnum: number, //double information about quadrant 
+      public quadrantid: number, //double information about quadrant 
       public quadrant: Quadrant,  //   -> to be refactored out
       goodness: number,   // between 0.0 and 1.0; closer to zero is better
     ) {

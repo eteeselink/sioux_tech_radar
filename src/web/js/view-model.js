@@ -36,10 +36,10 @@ var TechRadar;
         Client.Quadrant = Quadrant;        
         var Thing = (function (_super) {
             __extends(Thing, _super);
-            function Thing(name, quadrantnum, quadrant, goodness) {
+            function Thing(name, quadrantid, quadrant, goodness) {
                         _super.call(this, null, null);
                 this.name = name;
-                this.quadrantnum = quadrantnum;
+                this.quadrantid = quadrantid;
                 this.quadrant = quadrant;
                 var r = goodness * Client.Radar.radius;
                 var phi = quadrant.angle + TechRadar.random(0.01, 0.02);
@@ -79,3 +79,4 @@ var TechRadar;
 
 })(TechRadar || (TechRadar = {}));
 
+//@ sourceMappingURL=view-model.js.map
