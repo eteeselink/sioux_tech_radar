@@ -89,6 +89,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.addOpinion(things_matched[0]);
     }
+    things_matched[0].storeNewOpinion();
   }
 
   function removeOpinion(thingname: string, things: Thing[], radar: Radar){
@@ -99,6 +100,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.removeOpinion(things_matched[0]);
     }
+    things_matched[0].deleteOpinion();
   }
 
 

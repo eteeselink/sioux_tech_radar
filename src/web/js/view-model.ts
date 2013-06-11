@@ -54,18 +54,35 @@ module TechRadar.Client{
     private previousGoodness = goodness;
 
     private notifyServer() {
-    	if (Math.abs(this.previousGoodness - this.goodness) <= 0.01)
+    	var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
+    	if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.1)
     	{
     		return;
     	}
-    	this.previousGoodness = this.goodness;
+    	this.previousGoodness = this.goodness();
+    	this.updateOpinion();
+    }
+
+    public deleteOpinion() {
+    	console.log("ajax (deleteOpinion) called");
+    	return;
+    	$.ajax({
+    		url: "http://localhost:54321/api/opinions/" + name,
+    		type: 'DELETE',
+    		contentType: 'application/json',
+    		dataType: 'json'
+    	}).done(function (data) { console.log("ajax (deleteOpinion) OK") });
+    }
+
+    public updateOpinion() {
+    	console.log("ajax (updateOpinion) called");
+    	return;
     	var opinion: Object = {
     		name: this.name,
     		goodness: this.goodness
     	}
-    	return; // rest interface not done yet
     	$.ajax({
-    		url: "http://localhost:54321/api/opinions/"+name,
+    		url: "http://localhost:54321/api/opinions/" + name,
     		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
@@ -73,6 +90,21 @@ module TechRadar.Client{
     	}).done(function (data) { console.log("ajax (updateOpinion) OK") });
     }
    
+    public storeNewOpinion() {
+    	console.log("ajax (storeNewOpinion) called");
+    	return;
+    	var opinion: Object = {
+    		name: this.name,
+    		goodness: this.goodness
+    	}
+    	$.ajax({
+    		url: "http://localhost:54321/api/opinions/" ,
+    		type: 'PUT',
+    		contentType: 'application/json',
+    		data: JSON.stringify(opinion),
+    		dataType: 'json'
+    	}).done(function (data) { console.log("ajax (storeNewOpinion) OK") });
+    }
 
     public polar: Polar;
     public prevPolar: Polar;
