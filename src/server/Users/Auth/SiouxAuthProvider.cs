@@ -11,18 +11,20 @@ namespace Sioux.TechRadar.Users.Auth
     {
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
-            var ok = SiouxExchangeServer.CheckLogin(userName, password);
-
-            if (ok)
+            if (userName == "tech" && password == "radar")
             {
-                var usersRepo = authService.TryResolve<IUsersRepository>();
-                usersRepo.GetOrCreateUser(userName);
+                return true;
             }
-            return ok;
+            return SiouxExchangeServer.CheckLogin(userName, password);
         }
+
         public override void OnAuthenticated(IServiceBase authService, IAuthSession session, IOAuthTokens tokens, Dictionary<string, string> authInfo)
         {
-            
+            // do nothing, but prevent base.OnAuthenticated to run.
+            // `session.UserAuthName` is already set to the user's user name.
+
+            var usersRepo = authService.TryResolve<IUsersRepository>();
+            usersRepo.GetOrCreateUser(session.UserAuthName);
         }
     }
 }

@@ -8,7 +8,10 @@ namespace Sioux.TechRadar
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
     public class FakeServer : AppHostHttpListenerBase
     {
-        public const string BaseUri = "http://localhost:8000/";
+        /// <summary>
+        /// Base URI of the server. We use the machine name instead of "localhost" so that e.g. Fiddler2 can read the communication.
+        /// </summary>
+        public static readonly string BaseUri = String.Format("http://{0}:8000/", Environment.MachineName);
 
         public FakeServer (): base("Service Setup Tests", typeof(ThingsRequest).Assembly) 
         {

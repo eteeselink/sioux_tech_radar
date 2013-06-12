@@ -99,6 +99,7 @@ namespace Sioux.TechRadar
             container.Register<IThingsRepository>(new ThingsRepository(factory));
             container.Register<IOpinionsRepository>(new OpinionsRepository(factory));
             container.Register<IUsersRepository>(new UsersRepository(factory));
+
             container.Register<ICacheClient>(new MemoryCacheClient() { FlushOnDispose = false });
 
             var authFeature = new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] {
@@ -108,8 +109,8 @@ namespace Sioux.TechRadar
                 ServiceRoutes = new Dictionary<Type, string[]> 
                 {
                     { typeof(AuthService), new[]{"/api/auth", "/api/auth/{provider}"} },
-                    //{ typeof(AssignRolesService), new[]{"/assignroles"} },
-                    //{ typeof(UnAssignRolesService), new[]{"/unassignroles"} },
+                    { typeof(AssignRolesService), new[]{"/assignroles"} },
+                    { typeof(UnAssignRolesService), new[]{"/unassignroles"} },
                 }
             };
             Plugins.Add(authFeature);
