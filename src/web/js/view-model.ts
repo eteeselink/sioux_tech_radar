@@ -65,12 +65,12 @@ module TechRadar.Client{
 
     public deleteOpinion() {
     	console.log("ajax (deleteOpinion) called");
-    	$.ajax({
+    	return $.ajax({
     		url: "http://localhost:54321/api/opinions/" + this.name,
     		type: 'DELETE',
     		contentType: 'application/json',
     		dataType: 'json'
-    	}).done(function (data) { console.log("ajax (deleteOpinion) OK") });
+    	});
     }
 
     public updateOpinion() {
@@ -79,13 +79,13 @@ module TechRadar.Client{
     		thingName: this.name,
     		goodness: this.goodness()
     	}
-    	$.ajax({
+    	return $.ajax({
     		url: "http://localhost:54321/api/opinions/" + opinion.thingName,
     		type: 'PUT',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
     		dataType: 'json'
-    	}).done(function (data) { console.log("ajax (updateOpinion) OK") });
+    	});
     }
    
     public storeNewOpinion() {
@@ -94,13 +94,13 @@ module TechRadar.Client{
     		thingName: this.name,
     		goodness: this.goodness()
     	}
-    	$.ajax({
-    		url: "http://localhost:54321/api/opinions/" ,
+    	return $.ajax({
+    		url: "http://localhost:54321/api/opinions/",
     		type: 'POST',
     		contentType: 'application/json',
     		data: JSON.stringify(opinion),
     		dataType: 'json'
-    	}).done(function (data) { console.log("ajax (storeNewOpinion) OK") });
+    	});
     }
 
     public polar: Polar;

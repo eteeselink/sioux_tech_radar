@@ -67,14 +67,13 @@ module TechRadar.Client {
         console.log("dataforjson : ");
         console.log(dataforjson);
 
-        $.ajax({
-            url: "http://localhost:54321/api/things/",
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(newThing),
-            dataType: 'json'
-        }).done(function (data) { 
-            console.log("ajax (addThing) OK")});
+        return $.ajax({
+        	url: "http://localhost:54321/api/things/",
+        	type: 'POST',
+        	contentType: 'application/json',
+        	data: JSON.stringify(newThing),
+        	dataType: 'json'
+        });
   }
     
   function addOpinion(thingname: string, things: Thing[], radar: Radar){
@@ -85,7 +84,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.addOpinion(things_matched[0]);
     }
-    things_matched[0].storeNewOpinion();
+    return things_matched[0].storeNewOpinion();
   }
 
   function removeOpinion(thingname: string, things: Thing[], radar: Radar){
@@ -96,7 +95,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.removeOpinion(things_matched[0]);
     }
-    things_matched[0].deleteOpinion();
+    return things_matched[0].deleteOpinion();
   }
 
 
@@ -116,7 +115,7 @@ module TechRadar.Client {
             addOpinion(thingname, things, radar);
         }
         else {
-              removeOpinion(thingname, things, radar);
+            removeOpinion(thingname, things, radar);
         }
     });
 
