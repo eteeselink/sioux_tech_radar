@@ -15,15 +15,13 @@ namespace Sioux.TechRadar
 
         public IEnumerable<Opinion> Get(Opinion opinion)
         {
-            Console.WriteLine("Get received opinion string = " + opinion.thingName);
-            return Repository.GetByName(opinion.thingName);
+            if (opinion.thingName == null ){
+                return Repository.GetAll();
+            }else{
+                return Repository.GetByName(opinion.thingName);
+            }
         }
 
-        public IEnumerable<Opinion> Get()
-        {
-            Console.WriteLine("Get received opinions");
-            return Repository.GetAll();
-        }
 
         public object Put(Opinion opinion)
         {
