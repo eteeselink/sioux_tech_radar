@@ -38,19 +38,19 @@ module TechRadar.Client{
   /// on the technology radar.
   export class Thing extends D3Node {
     constructor(
-      public name: string,
+	  public name: string,
+	  public title: string,
       public quadrantid: number, //double information about quadrant 
       public quadrant: Quadrant,  //   -> to be refactored out
-      goodness: number,   // between 0.0 and 1.0; closer to zero is better
+      	goodness: number   // between 0.0 and 1.0; closer to zero is better		
     ) {
       super(null, null);
-      var r = goodness * Radar.radius;
-
-      var phi = quadrant.angle + random(0.01, 0.02);
-      this.polar = new Polar(r, phi);
-      this.updateXY();
+      this.setgoodness(goodness);
     }
 
+
+
+    public hasOpinion = false;
     private previousGoodness = goodness;
 
     private notifyServer() {
@@ -129,6 +129,13 @@ module TechRadar.Client{
     }
     public goodness() {
       return this.polar.r / Radar.radius;
+    }
+
+    public setgoodness(goodness: number) {
+    	var r = goodness * Radar.radius;
+    	var phi = this.quadrant.angle + random(0.01, 0.02);
+    	this.polar = new Polar(r, phi);
+    	this.updateXY();
     }
   }
 }

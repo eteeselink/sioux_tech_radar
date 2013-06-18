@@ -11,9 +11,7 @@ module TechRadar.Client {
 
 
   function getThings() {
-      
-    //TODO : thingsinfocus as class variables ? Also quadrant ?
-
+  	console.log("getting things");
     var things = [];
     var d = $.Deferred();
     $.getJSON("http://localhost:54321/api/things/search/")
@@ -27,7 +25,7 @@ module TechRadar.Client {
               else if (quadrant == "Languages") quadrantid = 2;
               else if (quadrant == "Platforms") quadrantid = 3;
 
-              things.push(new Thing(data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
+              things.push(new Thing(data[i].Name, data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
           }//end for
           d.resolve(things);
       }).fail(d.reject);
@@ -35,7 +33,29 @@ module TechRadar.Client {
     return d.promise();
   }
 
-  
+
+  function getThingsAndOpinions() {
+  	console.log("getting things and opinions");
+  	var d = $.Deferred();  	
+  	getThings().done(function (things) {
+  		console.log("getting opinions");
+  		$.getJSON("http://localhost:54321/api/opinions")
+			.done(function (data) {
+		  	for (var i = 0; i < data.length; i++) {
+		  		for (var j = 0; j < things.length; j++) {
+		  			if (data[i].thingName == things[j].name) {
+		  				console.log(things[j].name + " has an opinion!");
+		  				things[j].setgoodness(data[i].goodness);
+		  				things[j].hasOpinion = true;
+		  			}
+		  		}
+		  	}//end fors		  			  	
+		  	console.log("got opinions and  things");
+		  	d.resolve(things);
+			}).fail(d.reject);
+  		}).fail(d.reject);
+  	return d.promise();
+  	}
 
   function showTab(q: string) {
 
@@ -50,7 +70,8 @@ module TechRadar.Client {
       classes += " single-quadrant";
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
-    var things = getThings().done(function (things) {
+    getThingsAndOpinions().done(function (things) {
+    	console.log("got my things ="+JSON.stringify(things));
     	if (quad !== null) {
     		showList(things, parseInt(q, 10), quad, radar);
     	}
@@ -59,9 +80,8 @@ module TechRadar.Client {
 
 
 
-
   function addThing(thingname: string, quadrantnum: number, quadrant: Quadrant) {
-        var newThing = new Thing(thingname, quadrantnum,  quadrant, random(0.1, 1.0));
+        var newThing = new Thing(null,thingname, quadrantnum,  quadrant, random(0.1, 1.0));
 
         var dataforjson = JSON.stringify(newThing);
         console.log("dataforjson : ");
@@ -84,6 +104,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.addOpinion(things_matched[0]);
     }
+    things_matched[0].hasOpinion = true;
     return things_matched[0].storeNewOpinion();
   }
 
@@ -95,6 +116,7 @@ module TechRadar.Client {
     if (thingname.length > 0) {
         radar.removeOpinion(things_matched[0]);
     }
+    things_matched[0].hasOpinion = false;
     return things_matched[0].deleteOpinion();
   }
 
@@ -104,7 +126,11 @@ module TechRadar.Client {
     var container = $('<div class="btn-group btn-group-vertical thing-list '+contClass+'" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant === quadrant);
     selectedThings.forEach(thing => {
-      container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.name + '</button>')
+    	if (thing.hasOpinion) {
+    		container.append('<button class="btn active" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    	} else {
+    		container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    	}      
     });
 
 	// add existing things to view
