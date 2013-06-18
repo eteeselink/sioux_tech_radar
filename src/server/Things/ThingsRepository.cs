@@ -78,7 +78,7 @@ namespace Sioux.TechRadar
         {
             try {
                 using (var connection = connectionFactory.Connect()) {
-                    connection.UpdateOnly( thing, t => t.Description);
+                    connection.UpdateOnly( thing, t => t.Description ,  t => t.Name == thing.Name);
                 }
                 return thing;
             } catch (Exception e) {

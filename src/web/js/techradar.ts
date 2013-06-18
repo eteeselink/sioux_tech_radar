@@ -144,6 +144,7 @@ module TechRadar.Client {
         var thingname = $(this).data('thing'); 
 
         if (!$(this).hasClass('active')) {
+			
             addOpinion(thingname, things, radar);
         }
         else {

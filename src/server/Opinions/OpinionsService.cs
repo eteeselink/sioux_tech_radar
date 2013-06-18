@@ -25,7 +25,7 @@ namespace Sioux.TechRadar
 
         public object Put(Opinion opinion)
         {
-            Console.WriteLine("Put received opinion string = " + opinion.ToString());
+            Console.WriteLine("Put received opinion string = " + opinion.thingName);
             return Repository.StoreUpdated(opinion);
         }
 

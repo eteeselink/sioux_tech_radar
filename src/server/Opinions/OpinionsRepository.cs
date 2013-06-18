@@ -51,7 +51,7 @@ namespace Sioux.TechRadar
             {
                 using (var connection = connectionFactory.Connect())
                 {
-                    connection.UpdateOnly(opinion,o => o.goodness);
+                    connection.UpdateOnly(opinion, o=> o.goodness, o => o.thingName == opinion.thingName);
                 }
                 return opinion;
             }
