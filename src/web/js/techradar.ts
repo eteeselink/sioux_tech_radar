@@ -15,11 +15,7 @@ module TechRadar.Client {
     //TODO : thingsinfocus as class variables ? Also quadrant ?
 
     var things = [];
-
-    $.ajaxSetup({
-        async: false
-    });
-
+    var d = $.Deferred();
     $.getJSON("http://localhost:54321/api/things/search/")
       .done(function(data) {
           for (var i=0;i<data.length;i++)
@@ -31,16 +27,15 @@ module TechRadar.Client {
               else if (quadrant == "Languages") quadrantid = 2;
               else if (quadrant == "Platforms") quadrantid = 3;
 
-              things.push(new Thing(data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));
-          }
-    });
+              things.push(new Thing(data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
+          }//end for
+          d.resolve(things);
+      }).fail(d.reject);
 
-    $.ajaxSetup({
-        async: true
-    });
-
-    return things;
+    return d.promise();
   }
+
+  
 
   function showTab(q: string) {
 
@@ -55,10 +50,11 @@ module TechRadar.Client {
       classes += " single-quadrant";
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
-
-    if (quad !== null) {
-        showList(getThings(), parseInt(q, 10), quad, radar);
-    }
+    var things = getThings().done(function (things) {
+    	if (quad !== null) {
+    		showList(things, parseInt(q, 10), quad, radar);
+    	}
+    });
   }
 
 
@@ -112,6 +108,7 @@ module TechRadar.Client {
       container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.name + '</button>')
     });
 
+	// add existing things to view
     container.find('.btn').click(function(ev) {
         var thingname = $(this).data('thing'); 
 
@@ -122,6 +119,8 @@ module TechRadar.Client {
               removeOpinion(thingname, things, radar);
         }
     });
+
+  	//add existing opinions to view
 
 
     //Section for adding a thing.
