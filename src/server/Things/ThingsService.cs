@@ -99,10 +99,7 @@ namespace Sioux.TechRadar
         public object Post(Thing thing)
         {
             Console.WriteLine("Post received thing string = " + thing.ToString());
-
-            //TODO Temporary workaround  -> Title should be filled in and name is derived from it. Not available yet in typescript code.
-            thing.Title = thing.Name;
-
+            
             if (String.IsNullOrWhiteSpace(thing.Title)
                ) throw new HttpError(HttpStatusCode.NotAcceptable, "Thing was not complete");
 

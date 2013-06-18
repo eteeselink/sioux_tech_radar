@@ -10,12 +10,12 @@ module TechRadar.Client{
   /// faking an enum with a class and statics is that you can add methods, more
   /// like Java and less like C(#/++/)
   export class Quadrant extends Enum {
-    constructor(public xloc: number, public yloc: number, public angle: number) { super(Quadrant); }
+    constructor(public xloc: number, public yloc: number, public angle: number, public id:number) { super(Quadrant); }
 
-    public static Tools      = new Quadrant( 1, -1,  1 * deg45);
-    public static Techniques = new Quadrant(-1, -1,  3 * deg45);
-    public static Platforms  = new Quadrant(-1,  1, -3 * deg45);
-    public static Languages  = new Quadrant( 1,  1, -1 * deg45);
+    public static Tools      = new Quadrant( 1, -1,  1 * deg45, 1);
+    public static Techniques = new Quadrant(-1, -1,  3 * deg45, 0);
+    public static Platforms  = new Quadrant(-1,  1, -3 * deg45, 3);
+    public static Languages  = new Quadrant( 1,  1, -1 * deg45, 2);
 
     public angleLower() {
       return this.angle - deg45;

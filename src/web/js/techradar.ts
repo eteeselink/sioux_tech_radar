@@ -159,6 +159,11 @@ module TechRadar.Client {
     var btnAdd = $('<button class="btn btn_thing btn-info"  data-toggle="modal" data-target="#addThingsModal">Add</button>');
     parentContainer.append(btnAdd);
 
+    $('#addthingsform').submit(function (ev) {
+    	addThing($('input#titleInput').val(), quadrant.id, quadrant);
+    	ev.preventDefault();
+    });
+
     parentContainer.append(container);
     $('body').append(parentContainer);
   }
