@@ -127,20 +127,20 @@ module TechRadar.Client {
 
 
   function showList(things: Thing[], quadrantnum: number, quadrant: Quadrant, radar: Radar) {
-    var contClass = quadrant.isLeft() ? "thing-list-left" : "thing-list-right";
-    var container = $('<div class="btn-group btn-group-vertical thing-list '+contClass+'" data-toggle="buttons-checkbox">');
+  	var parentContainer = $('<div class="thing-list-left btn-group btn-group-vertical">');
+  	var container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant === quadrant);
     selectedThings.forEach(thing => {
     	if (thing.hasOpinion) {
-    		container.append('<button class="btn active" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    		container.append('<button class="btn active btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
     		addOpinion(thing.name, things, radar);
     	} else {
-    		container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    		container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
     	}      
     });
 
 	// add existing things to view
-    container.find('.btn').click(function(ev) {
+    container.find('.thingButton').click(function(ev) {
         var thingname = $(this).data('thing'); 
 
         if (!$(this).hasClass('active')) {
@@ -155,15 +155,12 @@ module TechRadar.Client {
   	//add existing opinions to view
 
 
-    //Section for adding a thing.
-    container.append('<button class="addbtn">' + 'ADD' + '</button>');
-    container.append('title: <input type="text" id="title">');
+  	//Section for adding a thing.       
+    var btnAdd = $('<button class="btn btn_thing btn-info"  data-toggle="modal" data-target="#addThingsModal">Add</button>');
+    parentContainer.append(btnAdd);
 
-    container.find('.addbtn').click(function (ev)
-     {
-        addThing($("#title").val(), quadrantnum, quadrant);
-    });
-    $('body').append(container);
+    parentContainer.append(container);
+    $('body').append(parentContainer);
   }
 
   function makeTabs() {

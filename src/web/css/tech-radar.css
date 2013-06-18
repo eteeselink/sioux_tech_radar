@@ -2,15 +2,27 @@
   font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace;
   text-align: center;
 }
-div.thing-list {
+.thing-list {
   position: absolute;
   top: 60px;
 }
-div.thing-list-right {
+.thing-list-right {
+  position: absolute;
+  top: 60px;
   right: 20px;
 }
-div.thing-list-left {
+.thing-list-left {
+  position: absolute;
+  top: 60px;
   left: 20px;
+}
+.btn_thing {
+  min-width: 160px !important;
+}
+.addThings {
+  position: absolute;
+  top: 60px;
+  left: 200px;
 }
 svg.radar circle.thing {
   stroke: #83b2e5;
