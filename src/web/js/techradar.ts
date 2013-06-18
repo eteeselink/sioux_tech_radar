@@ -102,10 +102,15 @@ module TechRadar.Client {
             alert("Amount of things matched to button unexpected : " + things_matched.length);
           }
     if (thingname.length > 0) {
+		//do UI stuff
         radar.addOpinion(things_matched[0]);
     }
-    things_matched[0].hasOpinion = true;
-    return things_matched[0].storeNewOpinion();
+    if (things_matched[0].hasOpinion) {
+    	return things_matched[0].updateOpinion()
+    } else {
+    	things_matched[0].hasOpinion = true;
+    	return things_matched[0].storeNewOpinion();
+    }        
   }
 
   function removeOpinion(thingname: string, things: Thing[], radar: Radar){
