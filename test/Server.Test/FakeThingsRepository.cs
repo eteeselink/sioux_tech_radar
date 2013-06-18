@@ -31,7 +31,7 @@ namespace Sioux.TechRadar
 		{
 			var oldThing = Things.Where (t => t.Name == thing.Name).First ();
 			oldThing.Description = thing.Description;
-			oldThing.Quadrant = thing.Quadrant;
+			oldThing.Quadrantid = thing.Quadrantid;
 			return oldThing;
 		}
 		public IEnumerable<Thing> GetByName (string name)
@@ -45,7 +45,7 @@ namespace Sioux.TechRadar
 		}
 		public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
 		{
-			return Things.Where( thing => thing.Quadrant == quadrant);
+			return Things.Where( thing => thing.Quadrantid == quadrant);
 		}
 		public IEnumerable<Thing> Search (ThingsRequest request)
 		{

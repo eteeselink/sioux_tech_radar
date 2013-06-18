@@ -102,7 +102,7 @@ namespace Sioux.TechRadar
         public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
         {
             using (var connection = connectionFactory.Connect()) {
-                return connection.Select<Thing>("Quadrant = {0}", quadrant);
+                return connection.Select<Thing>("Quadrantid = {0}", quadrant);
             }
         }
         //TODO: make this perform properly

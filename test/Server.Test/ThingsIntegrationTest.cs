@@ -24,14 +24,14 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithRealRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+                    var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
                     client.Post(newThing);					
                     ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};					
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
                     
                     res.Count().ShouldBe(1);
                     res.First().Description.ShouldBe(newThing.Description);
-                    res.First().Quadrant.ShouldBe(newThing.Quadrant);
+                    res.First().Quadrantid.ShouldBe(newThing.Quadrantid);
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithRealRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrant=Quadrant.Languages};
+                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
                     var updatedThing = fs.RealThingsRepos.StoreNew(newThing);
 
                     updatedThing.Description += ", whatever";
@@ -54,7 +54,7 @@ namespace Sioux.TechRadar
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
                     
                     res.Count().ShouldBe(1);
-                    result.Quadrant.ShouldBe(updatedThing.Quadrant);
+                    result.Quadrantid.ShouldBe(updatedThing.Quadrantid);
                     result.Description.ShouldBe(updatedThing.Description);
                 }
             }

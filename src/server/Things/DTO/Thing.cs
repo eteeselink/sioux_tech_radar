@@ -19,8 +19,8 @@ namespace Sioux.TechRadar
     {
         [PrimaryKey]
         public string Name{ get; set; }
-        public Quadrant Quadrantid { get; set; }
-        public Quadrant Quadrant { get; set; }   //TODO double quadrant information -> refactor out.
+        
+        public Quadrant Quadrantid { get; set; }   //TODO double quadrant information -> refactor out.
         public string Title { get; set; }
         public string Description{ get; set; }
 
