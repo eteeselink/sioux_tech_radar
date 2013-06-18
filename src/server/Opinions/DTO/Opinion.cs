@@ -6,6 +6,7 @@ using ServiceStack.DataAnnotations;
 
 namespace Sioux.TechRadar{
 
+    [Route("/api/opinions", "GET")] // create  
     [Route("/api/opinions/{thingName}", "GET")] // read
     [Route("/api/opinions/{thingName}", "PUT")] // update
     [Route("/api/opinions", "POST")] // create  

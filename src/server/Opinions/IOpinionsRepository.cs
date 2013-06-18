@@ -14,5 +14,7 @@ namespace Sioux.TechRadar
          object StoreNew(Opinion opinion);
 
          void Delete(string name);
+
+         IEnumerable<Opinion> GetAll();
     }
 }

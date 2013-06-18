@@ -19,6 +19,12 @@ namespace Sioux.TechRadar
             return Repository.GetByName(opinion.thingName);
         }
 
+        public IEnumerable<Opinion> Get()
+        {
+            Console.WriteLine("Get received opinions");
+            return Repository.GetAll();
+        }
+
         public object Put(Opinion opinion)
         {
             Console.WriteLine("Put received opinion string = " + opinion.ToString());

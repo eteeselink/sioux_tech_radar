@@ -37,6 +37,14 @@ namespace Sioux.TechRadar
             }
         }
 
+        public IEnumerable<Opinion> GetAll()
+        {
+            using (var connection = connectionFactory.Connect())
+            {
+                return connection.Select<Opinion>();
+            }
+        }
+
         public object StoreUpdated(Opinion opinion)
         {
             try
