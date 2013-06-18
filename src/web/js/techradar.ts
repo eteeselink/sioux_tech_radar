@@ -7,8 +7,6 @@ module TechRadar.Client {
 
   declare var d3: any;
 
-  var quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
-
 
   function getThings() {
   	console.log("getting things");
@@ -25,7 +23,7 @@ module TechRadar.Client {
               else if (quadrant == "Languages") quadrantid = 2;
               else if (quadrant == "Platforms") quadrantid = 3;
 
-              things.push(new Thing(data[i].Name, data[i].Title, data[i].Description, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
+              things.push(new Thing(data[i].Name, data[i].Title, data[i].Description, quadrantid, random(0.1, 1.0)));			  
           }//end for
           d.resolve(things);
       }).fail(d.reject);
@@ -64,7 +62,7 @@ module TechRadar.Client {
     $('svg.radar').remove();
     $('#thingsList').remove();
 
-    var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];
+    var quad = (q === "all") ? null : Quadrants[parseInt(q, 10)];
     var classes = "quadrant-" + q;
     if (quad !== null) {
       classes += " single-quadrant";
@@ -73,17 +71,17 @@ module TechRadar.Client {
     getThingsAndOpinions().done(function (things) {
     	console.log("got my things ="+JSON.stringify(things));
     	if (quad !== null) {
-    		showList(things, parseInt(q, 10), quad, radar);
+    		showList(things, quad, radar);
     	}
     });
   }
 
 
 
-  function addThing(thingname: string, quadrantnum: number, quadrant: Quadrant) {
-        var newThing = new Thing(null,thingname, thingname+" has no description", quadrantnum,  quadrant, random(0.1, 1.0));
+  function addThing(thingname: string, quadrantnum: number) {
+        var newThing = new Thing(null,thingname, thingname+" has no description", quadrantnum,  random(0.1, 1.0));
 
-        var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum, "Quadrant": quadrantnum });
+        var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum });
 
         return $.ajax({
         	url: "http://localhost:54321/api/things/",
@@ -124,10 +122,10 @@ module TechRadar.Client {
   }
 
 
-  function showList(things: Thing[], quadrantnum: number, quadrant: Quadrant, radar: Radar) {  	
+  function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {  	
   	var parentContainer = $('<div id="thingsList" class="thing-list-left btn-group btn-group-vertical">');
   	var container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
-    var selectedThings = things.filter(t => t.quadrant === quadrant);
+    var selectedThings = things.filter(t => t.quadrant() === quadrant);
     selectedThings.forEach(thing => {
     	if (thing.hasOpinion) {
     		container.append('<button class="btn active btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
@@ -156,13 +154,13 @@ module TechRadar.Client {
   	//Section for adding a thing.       
     var btnAdd = $('<button class="btn btn_thing btn-info"  data-toggle="modal" data-target="#addThingsModal">Add</button>');
     parentContainer.append(btnAdd);
-
-    $('#addthingsform').submit(function (ev) {
-    	addThing($('input#titleInput').val(), quadrant.id, quadrant).done(function (thing) {
+    
+    $('#addthingsform').unbind('submit');
+    $('#addthingsform').submit((ev) => {
+    	addThing($('input#titleInput').val(), quadrant.id).done(function (thing) {
     		container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
     		showTab(quadrant.id.toString());
     	});
-
     	ev.preventDefault();
     });
 

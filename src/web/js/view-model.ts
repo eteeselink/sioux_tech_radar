@@ -12,10 +12,11 @@ module TechRadar.Client{
   export class Quadrant extends Enum {
     constructor(public xloc: number, public yloc: number, public angle: number, public id:number) { super(Quadrant); }
 
+    public static Techniques = new Quadrant(-1, -1, 3 * deg45, 0);
     public static Tools      = new Quadrant( 1, -1,  1 * deg45, 1);
-    public static Techniques = new Quadrant(-1, -1,  3 * deg45, 0);
+    public static Languages = new Quadrant(1, 1, -1 * deg45, 2);
     public static Platforms  = new Quadrant(-1,  1, -3 * deg45, 3);
-    public static Languages  = new Quadrant( 1,  1, -1 * deg45, 2);
+    
 
     public angleLower() {
       return this.angle - deg45;
@@ -32,7 +33,10 @@ module TechRadar.Client{
     public isTop() {
       return this.yloc < 0;
     }
+    
   }
+
+  export var Quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
 
   /// View model for a "thing" that can be positioned at some place
   /// on the technology radar.
@@ -42,15 +46,16 @@ module TechRadar.Client{
 	  public title: string,
 	  public description: string,
       public quadrantid: number, //double information about quadrant 
-      public quadrant: Quadrant,  //   -> to be refactored out
       	goodness: number   // between 0.0 and 1.0; closer to zero is better		
     ) {
       super(null, null);
-      this.setgoodness(goodness);
+      this.setgoodness(goodness);      
     }
 
 
-
+    public quadrant() {
+    	return Quadrants[this.quadrantid];
+    }
     public hasOpinion = false;
     private previousGoodness = goodness;
 
@@ -134,7 +139,7 @@ module TechRadar.Client{
 
     public setgoodness(goodness: number) {
     	var r = goodness * Radar.radius;
-    	var phi = this.quadrant.angle + random(0.01, 0.02);
+    	var phi = this.quadrant().angle + random(0.01, 0.02);
     	this.polar = new Polar(r, phi);
     	this.updateXY();
     }

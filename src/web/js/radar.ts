@@ -139,9 +139,9 @@ module TechRadar.Client{
       textThings.enter()
         .append("text")
         .attr("class", "thing")
-        .attr("dx", (thing: Thing) => (thing.quadrant.isLeft() ? -1 : 1) * 12)
+        .attr("dx", (thing: Thing) => (thing.quadrant().isLeft() ? -1 : 1) * 12)
         .attr("dy", 4)
-        .attr("text-anchor", (thing: Thing) => thing.quadrant.isLeft() ? "end" : "start");
+        .attr("text-anchor", (thing: Thing) => thing.quadrant().isLeft() ? "end" : "start");
 
       textThings.text((thing: Thing) => thing.name);
      
@@ -164,11 +164,11 @@ module TechRadar.Client{
 
         // enable "quadrant gravity", pulling each node a bit to the centre diagonal
         // of its quadrant
-        thing.polar.phi += (thing.quadrant.angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
+        thing.polar.phi += (thing.quadrant().angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
 
         var borderOffset = 10 / (thing.polar.r + 0.1);
         // ensure that nodes never leave their quadrant
-        thing.polar.phi = cap(thing.quadrant.angleLower() + borderOffset, thing.polar.phi, thing.quadrant.angleUpper() - borderOffset);
+        thing.polar.phi = cap(thing.quadrant().angleLower() + borderOffset, thing.polar.phi, thing.quadrant().angleUpper() - borderOffset);
 
         // ensure that nodes never leave the radar
         thing.polar.r = Math.min(thing.polar.r, Radar.radius);
