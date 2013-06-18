@@ -128,6 +128,7 @@ module TechRadar.Client {
     selectedThings.forEach(thing => {
     	if (thing.hasOpinion) {
     		container.append('<button class="btn active" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    		addOpinion(thing.name, things, radar);
     	} else {
     		container.append('<button class="btn" data-thing="' + thing.name + '">' + thing.title + '</button>')
     	}      
