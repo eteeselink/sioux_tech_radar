@@ -38,7 +38,7 @@ namespace Sioux.TechRadar
     }
 
     public enum Quadrant{
-        Techniques, Tools, Languages, Platforms
+        Techniques=0, Tools=1, Languages=2, Platforms=3
     }
 }
 

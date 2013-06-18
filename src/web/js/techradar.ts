@@ -25,7 +25,7 @@ module TechRadar.Client {
               else if (quadrant == "Languages") quadrantid = 2;
               else if (quadrant == "Platforms") quadrantid = 3;
 
-              things.push(new Thing(data[i].Name, data[i].Title, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
+              things.push(new Thing(data[i].Name, data[i].Title, data[i].Description, quadrantid, quadrants[quadrantid], random(0.1, 1.0)));			  
           }//end for
           d.resolve(things);
       }).fail(d.reject);
@@ -62,7 +62,7 @@ module TechRadar.Client {
       console.log("showTab : " + q);
     // remove earlier radars, if any.
     $('svg.radar').remove();
-    $('div.thing-list').remove();
+    $('#thingsList').remove();
 
     var quad = (q === "all") ? null : quadrants[parseInt(q, 10)];
     var classes = "quadrant-" + q;
@@ -81,17 +81,15 @@ module TechRadar.Client {
 
 
   function addThing(thingname: string, quadrantnum: number, quadrant: Quadrant) {
-        var newThing = new Thing(null,thingname, quadrantnum,  quadrant, random(0.1, 1.0));
+        var newThing = new Thing(null,thingname, thingname+" has no description", quadrantnum,  quadrant, random(0.1, 1.0));
 
-        var dataforjson = JSON.stringify(newThing);
-        console.log("dataforjson : ");
-        console.log(dataforjson);
+        var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum, "Quadrant": quadrantnum });
 
         return $.ajax({
         	url: "http://localhost:54321/api/things/",
         	type: 'POST',
         	contentType: 'application/json',
-        	data: JSON.stringify(newThing),
+        	data: dataforjson,
         	dataType: 'json'
         });
   }
@@ -126,8 +124,8 @@ module TechRadar.Client {
   }
 
 
-  function showList(things: Thing[], quadrantnum: number, quadrant: Quadrant, radar: Radar) {
-  	var parentContainer = $('<div class="thing-list-left btn-group btn-group-vertical">');
+  function showList(things: Thing[], quadrantnum: number, quadrant: Quadrant, radar: Radar) {  	
+  	var parentContainer = $('<div id="thingsList" class="thing-list-left btn-group btn-group-vertical">');
   	var container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant === quadrant);
     selectedThings.forEach(thing => {
@@ -160,7 +158,11 @@ module TechRadar.Client {
     parentContainer.append(btnAdd);
 
     $('#addthingsform').submit(function (ev) {
-    	addThing($('input#titleInput').val(), quadrant.id, quadrant);
+    	addThing($('input#titleInput').val(), quadrant.id, quadrant).done(function (thing) {
+    		container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
+    		showTab(quadrant.id.toString());
+    	});
+
     	ev.preventDefault();
     });
 

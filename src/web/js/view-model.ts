@@ -40,6 +40,7 @@ module TechRadar.Client{
     constructor(
 	  public name: string,
 	  public title: string,
+	  public description: string,
       public quadrantid: number, //double information about quadrant 
       public quadrant: Quadrant,  //   -> to be refactored out
       	goodness: number   // between 0.0 and 1.0; closer to zero is better		
