@@ -11,7 +11,6 @@ namespace Sioux.TechRadar
     /// A thing can be request when it is PUT or POSTed, i.e. updated or added.
     /// A thing is in most cases a response object.
     /// </summary>
-    // TODO: POST should be for Create, and PUT for update. Also change in service.
 
     [Route("/api/things/{name}","PUT")] // update
     [Route("/api/things","POST")] // create
@@ -20,7 +19,7 @@ namespace Sioux.TechRadar
         [PrimaryKey]
         public string Name{ get; set; }
         
-        public Quadrant Quadrantid { get; set; }   //TODO double quadrant information -> refactor out.
+        public Quadrant Quadrantid { get; set; } 
         public string Title { get; set; }
         public string Description{ get; set; }
 

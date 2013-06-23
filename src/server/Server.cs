@@ -72,7 +72,7 @@ namespace Sioux.TechRadar
             {
                 server.Start();
                 logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
-                Console.ReadKey();
+                while (Console.ReadKey().Key != ConsoleKey.Enter) { }
             }
         }
 

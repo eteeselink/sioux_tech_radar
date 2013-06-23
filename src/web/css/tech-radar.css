@@ -24,6 +24,12 @@
   top: 60px;
   left: 200px;
 }
+.logged-no {
+  padding: 4px 0 0 0;
+}
+.logged-no input {
+  margin: 0;
+}
 svg.radar circle.thing {
   stroke: #83b2e5;
   stroke-width: 1;

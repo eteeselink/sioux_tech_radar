@@ -33,16 +33,11 @@ namespace Sioux.TechRadar
             {
                 //GlobalProxySelection.Select = new WebProxy("127.0.0.1", 8888); // proxy via Fiddler2.
 
-                using (var fs = new Server()  { Port = 8000, SqliteFile = tempDb.Path })
+                using (var server = new Server()  { Port = 8000, SqliteFile = tempDb.Path })
                 {
-                    fs.Start();
-
-                    var client = new WebClient();
-                    var result = client.DownloadString(
-                        FakeServer.BaseUri + "api/things/search?format=json"
-                    );
-                    Console.WriteLine(result);
-
+                    server.Start();
+                    
+                    // log in
                     var restClient = new JsonServiceClient(FakeServer.BaseUri);
                     var response = restClient.Post<AuthResponse>(
                         "/api/auth/credentials?format=json",
@@ -55,7 +50,22 @@ namespace Sioux.TechRadar
 
                     response.SessionId.ShouldMatch(@"[a-zA-Z0-9=+/]{20,100}");
 
-                    // FIXME: add to test that we can now access something that needs authentication.
+                    // check session service
+                    var checkResponse = restClient.Get<AuthResponse>("/api/session");
+                    checkResponse.SessionId.ShouldMatch(@"[a-zA-Z0-9=+/]{20,100}");
+                    checkResponse.UserName.ShouldBe("tech");
+
+
+                    // log out
+                    var logoutResponse = restClient.Delete<AuthResponse>("/api/auth/credentials?format=json&UserName=tech");
+                    logoutResponse.SessionId.ShouldBe(null);
+
+
+                    // check that GET /api/session 404s
+                    var httpError = Should.Throw<WebServiceException>(() => 
+                        restClient.Get<AuthResponse>("/api/session")
+                    );
+                    httpError.StatusCode.ShouldBe(404);
                 }
             }
         }

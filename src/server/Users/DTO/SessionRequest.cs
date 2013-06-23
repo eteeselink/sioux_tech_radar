@@ -6,10 +6,9 @@ using System.Text;
 
 namespace Sioux.TechRadar.Users.DTO
 {
-    [Route("/api/session", "POST")]
+    [Route("/api/session", "GET")]
     public class SessionRequest
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
+
 }

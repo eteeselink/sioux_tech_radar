@@ -22,9 +22,10 @@ namespace Sioux.TechRadar.Users.Auth
         {
             // do nothing, but prevent base.OnAuthenticated to run.
             // `session.UserAuthName` is already set to the user's user name.
-
+            
             var usersRepo = authService.TryResolve<IUsersRepository>();
             usersRepo.GetOrCreateUser(session.UserAuthName);
+            authService.SaveSession(session);
         }
     }
 }
