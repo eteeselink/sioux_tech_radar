@@ -16,6 +16,9 @@ namespace Sioux.TechRadar{
     [Authenticate]
     public class Opinion : IReturn<Opinion>
     {
+        [PrimaryKey]
+        [AutoIncrement]
+        public int id { get; set; }
         public String thingName{ get; set; }        
         public Double goodness { get; set; }
         public String user { get; set; }
