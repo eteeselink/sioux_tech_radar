@@ -1,98 +1,13 @@
 /// <reference path="structs.ts" />
 /// <reference path="view-model.ts" />
 /// <reference path="radar.ts" />
+/// <reference path="auth.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
  
 module TechRadar.Client {
 
   declare var d3: any;
 
-  class AuthInfo
-  {
-    private url = "/api/auth/credentials?format=json";
-
-    constructor(
-      private loggedIn: bool,
-      private username: string
-    ) {
-      $('#login_button').click(e => this.login());
-      $('#logout_button').click(e => this.logout());
-      this.updateUi();
-    }
-    
-    private callbacks: { (isloggedin: Boolean): void; }[] = [];
-    public registerCallback(callback: (isloggedin:Boolean)=>any) {
-    	this.callbacks.push(callback);
-    }
-
-
-    private login() {
-      console.log(4);
-
-      var body = JSON.stringify({
-        UserName: $('#username').val(),
-        Password: $('#password').val(),
-        RememberMe: true
-      })
-
-      var request = $.ajax({
-        url: this.url,
-        type: 'POST',
-        contentType: 'application/json',
-        data: body,
-        dataType: 'json'
-      })
-
-      request.done(data => {
-        this.loggedIn = true;
-        this.username = data.UserName;
-      });
-
-      request.fail(data => {
-        this.loggedIn = false;
-        alert("Could not log in. Incorrect u/p?");
-      });
-
-      request.always(() => this.updateUi());
-    }
-
-    private logout() {
-      var request = $.ajax({
-        url: this.url + "&UserName=" + this.username,
-        type: 'DELETE'
-      });
-
-      request.done(data => {
-        this.loggedIn = false;
-      });
-
-      request.fail(data => {
-        alert("Bug! Something went wrong.");
-        console.log(data);
-      });
-
-      request.always(() => this.updateUi());
-    }
-
-    private updateUi() {
-      $('.logged-yes').toggle(this.loggedIn);
-      $('.logged-no').toggle(!this.loggedIn);
-
-      if (this.loggedIn) {
-        $('#current_username').text(this.username);
-      }
-      for (var i = 0; i < this.callbacks.length; i++)
-      {
-      	this.callbacks[i](this.loggedIn);
-      }
-    }
-
-    public check():Boolean {    	
-    	return this.loggedIn;
-    }
-  }
-
-  var authInfo: AuthInfo;
 
 
   function getThings() {
@@ -155,7 +70,7 @@ module TechRadar.Client {
       classes += " single-quadrant";
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
-    if (authInfo.check()) {
+    if (AuthInfo.instance.isLoggedIn()) { 
     	getThingsAndOpinions().done(function (things) {
     		console.log("got my things =" + JSON.stringify(things));
     		if (quad !== null) {
@@ -275,8 +190,8 @@ module TechRadar.Client {
   
   export function Start() {
   	makeTabs();
-  	authInfo = new AuthInfo(false, null);
-  	authInfo.registerCallback(function () { showTab($('li.active a[data-toggle="tab"]').data('q')); });
+  	
+  	AuthInfo.instance.registerCallback(function () { showTab($('li.active a[data-toggle="tab"]').data('q')); });
   	showTab($('li.active a[data-toggle="tab"]').data('q'));
     return this;
   }

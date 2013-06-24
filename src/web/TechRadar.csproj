@@ -34,6 +34,10 @@
     <Content Include="expl.html" />
     <Content Include="index.html" />
     <TypeScriptCompile Include="js\main.ts" />
+    <TypeScriptCompile Include="js\auth.ts" />
+    <Content Include="js\auth.js">
+      <DependentUpon>auth.ts</DependentUpon>
+    </Content>
     <Content Include="js\main.js">
       <DependentUpon>main.ts</DependentUpon>
     </Content>
