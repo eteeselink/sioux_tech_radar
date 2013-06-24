@@ -6,10 +6,11 @@
   position: absolute;
   top: 60px;
 }
-.thing-list-right {
+.rants-list-right {
   position: absolute;
   top: 60px;
   right: 20px;
+  min-width: 160px !important;
 }
 .thing-list-left {
   position: absolute;

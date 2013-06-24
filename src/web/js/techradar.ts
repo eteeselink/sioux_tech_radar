@@ -153,16 +153,19 @@ module TechRadar.Client {
     container.find('.thingButton').click(function(ev) {
         var thingname = $(this).data('thing'); 
 
-        if (!$(this).hasClass('active')) {
-            
-            addOpinion(thingname, things, radar);
+        if (!$(this).hasClass('active')) {            
+        	addOpinion(thingname, things, radar);
+        	buildRantList(selectedThings);
         }
         else {
             removeOpinion(thingname, things, radar);
         }
     });
 
-    //add existing opinions to view
+  	//add existing opinions to view
+
+  	//section for adding rants    
+    buildRantList(selectedThings);
 
 
     //Section for adding a thing.       
@@ -183,6 +186,31 @@ module TechRadar.Client {
     parentContainer.append(container);
     $('body').append(parentContainer);
   }
+
+  function buildRantList(things: Opinion[]) {
+  	$('#rantList').remove();
+  	$('body').append('<div class="rants-list-right" id="rantList"></div>');
+  	$('#rantList').append('<p>click to add rant</p>');
+  	things.forEach(thing => {
+  		if (thing.hasOpinion) {
+  			$('#rantList').append(newRantForAccordion(thing));
+  		}
+  	});
+  	$('#rantList').show();
+  }
+
+  function newRantForAccordion(thing: Opinion) {
+  	console.log("adding rant for " + thing.name);
+  	var aGroup = $('<div class="accordion-group">');
+  	var ahead = $('<div class="accordion-heading">');
+  	ahead.append('<a class="accordion-toggle" data-toggle="collapse" data-parent="#rantList" href="#collapse' + thing.name + '">' + thing.title + '</a>');
+  	aGroup.append(ahead);
+
+  	var aBody = $('<div id="collapse' + thing.name + '" class="accordion-body collapse"><div class="accordion-inner"><textarea id="input' + thing.name + '">' + thing.rant + '</textarea></div></div>');
+  	aGroup.append(aBody);
+  	return aGroup;
+  }
+
 
   function makeTabs() {
     $('a[data-toggle="tab"]').on('shown', e => showTab($(e.target).data('q')));
