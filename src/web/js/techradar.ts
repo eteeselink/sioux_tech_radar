@@ -99,7 +99,7 @@ module TechRadar.Client {
     console.log("getting things");
     var things = [];
     var d = $.Deferred();
-    $.getJSON("http://localhost:54321/api/things/search/")
+    $.getJSON("/api/things/search/")
       .done(function(data) {
           for (var i=0;i<data.length;i++)
           {
@@ -124,7 +124,7 @@ module TechRadar.Client {
     var d = $.Deferred();  	
     getThings().done(function (things) {
         console.log("getting opinions");
-        $.getJSON("http://localhost:54321/api/opinions")
+        $.getJSON("/api/opinions")
             .done(function (data) {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < things.length; j++) {
@@ -175,7 +175,7 @@ module TechRadar.Client {
         var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum });
 
         return $.ajax({
-            url: "http://localhost:54321/api/things/",
+            url: "/api/things/",
             type: 'POST',
             contentType: 'application/json',
             data: dataforjson,
