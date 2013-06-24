@@ -19,6 +19,12 @@ module TechRadar.Client {
       $('#logout_button').click(e => this.logout());
       this.updateUi();
     }
+    
+    private callbacks: { (isloggedin: Boolean): void; }[] = [];
+    public registerCallback(callback: (isloggedin:Boolean)=>any) {
+    	this.callbacks.push(callback);
+    }
+
 
     private login() {
       console.log(4);
@@ -75,10 +81,14 @@ module TechRadar.Client {
       if (this.loggedIn) {
         $('#current_username').text(this.username);
       }
+      for (var i = 0; i < this.callbacks.length; i++)
+      {
+      	this.callbacks[i](this.loggedIn);
+      }
     }
 
-    public check() {
-      // AJAX stuff
+    public check():Boolean {    	
+    	return this.loggedIn;
     }
   }
 
@@ -145,12 +155,14 @@ module TechRadar.Client {
       classes += " single-quadrant";
     }
     var radar = new Radar(500, quad, (quad !== null), classes);
-    getThingsAndOpinions().done(function (things) {
-        console.log("got my things ="+JSON.stringify(things));
-        if (quad !== null) {
-            showList(things, quad, radar);
-        }
-    });
+    if (authInfo.check()) {
+    	getThingsAndOpinions().done(function (things) {
+    		console.log("got my things =" + JSON.stringify(things));
+    		if (quad !== null) {
+    			showList(things, quad, radar);
+    		}
+    	});
+    }
   }
 
 
@@ -251,9 +263,10 @@ module TechRadar.Client {
 
   
   export function Start() {
-    makeTabs();
-    showTab($('li.active a[data-toggle="tab"]').data('q'));
-    authInfo = new AuthInfo(false, null);
+  	makeTabs();
+  	authInfo = new AuthInfo(false, null);
+  	authInfo.registerCallback(function () { showTab($('li.active a[data-toggle="tab"]').data('q')); });
+  	showTab($('li.active a[data-toggle="tab"]').data('q'));
     return this;
   }
 }
