@@ -49,9 +49,14 @@ namespace Sioux.TechRadar
         {
             try
             {
+                var matchingOpinion = GetByName(opinion.thingName, opinion.user).First();
                 using (var connection = connectionFactory.Connect())
                 {
-                    connection.UpdateOnly(opinion, o=> o.goodness, o => (o.thingName == opinion.thingName && o.user == opinion.user));
+                    opinion.id = matchingOpinion.id;
+                    if (String.IsNullOrEmpty(opinion.rant)) {
+                        opinion.rant = matchingOpinion.rant;
+                    }
+                    connection.Update(opinion);
                 }
                 return opinion;
             }

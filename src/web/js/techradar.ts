@@ -206,8 +206,21 @@ module TechRadar.Client {
   	ahead.append('<a class="accordion-toggle" data-toggle="collapse" data-parent="#rantList" href="#collapse' + thing.name + '">' + thing.title + '</a>');
   	aGroup.append(ahead);
 
-  	var aBody = $('<div id="collapse' + thing.name + '" class="accordion-body collapse"><div class="accordion-inner"><textarea id="input' + thing.name + '">' + thing.rant + '</textarea></div></div>');
+  	var aBody = $('<div id="collapse' + thing.name + '" class="accordion-body collapse">');
+  	var subBody = $('<div class="accordion-inner">');
+  	aBody.append(subBody);
+  	var inputRant = $('<textarea id = "input' + thing.name + '" > ' + thing.rant + ' </textarea>');
+  	subBody.append(inputRant);
   	aGroup.append(aBody);
+
+  	var handler = function () {
+  		thing.rant = inputRant.val();
+  		console.log("updating rant: " + thing.rant);
+  		thing.updateOpinion();
+  	};
+
+  	inputRant.change(handler);
+
   	return aGroup;
   }
 

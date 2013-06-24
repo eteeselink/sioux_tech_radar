@@ -98,8 +98,8 @@ module TechRadar.Client{
     public storeNewOpinion() {
       console.log("ajax (storeNewOpinion) called");
       var opinion: Object = {
-      	thingName: this.name,
-      	rant: this.rant,
+        thingName: this.name,
+
         goodness: this.goodness()
       }
       return $.ajax({
