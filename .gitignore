@@ -118,6 +118,7 @@ UpgradeLog*.XML
 
 
 !/lib
+src/web/js/auth.js
 src/web/js/main.js
 src/web/js/main.js.map
 src/web/js/radar.js
