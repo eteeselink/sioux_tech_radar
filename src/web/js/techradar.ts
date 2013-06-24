@@ -46,6 +46,7 @@ module TechRadar.Client {
                     if (data[i].thingName == things[j].name) {
                         console.log(things[j].name + " has an opinion!");
                         things[j].setgoodness(data[i].goodness);
+                        things[j].rant = data[i].rant;
                         things[j].hasOpinion = true;
                     }
                 }

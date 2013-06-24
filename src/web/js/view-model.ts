@@ -45,13 +45,13 @@ module TechRadar.Client{
       public name: string,
       public title: string,
       public description: string,
-      public quadrantid: number, //double information about quadrant 
+	  public quadrantid: number, //double information about quadrant 	  
       goodness: number   // between 0.0 and 1.0; closer to zero is better		
     ) {
-      super(null, null);
+    	super(null, null);
       this.setgoodness(goodness);      
     }
-
+    public rant: string;
 
     public quadrant() {
       return Quadrants[this.quadrantid];
@@ -82,7 +82,8 @@ module TechRadar.Client{
     public updateOpinion() {
       console.log("ajax (updateOpinion) called");
       var opinion = {
-        thingName: this.name,
+      	thingName: this.name,
+		rant : this.rant,
         goodness: this.goodness()
       }
       return $.ajax({
@@ -97,7 +98,8 @@ module TechRadar.Client{
     public storeNewOpinion() {
       console.log("ajax (storeNewOpinion) called");
       var opinion: Object = {
-        thingName: this.name,
+      	thingName: this.name,
+      	rant: this.rant,
         goodness: this.goodness()
       }
       return $.ajax({
