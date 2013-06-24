@@ -160,6 +160,8 @@ module TechRadar.Client {
     		console.log("got my things =" + JSON.stringify(things));
     		if (quad !== null) {
     			showList(things, quad, radar);
+    		} else {
+    			showAllThings(things, radar);
     		}
     	});
     }
@@ -210,6 +212,13 @@ module TechRadar.Client {
     return things_matched[0].deleteOpinion();
   }
 
+  function showAllThings(things: Thing[], radar: Radar) {
+  	things.forEach(thing => {
+  		if (thing.hasOpinion) {
+  			addOpinion(thing.name, things, radar);
+  		}
+  	});
+  }
 
   function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {  	
     var parentContainer = $('<div id="thingsList" class="thing-list-left btn-group btn-group-vertical">');
