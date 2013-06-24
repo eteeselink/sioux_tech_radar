@@ -25,7 +25,7 @@ module TechRadar.Client {
               else if (quadrant == "Languages") quadrantid = 2;
               else if (quadrant == "Platforms") quadrantid = 3;
 
-              things.push(new Thing(data[i].Name, data[i].Title, data[i].Description, quadrantid, random(0.1, 1.0)));			  
+              things.push(new Opinion(data[i].Name, data[i].Title, data[i].Description, quadrantid, random(0.1, 1.0)));			  
           }//end for
           d.resolve(things);
       }).fail(d.reject);
@@ -85,7 +85,7 @@ module TechRadar.Client {
 
 
   function addThing(thingname: string, quadrantnum: number) {
-        var newThing = new Thing(null,thingname, thingname+" has no description", quadrantnum,  random(0.1, 1.0));
+        var newThing = new Opinion(null,thingname, thingname+" has no description", quadrantnum,  random(0.1, 1.0));
 
         var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum });
 
@@ -98,7 +98,7 @@ module TechRadar.Client {
         });
   }
     
-  function addOpinion(thingname: string, things: Thing[], radar: Radar){
+  function addOpinion(thingname: string, things: Opinion[], radar: Radar){
     var things_matched = things.filter(t => t.name == thingname);
     if (things_matched.length != 1) {
             alert("Amount of things matched to button unexpected : " + things_matched.length);
@@ -115,7 +115,7 @@ module TechRadar.Client {
     }        
   }
 
-  function removeOpinion(thingname: string, things: Thing[], radar: Radar){
+  function removeOpinion(thingname: string, things: Opinion[], radar: Radar){
     var things_matched = things.filter(t => t.name == thingname);
     if (things_matched.length != 1) {
             alert("Amount of things matched to button unexpected : " + things_matched.length);
@@ -127,7 +127,7 @@ module TechRadar.Client {
     return things_matched[0].deleteOpinion();
   }
 
-  function showAllThings(things: Thing[], radar: Radar) {
+  function showAllThings(things: Opinion[], radar: Radar) {
   	things.forEach(thing => {
   		if (thing.hasOpinion) {
   			addOpinion(thing.name, things, radar);
@@ -135,7 +135,7 @@ module TechRadar.Client {
   	});
   }
 
-  function showList(things: Thing[], quadrant: Quadrant, radar: Radar) {  	
+  function showList(things: Opinion[], quadrant: Quadrant, radar: Radar) {  	
     var parentContainer = $('<div id="thingsList" class="thing-list-left btn-group btn-group-vertical">');
     var container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
     var selectedThings = things.filter(t => t.quadrant() === quadrant);

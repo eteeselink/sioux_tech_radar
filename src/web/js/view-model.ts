@@ -40,13 +40,13 @@ module TechRadar.Client{
 
   /// View model for a "thing" that can be positioned at some place
   /// on the technology radar.
-  export class Thing extends D3Node {
+  export class Opinion extends D3Node {
     constructor(
-	  public name: string,
-	  public title: string,
-	  public description: string,
+      public name: string,
+      public title: string,
+      public description: string,
       public quadrantid: number, //double information about quadrant 
-      	goodness: number   // between 0.0 and 1.0; closer to zero is better		
+      goodness: number   // between 0.0 and 1.0; closer to zero is better		
     ) {
       super(null, null);
       this.setgoodness(goodness);      
@@ -54,59 +54,59 @@ module TechRadar.Client{
 
 
     public quadrant() {
-    	return Quadrants[this.quadrantid];
+      return Quadrants[this.quadrantid];
     }
     public hasOpinion = false;
     private previousGoodness = goodness;
 
     private notifyServer() {
-    	var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
-    	if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.05)
-    	{
-    		return;
-    	}
-    	this.previousGoodness = this.goodness();
-    	this.updateOpinion();
+      var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
+      if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.05)
+      {
+        return;
+      }
+      this.previousGoodness = this.goodness();
+      this.updateOpinion();
     }
 
     public deleteOpinion() {
-    	console.log("ajax (deleteOpinion) called");
-    	return $.ajax({
+      console.log("ajax (deleteOpinion) called");
+      return $.ajax({
             url: "/api/opinions/" + encodeURIComponent(this.name),
-    		type: 'DELETE',
-    		contentType: 'application/json',
-    		dataType: 'json'
-    	});
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json'
+      });
     }
 
     public updateOpinion() {
-    	console.log("ajax (updateOpinion) called");
-    	var opinion = {
-    		thingName: this.name,
-    		goodness: this.goodness()
-    	}
-    	return $.ajax({
+      console.log("ajax (updateOpinion) called");
+      var opinion = {
+        thingName: this.name,
+        goodness: this.goodness()
+      }
+      return $.ajax({
             url: "/api/opinions/" + encodeURIComponent(opinion.thingName),
-    		type: 'PUT',
-    		contentType: 'application/json',
-    		data: JSON.stringify(opinion),
-    		dataType: 'json'
-    	});
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(opinion),
+        dataType: 'json'
+      });
     }
    
     public storeNewOpinion() {
-    	console.log("ajax (storeNewOpinion) called");
-    	var opinion: Object = {
-    		thingName: this.name,
-    		goodness: this.goodness()
-    	}
-    	return $.ajax({
-    		url: "/api/opinions/",
-    		type: 'POST',
-    		contentType: 'application/json',
-    		data: JSON.stringify(opinion),
-    		dataType: 'json'
-    	});
+      console.log("ajax (storeNewOpinion) called");
+      var opinion: Object = {
+        thingName: this.name,
+        goodness: this.goodness()
+      }
+      return $.ajax({
+        url: "/api/opinions/",
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(opinion),
+        dataType: 'json'
+      });
     }
 
     public polar: Polar;
@@ -138,10 +138,10 @@ module TechRadar.Client{
     }
 
     public setgoodness(goodness: number) {
-    	var r = goodness * Radar.radius;
-    	var phi = this.quadrant().angle + random(0.01, 0.02);
-    	this.polar = new Polar(r, phi);
-    	this.updateXY();
+      var r = goodness * Radar.radius;
+      var phi = this.quadrant().angle + random(0.01, 0.02);
+      this.polar = new Polar(r, phi);
+      this.updateXY();
     }
   }
 }

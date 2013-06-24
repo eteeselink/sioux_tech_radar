@@ -12,7 +12,7 @@ module TechRadar.Client{
 
     private svg: any;
     private force: any;
-    private things: Thing[];
+    private things: Opinion[];
     private static quadrantGravity = 0.03;
 
 
@@ -37,17 +37,17 @@ module TechRadar.Client{
     }
 
     /// Call this to add more models to the view.
-    public addThings(things: Thing[]) {
+    public addThings(things: Opinion[]) {
       things.forEach(thing => this.things.push(thing));
       this.restart();
     }
 
-    public addOpinion(opinion: Thing) {
+    public addOpinion(opinion: Opinion) {
       this.things.push(opinion);
       this.restart();
     }
          
-    public removeOpinion(opinion: Thing) {
+    public removeOpinion(opinion: Opinion) {
 
         var index_opinion = this.things.indexOf(opinion);
         this.things.splice(index_opinion, 1);
@@ -115,7 +115,7 @@ module TechRadar.Client{
         .charge(-50)
         .on("tick", e => this.tick(e));
 
-      this.things = <Thing[]>this.force.nodes();
+      this.things = <Opinion[]>this.force.nodes();
     }
 
 
@@ -139,11 +139,11 @@ module TechRadar.Client{
       textThings.enter()
         .append("text")
         .attr("class", "thing")
-        .attr("dx", (thing: Thing) => (thing.quadrant().isLeft() ? -1 : 1) * 12)
+        .attr("dx", (thing: Opinion) => (thing.quadrant().isLeft() ? -1 : 1) * 12)
         .attr("dy", 4)
-        .attr("text-anchor", (thing: Thing) => thing.quadrant().isLeft() ? "end" : "start");
+        .attr("text-anchor", (thing: Opinion) => thing.quadrant().isLeft() ? "end" : "start");
 
-      textThings.text((thing: Thing) => thing.name);
+      textThings.text((thing: Opinion) => thing.name);
      
       this.force.start();
     }
@@ -243,7 +243,7 @@ module TechRadar.Client{
         .attr("xlink:href", "#" + id)
         .attr("startOffset", quadrant.isTop() ? "0%" : "50%")
         .append("tspan")
-        .attr("dy", 8)
+        .attr("dy", 8 + (quadrant.isTop() ? 2 : -4))
         .attr("dx", 5)
         .text(name);
     }
