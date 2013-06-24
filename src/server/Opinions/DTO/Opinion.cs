@@ -22,5 +22,6 @@ namespace Sioux.TechRadar{
         public String thingName{ get; set; }        
         public Double goodness { get; set; }
         public String user { get; set; }
+        public String rant { get; set; }
     }
 }
