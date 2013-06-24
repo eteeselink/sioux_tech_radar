@@ -29,19 +29,19 @@ namespace Sioux.TechRadar
             }
         }
 
-        public IEnumerable<Opinion> GetByName(string name)
+        public IEnumerable<Opinion> GetByName(string name, string username)
         {
             using (var connection = connectionFactory.Connect())
             {
-                return connection.Select<Opinion>("thingName = {0}", name);
+                return connection.Select<Opinion>("thingName = {0} AND user= {1}", name, username);
             }
         }
 
-        public IEnumerable<Opinion> GetAll()
+        public IEnumerable<Opinion> GetAll(string username)
         {
             using (var connection = connectionFactory.Connect())
             {
-                return connection.Select<Opinion>();
+                return connection.Select<Opinion>("user= {0}", username);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Sioux.TechRadar
             {
                 using (var connection = connectionFactory.Connect())
                 {
-                    connection.UpdateOnly(opinion, o=> o.goodness, o => o.thingName == opinion.thingName);
+                    connection.UpdateOnly(opinion, o=> o.goodness, o => (o.thingName == opinion.thingName && o.user == opinion.user));
                 }
                 return opinion;
             }
@@ -79,9 +79,9 @@ namespace Sioux.TechRadar
             }
         }
 
-        public void Delete(string name)
+        public void Delete(string name, string username)
         {
-            Opinion opinion = this.GetByName(name).First();
+            Opinion opinion = this.GetByName(name, username).First();
             if (opinion == null) throw new HttpError(HttpStatusCode.NotFound, "exception while trying to delete opinion");
             using (var connection = connectionFactory.Connect())
             {

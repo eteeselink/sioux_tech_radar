@@ -24,7 +24,8 @@ namespace Sioux.TechRadar.Users.Auth
             // `session.UserAuthName` is already set to the user's user name.
             
             var usersRepo = authService.TryResolve<IUsersRepository>();
-            usersRepo.GetOrCreateUser(session.UserAuthName);
+            var user = usersRepo.GetOrCreateUser(session.UserAuthName);
+            session.UserName = user.Username;
             authService.SaveSession(session);
         }
     }
