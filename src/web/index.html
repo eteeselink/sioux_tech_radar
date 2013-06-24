@@ -42,7 +42,7 @@
       <script type="text/javascript" src="js/radar.js"></script>
       <script type="text/javascript" src="js/techradar.js"></script>
       <script type="text/javascript" src="js/main.js"></script>
-      
+      <script>$(".alert").alert()</script>
 
       
      <div id="addThingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -55,6 +55,7 @@
           <input id="titleInput" type="text" placeholder="title of thing" />
           <button class="btn" type="submit">Add</button>
           </form>
+           <div id="addSuccess" class="alert alert-success hide"></div>            
         </div>
         <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>        

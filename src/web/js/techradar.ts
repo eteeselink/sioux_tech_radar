@@ -258,6 +258,8 @@ module TechRadar.Client {
         addThing($('input#titleInput').val(), quadrant.id).done(function (thing) {
             container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
             showTab(quadrant.id.toString());
+            $('#addSuccess').text($('input#titleInput').val() + " has been added.");
+            $('#addSuccess').show();
         });
         ev.preventDefault();
     });
