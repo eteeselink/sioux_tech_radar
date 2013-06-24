@@ -61,7 +61,7 @@ module TechRadar.Client {
         this.loggedIn = false;
       });
 
-      request.fail(data => {
+      request.fail(data => {  
         alert("Bug! Something went wrong.");
         console.log(data);
       });
@@ -87,6 +87,7 @@ module TechRadar.Client {
       
       request.done(data => {
         this.loggedIn = true;
+        this.username = data.UserName;
       });
 
       request.fail(data => {
