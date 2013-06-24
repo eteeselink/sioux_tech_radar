@@ -91,6 +91,9 @@
     <Content Include="js\main.js.map">
       <DependentUpon>main.ts</DependentUpon>
     </Content>
+    <Content Include="js\view-model.min.js.map">
+      <DependentUpon>view-model.js</DependentUpon>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
