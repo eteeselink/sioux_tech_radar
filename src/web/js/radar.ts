@@ -139,11 +139,11 @@ module TechRadar.Client{
       textThings.enter()
         .append("text")
         .attr("class", "thing")
-        .attr("dx", (thing: Opinion) => (thing.quadrant().isLeft() ? -1 : 1) * 12)
+        .attr("dx", (opinion: Opinion) => (opinion.thing.quadrant().isLeft() ? -1 : 1) * 12)
         .attr("dy", 4)
-        .attr("text-anchor", (thing: Opinion) => thing.quadrant().isLeft() ? "end" : "start");
+        .attr("text-anchor", (opinion: Opinion) => opinion.thing.quadrant().isLeft() ? "end" : "start");
 
-      textThings.text((thing: Opinion) => thing.name);
+      textThings.text((opinion: Opinion) => opinion.thing.name);
      
       this.force.start();
     }
@@ -154,27 +154,28 @@ module TechRadar.Client{
       // change every node's newly computed position such that
       // the distance from the origin (r) never changes, and only
       // its angle (phi) can.
-      this.things.forEach(thing => {
+      this.things.forEach(opinion => {
 
+        var quadrant = opinion.thing.quadrant();
         // "read" the newly computed x,y values into `thing.polar`.
-        thing.updatePolar();
+        opinion.updatePolar();
 
         // set the thing's radius to whatever it was, unless we're being dragged
-        thing.fixRadius(this.goodnessEditable);
+        opinion.fixRadius(this.goodnessEditable);
 
         // enable "quadrant gravity", pulling each node a bit to the centre diagonal
         // of its quadrant
-        thing.polar.phi += (thing.quadrant().angle - thing.polar.phi) * e.alpha * Radar.quadrantGravity;
+        opinion.polar.phi += (quadrant.angle - opinion.polar.phi) * e.alpha * Radar.quadrantGravity;
 
-        var borderOffset = 10 / (thing.polar.r + 0.1);
+        var borderOffset = 10 / (opinion.polar.r + 0.1);
         // ensure that nodes never leave their quadrant
-        thing.polar.phi = cap(thing.quadrant().angleLower() + borderOffset, thing.polar.phi, thing.quadrant().angleUpper() - borderOffset);
+        opinion.polar.phi = cap(quadrant.angleLower() + borderOffset, opinion.polar.phi, quadrant.angleUpper() - borderOffset);
 
         // ensure that nodes never leave the radar
-        thing.polar.r = Math.min(thing.polar.r, Radar.radius);
+        opinion.polar.r = Math.min(opinion.polar.r, Radar.radius);
 
         // "save" the modifed polar coordinates back to x,y.
-        thing.updateXY();
+        opinion.updateXY();
       });
 
       var origin = this.diameter / 2;
