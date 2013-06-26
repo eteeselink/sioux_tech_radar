@@ -12,7 +12,7 @@ module TechRadar.Client{
 
     private svg: any;
     private force: any;
-    private things: Opinion[];
+    private opinions: Opinion[];
     private static quadrantGravity = 0.03;
 
 
@@ -36,21 +36,15 @@ module TechRadar.Client{
       this.setupForceLayout();
     }
 
-    /// Call this to add more models to the view.
-    public addThings(things: Opinion[]) {
-      things.forEach(thing => this.things.push(thing));
-      this.restart();
-    }
-
     public addOpinion(opinion: Opinion) {
-      this.things.push(opinion);
+      this.opinions.push(opinion);
       this.restart();
     }
          
     public removeOpinion(opinion: Opinion) {
 
-        var index_opinion = this.things.indexOf(opinion);
-        this.things.splice(index_opinion, 1);
+        var index_opinion = this.opinions.indexOf(opinion);
+        this.opinions.splice(index_opinion, 1);
         this.restart();
     }
 
@@ -115,7 +109,7 @@ module TechRadar.Client{
         .charge(-50)
         .on("tick", e => this.tick(e));
 
-      this.things = <Opinion[]>this.force.nodes();
+      this.opinions = <Opinion[]>this.force.nodes();
     }
 
 
@@ -123,8 +117,8 @@ module TechRadar.Client{
     /// `this.things` changes.
     private restart() {
 
-        var circles = this.svg.selectAll("circle.thing").data(this.things);
-        var textThings = this.svg.selectAll("text.thing").data(this.things);
+        var circles = this.svg.selectAll("circle.thing").data(this.opinions);
+        var textThings = this.svg.selectAll("text.thing").data(this.opinions);
         
       //remove all circles with no data attached.
         circles.exit().remove();
@@ -154,7 +148,7 @@ module TechRadar.Client{
       // change every node's newly computed position such that
       // the distance from the origin (r) never changes, and only
       // its angle (phi) can.
-      this.things.forEach(opinion => {
+      this.opinions.forEach(opinion => {
 
         var quadrant = opinion.thing.quadrant();
         // "read" the newly computed x,y values into `thing.polar`.

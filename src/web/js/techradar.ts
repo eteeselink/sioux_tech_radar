@@ -111,23 +111,6 @@ module TechRadar.Client {
         });
     }
 
-    function addOpinion__(thingname: string, opinions: Opinion[], radar: Radar) {
-        //var opinions_matched = opinions.filter(t => t.name == thingname);
-        //if (opinions_matched.length != 1) {
-        //    alert("Amount of things matched to button unexpected : " + opinions_matched.length);
-        //}
-        //if (thingname.length > 0) {
-        //    //do UI stuff
-        //    radar.addOpinion(opinions_matched[0]);
-        //}
-        //if (opinions_matched[0].hasOpinion) {
-        //    return opinions_matched[0].updateOpinion()
-        //} else {
-        //    opinions_matched[0].hasOpinion = true;
-        //    return opinions_matched[0].storeNewOpinion();
-        //}
-    }
-
     function addOpinion(opinion: Opinion, radar: Radar) {
         radar.addOpinion(opinion);
 
@@ -148,18 +131,6 @@ module TechRadar.Client {
             return null;
         }
         return things_matched[0];
-    }
-
-    function removeOpinion__(thingname: string, opinions: Opinion[], radar: Radar) {
-        //var opinions_matched = opinions.filter(t => t.name == thingname);
-        //if (opinions_matched.length != 1) {
-        //    alert("Amount of things matched to button unexpected : " + opinions_matched.length);
-        //}
-        //if (thingname.length > 0) {
-        //    radar.removeOpinion(opinions_matched[0]);
-        //}
-        //opinions_matched[0].hasOpinion = false;
-        //return opinions_matched[0].deleteOpinion();
     }
 
     function removeOpinion(opinion: Opinion, radar: Radar) {
@@ -191,21 +162,11 @@ module TechRadar.Client {
         selectedOpinions.forEach(opinion => {
             var button = container.find('.thingButton[data-thing=' + opinion.thing.name + ']');
             button.addClass("active");
-            button.data("opinion", opinion);
+            button.data("opinion", opinion); // tie the Opinion object directly to the Button element, using jQuery. This way, we never lose it.
             addOpinion(opinion, radar)
         });
 
-        //var selectedThings = things.filter(o => o.quadrant() === quadrant);
-        //selectedThings.forEach(thing => {
-        //    if (thing.hasOpinion) {
-        //        container.append('<button class="btn active btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
-        //        addOpinion(thing.name, things, radar);
-        //    } else {
-        //        container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
-        //    }
-        //});
-
-        // add existing things to view
+        // add handlers for thing-button clicks.
         container.find('.thingButton').click(function (ev) {
             var button = $(this);
             var thingname = button.data('thing');
@@ -230,7 +191,6 @@ module TechRadar.Client {
             }
         });
 
-        //add existing opinions to view
 
         //section for adding rants    
         buildRantList(selectedOpinions);
