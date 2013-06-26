@@ -1,6 +1,7 @@
 /// <reference path="structs.ts" />
 /// <reference path="radar.ts" />
 /// <reference path="utils.ts" />
+/// <reference path="auth.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar.Client {
@@ -67,18 +68,23 @@ module TechRadar.Client {
         private previousGoodness = goodness;
 
         private notifyServer() {
-            var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
-            if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.05) {
-                return;
+            // never talk to the server while dragging, it's a waste
+            if (!this.isBeingDragged()) {
+
+                var goodnessDiff = Math.abs(this.previousGoodness - this.goodness());
+                if (isNaN(goodnessDiff) || !isFinite(goodnessDiff) || goodnessDiff <= 0.05) {
+                    // also don't talk to the server if hardly anything changed.
+                    return;
+                }
+                this.previousGoodness = this.goodness();
+                this.updateOpinion();
             }
-            this.previousGoodness = this.goodness();
-            this.updateOpinion();
         }
 
         public deleteOpinion() {
             console.log("ajax (deleteOpinion) called");
             return $.ajax({
-                url: "/api/opinions/" + encodeURIComponent(this.thing.name),
+                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(this.thing.name),
                 type: 'DELETE',
                 contentType: 'application/json',
                 dataType: 'json'
@@ -93,7 +99,7 @@ module TechRadar.Client {
                 goodness: this.goodness()
             }
             return $.ajax({
-                url: "/api/opinions/" + encodeURIComponent(opinion.thingName),
+                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName),
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(opinion),
@@ -109,7 +115,7 @@ module TechRadar.Client {
                 goodness: this.goodness()
             }
             return $.ajax({
-                url: "/api/opinions/",
+                url: "/api/opinions/" + AuthInfo.instance.username + "/",
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(opinion),

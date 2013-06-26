@@ -41,7 +41,7 @@ module TechRadar.Client {
         var d = $.Deferred();
         getThings().done(function (things) {
             console.log("getting opinions");
-            $.getJSON("/api/opinions")
+            $.getJSON("/api/opinions/" + AuthInfo.instance.username + "/")
                 .done(function (data) {
                     var opinions: Opinion[] = [];
 
