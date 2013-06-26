@@ -25,7 +25,6 @@ namespace Sioux.TechRadar
             }
         }
 
-        [Authenticate]
         public object Put(Opinion opinion)
         {
             var session = this.GetSession();
@@ -35,21 +34,7 @@ namespace Sioux.TechRadar
             }
             
             Console.WriteLine("Put received opinion string = " + opinion.thingName);
-            return Repository.StoreUpdated(opinion);
-        }
-
-        [Authenticate]
-        public object Post(Opinion opinion)
-        {
-            var session = this.GetSession();
-            if (session.UserName != opinion.user)
-            {
-                throw new HttpError(HttpStatusCode.MethodNotAllowed, "You can only edit your own opinions");
-            }
-
-            opinion.user = session.UserName;
-            Console.WriteLine("Post received opinion string = " + opinion.ToString());
-            return Repository.StoreNew(opinion);       
+            return Repository.Store(opinion);
         }
 
         [Authenticate]

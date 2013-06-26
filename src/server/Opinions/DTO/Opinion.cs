@@ -8,9 +8,9 @@ using Sioux.TechRadar.Users.DTO;
 
 namespace Sioux.TechRadar{
 
-    [Route("/api/opinions/{user}/{thingName}", "PUT")] // update
-    [Route("/api/opinions/{user}", "POST")] // create  
-    public class Opinion
+    [Route("/api/opinions/{user}/{thingName}", "PUT")] // update or create
+    [Authenticate]
+    public class Opinion : IReturn<Opinion>
     {
         [PrimaryKey]
         [AutoIncrement]
@@ -24,6 +24,7 @@ namespace Sioux.TechRadar{
     [Route("/api/opinions/{user}", "GET")] // create  
     [Route("/api/opinions/{user}/{thingName}", "GET")] // read
     [Route("/api/opinions/{user}/{thingName}", "DELETE")]
+    [Authenticate]
     public class OpinionRequest : IReturn<Opinion>
     {
         public String thingName { get; set; }

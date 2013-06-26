@@ -45,42 +45,41 @@ namespace Sioux.TechRadar
             }
         }
 
-        public object StoreUpdated(Opinion opinion)
+        public object Store(Opinion opinion)
         {
             try
             {
-                var matchingOpinion = GetByName(opinion.thingName, opinion.user).First();
-                using (var connection = connectionFactory.Connect())
+                var matchingOpinions = GetByName(opinion.thingName, opinion.user);
+
+                // did the opinion already exist? if so, update, else insert.
+                if (matchingOpinions.Any())
                 {
+                    var matchingOpinion = matchingOpinions.First();
+
                     opinion.id = matchingOpinion.id;
-                    if (String.IsNullOrEmpty(opinion.rant)) {
+                    if (String.IsNullOrEmpty(opinion.rant))
+                    {
                         opinion.rant = matchingOpinion.rant;
                     }
-                    connection.Update(opinion);
-                }
-                return opinion;
-            }
-            catch (Exception e)
-            {
-                logger.ErrorException("attempted to update a opinion", e);
-                throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to update opinion");
-            }
-        }
 
-        public object StoreNew(Opinion opinion)
-        {
-            try
-            {
-                using (var connection = connectionFactory.Connect())
+                    using (var connection = connectionFactory.Connect())
+                    {
+                        connection.Update(opinion);
+                    }
+                }
+                else
                 {
-                    connection.Insert(opinion);
+                    using (var connection = connectionFactory.Connect())
+                    {
+                        connection.Insert(opinion);
+                    }
                 }
                 return opinion;
             }
             catch (Exception e)
             {
-                logger.ErrorException("attempted to insert a new opinion", e);
-                throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to insert opinion");
+                logger.ErrorException("attempted to update/inset a opinion", e);
+                throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to update/insert opinion");
             }
         }
 

@@ -9,9 +9,7 @@ namespace Sioux.TechRadar
     {
         IEnumerable<Opinion> GetByName(string name, string username);
 
-         object StoreUpdated(Opinion opinion);
-
-         object StoreNew(Opinion opinion);
+         object Store(Opinion opinion);
 
          void Delete(string name, string username);
 

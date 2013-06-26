@@ -98,13 +98,7 @@ module TechRadar.Client {
                 rant: this.rant,
                 goodness: this.goodness()
             }
-            return $.ajax({
-                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName),
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(opinion),
-                dataType: 'json'
-            });
+            return this.store(opinion);
         }
 
         public storeNewOpinion() {
@@ -114,9 +108,13 @@ module TechRadar.Client {
 
                 goodness: this.goodness()
             }
+            return this.store(opinion);
+        }
+
+        private store(opinion: any) {
             return $.ajax({
-                url: "/api/opinions/" + AuthInfo.instance.username + "/",
-                type: 'POST',
+                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName),
+                type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(opinion),
                 dataType: 'json'
