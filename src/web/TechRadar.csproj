@@ -69,6 +69,10 @@
     <Content Include="js\techradar.min.js">
       <DependentUpon>techradar.ts</DependentUpon>
     </Content>
+    <Content Include="js\utils.js">
+      <DependentUpon>utils.ts</DependentUpon>
+    </Content>
+    <Content Include="js\utils.ts" />
     <Content Include="js\view-model.js">
       <DependentUpon>view-model.ts</DependentUpon>
     </Content>
@@ -100,6 +104,9 @@
     </Content>
     <Content Include="js\auth.js.map">
       <DependentUpon>auth.ts</DependentUpon>
+    </Content>
+    <Content Include="js\utils.js.map">
+      <DependentUpon>utils.ts</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

@@ -105,7 +105,7 @@ namespace Sioux.TechRadar
 
             if (thing.Name == null || Repository.GetByName(thing.Name).Count() == 0)
             {
-                thing.Name = thing.Title.ToLower().Replace(",", "").Replace(".", "").Replace("-", "");
+                thing.SetName();
                 return Repository.StoreNew(thing);
             }
             else

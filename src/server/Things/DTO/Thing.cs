@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using ServiceStack.ServiceHost;
 using ServiceStack.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Sioux.TechRadar
 {
@@ -33,6 +34,35 @@ namespace Sioux.TechRadar
         {
             var descriptionWords = Description.ToLower().Split(SplitChars).Union( Name.ToLower().Split(SplitChars));
             return keywords.Any( keyword => descriptionWords.Contains(keyword.ToLower()));
+        }
+
+        /// <summary>
+        /// Derive name from title. Replaces weird characters by friendlier ones.
+        /// </summary>
+        public void SetName()
+        {
+            if (!String.IsNullOrWhiteSpace(Name))
+            {
+                throw new InvalidOperationException("Cannot set an already existing name");
+            }
+            var name = Title.ToLower()
+                .Replace(",", "comma")
+                .Replace(".", "dot")
+                .Replace("-", "dash")
+                .Replace("+", "plus")
+                .Replace("/", "slash")
+                .Replace("\\", "backslash")
+                .Replace("!", "bang")
+                .Replace("@", "at")
+                .Replace("#", "sharp")
+                .Replace("$", "dollar")
+                .Replace("%", "percent")
+                .Replace("^", "caret")
+                .Replace("&", "and")
+                .Replace("*", "times")
+                .Replace("=", "equals");
+
+            Name = Uri.EscapeDataString(name);  
         }
     }
 

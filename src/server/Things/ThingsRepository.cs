@@ -40,13 +40,13 @@ namespace Sioux.TechRadar
                     //data if database is empty
                     
                     var thingToInsert = new Thing() { Title = @"C" };
-                    thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
+                    thingToInsert.SetName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
 
                     
                     thingToInsert = new Thing() { Title = @"Scala" };
-                    thingToInsert.Name = thingToInsert.Title.ToLower().Replace(" ", "").Replace(",", "").Replace(".", "");
+                    thingToInsert.SetName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
                 }
@@ -57,13 +57,11 @@ namespace Sioux.TechRadar
         {
             try {
                 using (var connection = connectionFactory.Connect()) {
-                    
-                    // we want the name to be a lowercase variant without dots, or comma's
-                    thing.Name = thing.Title
-                        .ToLower()
-                        .Replace(" ","")
-                        .Replace(",","")
-                        .Replace(".","");
+
+                    if (String.IsNullOrWhiteSpace(thing.Name))
+                    {
+                        throw new ArgumentException("Name must be set");
+                    }
 
                     connection.Insert (thing);
                 }
