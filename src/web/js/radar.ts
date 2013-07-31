@@ -15,7 +15,6 @@ module TechRadar.Client{
     private opinions: Opinion[];
     private static quadrantGravity = 0.03;
 
-
     /// @param diameter the diameter (in pixels) of the generated radar. the SVG
     /// element generated will be double as wide and slightly higher.
     /// @param quadrant (optional) the quadrant to display. To display the entire radar,
@@ -35,7 +34,7 @@ module TechRadar.Client{
       this.drawBackground(margin);
       this.setupForceLayout();
     }
-
+    
     public addOpinion(opinion: Opinion) {
       this.opinions.push(opinion);
       this.restart();
@@ -128,6 +127,7 @@ module TechRadar.Client{
       circles.enter().append("circle")
         .attr("class", "thing")
         .attr("r", 4)
+        .on("mousedown", (opinion: Opinion, index: number) => opinion.onChangeCallback())
         .call(this.force.drag);
 
       textThings.enter()
@@ -137,7 +137,7 @@ module TechRadar.Client{
         .attr("dy", 4)
         .attr("text-anchor", (opinion: Opinion) => opinion.thing.quadrant().isLeft() ? "end" : "start");
 
-      textThings.text((opinion: Opinion) => opinion.thing.name);
+      textThings.text((opinion: Opinion) => opinion.thing.title);
      
       this.force.start();
     }

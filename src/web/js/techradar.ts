@@ -96,7 +96,9 @@ module TechRadar.Client {
     }
 
 
-
+    /// Creates a new Thing on the server. Returns a promise with as a single argument all
+    /// data fields (name, title, etc) of the newly created thing. Notably, this means that the
+    /// server chooses how a thing's title is turned into a name.
     function addThing(thingname: string, quadrantnum: number) {
         var newThing = new Thing(null, thingname, thingname + " has no description", quadrantnum); // random(0.1, 1.0)
 
@@ -107,12 +109,25 @@ module TechRadar.Client {
             type: 'POST',
             contentType: 'application/json',
             data: dataforjson,
-            dataType: 'json'
+            dataType: 'json' 
         });
+    }
+
+    function expandRant(opinion: Opinion) {
+        console.log(opinion.thing.title);
+        var el = $('#collapse' + opinion.thing.name);
+        console.log(el);
+        (<any>el).collapse('show');
+    }
+
+    // TODO: ding zo maken dat het change event niet afvuurt. weet niet zeker hoe.
+    function showDefaultRant(opinion: Opinion) {
+
     }
 
     function addOpinion(opinion: Opinion, radar: Radar) {
         radar.addOpinion(opinion);
+        opinion.onChange(() => expandRant(opinion));
 
         //  TODO: maybe this logic belongs in the Opinion class, by refactoring
         // updateOpinion and storeNewOpinion into a single save() method?
@@ -135,6 +150,7 @@ module TechRadar.Client {
 
     function removeOpinion(opinion: Opinion, radar: Radar) {
         radar.removeOpinion(opinion);
+        opinion.onChange(null);
         opinion.existsOnServer = false; // not sure how much sense this makes, i guess the opinion object is gone for good now.
         opinion.deleteOpinion();
     }
@@ -160,7 +176,7 @@ module TechRadar.Client {
         var selectedOpinions = opinions.filter(o => o.thing.quadrant() === quadrant);
         console.log("Selected opinions: " + JSON.stringify(selectedOpinions));
         selectedOpinions.forEach(opinion => {
-            var button = container.find('.thingButton[data-thing=' + opinion.thing.name + ']');
+            var button = container.find('.thingButton[data-thing=\'' + opinion.thing.name + '\']');
             button.addClass("active");
             button.data("opinion", opinion); // tie the Opinion object directly to the Button element, using jQuery. This way, we never lose it.
             addOpinion(opinion, radar)
@@ -198,7 +214,6 @@ module TechRadar.Client {
 
         //Section for adding a thing.       
         var btnAdd = $('<button class="btn btn_thing btn-info"  data-toggle="modal" data-target="#addThingsModal">Add</button>');
-        parentContainer.append(btnAdd);
 
         $('#addthingsform').unbind('submit');
         $('#addthingsform').submit((ev) => {
@@ -212,6 +227,7 @@ module TechRadar.Client {
         });
 
         parentContainer.append(container);
+        parentContainer.append(btnAdd);
         $('body').append(parentContainer);
     }
 

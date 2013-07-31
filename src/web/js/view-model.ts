@@ -55,13 +55,21 @@ module TechRadar.Client {
     /// View model for a "thing" that can be positioned at some place
     /// on the technology radar.
     export class Opinion extends D3Node {
+        public onChangeCallback: Function = function () { };
+
         constructor(
-            public thing: Thing,
+              public thing: Thing,
             goodness: number,   // between 0.0 and 1.0; closer to zero is better		
-            public rant: string,
+              public rant: string,
         ) {
             super(null, null);
             this.setgoodness(goodness);
+        }
+
+        /// Pass null to unregister callback.
+        public onChange(callback: Function) {
+            callback = callback || function () { };
+            this.onChangeCallback = callback;
         }
 
         public existsOnServer = false;
