@@ -13,7 +13,12 @@ module TechRadar.Client {
         constructor() {
             $('#login_button').click(e => this.login());
             $('#logout_button').click(e => this.logout());
-            this.checkLoggedIn();
+
+            // TODO: flip comments when not debugging
+            //this.checkLoggedIn();
+            $('#username').val('tech');
+            $('#password').val('radar');
+            this.login();
         }
 
         public registerCallback(callback: (isloggedin: Boolean) => any) {

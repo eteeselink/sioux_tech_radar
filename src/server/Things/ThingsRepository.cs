@@ -53,6 +53,11 @@ namespace Sioux.TechRadar
             }
         }
 
+        /// <summary>
+        /// Store a new thing.
+        /// </summary>
+        /// <param name="thing"></param>
+        /// <returns></returns>
         public Thing StoreNew (Thing thing)
         {
             try {
@@ -85,18 +90,28 @@ namespace Sioux.TechRadar
                 throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to update thing");
             }
         }
-        public IEnumerable<Thing> GetByName (string name)
+
+        /// <summary>
+        /// Returns a thing or `null`.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Thing Get(string name, Quadrant quadrant)
         {
             using (var connection = connectionFactory.Connect()) {
-                return connection.Select<Thing>("Name = {0}",name);
+                return connection
+                    .Select<Thing>("Name = {0} AND Quadrantid = {1}", name, quadrant)
+                    .SingleOrDefault();
             }
         }
+
         public IEnumerable<Thing> GetByName (string[] names)
         {
             using (var connection = connectionFactory.Connect()) {
                 return connection.Select<Thing>("Name in ({0})", names.Aggregate((a,b) => a + ',' + b));
             }
         }
+
         public IEnumerable<Thing> GetByQuadrant (Quadrant quadrant)
         {
             using (var connection = connectionFactory.Connect()) {

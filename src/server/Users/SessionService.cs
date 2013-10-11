@@ -18,6 +18,7 @@ namespace Sioux.TechRadar.Users
 
         public AuthResponse Get(SessionRequest sessionRequest)
         {
+
             var authSession = this.GetSession();
             if (authSession.UserAuthName == null)
             {

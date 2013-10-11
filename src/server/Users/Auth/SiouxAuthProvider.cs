@@ -20,7 +20,7 @@ namespace Sioux.TechRadar.Users.Auth
 
         public override void OnAuthenticated(IServiceBase authService, IAuthSession session, IOAuthTokens tokens, Dictionary<string, string> authInfo)
         {
-            // do nothing, but prevent base.OnAuthenticated to run.
+            // Note:
             // `session.UserAuthName` is already set to the user's user name.
             
             var usersRepo = authService.TryResolve<IUsersRepository>();

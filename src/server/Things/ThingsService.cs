@@ -72,7 +72,7 @@ namespace Sioux.TechRadar
             if (String.IsNullOrWhiteSpace(thing.Name)
                 || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest, "Thing was not complete");
 
-            Thing existingThing = Repository.GetByName(thing.Name).FirstOrDefault();
+            Thing existingThing = Repository.Get(thing.Name, thing.Quadrantid);
 
             //verify update is valid
             if (existingThing != null)
@@ -103,9 +103,11 @@ namespace Sioux.TechRadar
             if (String.IsNullOrWhiteSpace(thing.Title)
                ) throw new HttpError(HttpStatusCode.NotAcceptable, "Thing was not complete");
 
-            if (thing.Name == null || Repository.GetByName(thing.Name).Count() == 0)
+            thing.SetName();
+
+            var existingThing = Repository.Get(thing.Name, thing.Quadrantid);
+            if (existingThing == null)
             {
-                thing.SetName();
                 return Repository.StoreNew(thing);
             }
             else
@@ -113,9 +115,6 @@ namespace Sioux.TechRadar
                 throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists");
             }
         }
-
-        //not needed?
-        //public void Delete(Thing thing):
     }
 }
 

@@ -15,3 +15,8 @@ New TODO d.d. 28-07-2013
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
 
 Totaal: 24 uur. Best flink, toch! Prio volgorde klopt zo.
+
+OPEN ISSUES:
+* Iemand voegt een thing toe die in een ander kwadrant al bestaat. Ojee!
+  Optie: een naam mag maar 1x bestaan; degene die'm het eerst toevoegt krijgt'm in dat kwadrant
+  Optie: elke naam mag in elk kwadrant bestaan. deze! iesh beter

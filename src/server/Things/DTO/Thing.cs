@@ -24,6 +24,11 @@ namespace Sioux.TechRadar
         public string Title { get; set; }
         public string Description{ get; set; }
 
+        /// <summary>
+        /// Whether or not a thing is supposed to exist when there are no associated opinions.
+        /// </summary>
+        public bool Sticky { get; set; }
+
         private char[] SplitChars = new char[]{',','.',' '};
         /// <summary>
         /// Checks if this thing is a possible result of a search with the given keywords.

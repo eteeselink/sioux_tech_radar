@@ -9,7 +9,7 @@ namespace Sioux.TechRadar
 		Thing StoreNew(Thing thing);
 		Thing StoreUpdated(Thing thing);
 		IEnumerable<Thing> GetByName (string[] names);	
-		IEnumerable<Thing> GetByName (string name);	
+		Thing Get (string name, Quadrant quadrant);	
 		IEnumerable<Thing> GetByQuadrant (Quadrant quadrant);
 		IEnumerable<Thing> Search (ThingsRequest request);
 		IEnumerable<Thing> GetAll();
