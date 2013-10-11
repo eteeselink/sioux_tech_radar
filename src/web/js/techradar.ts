@@ -10,11 +10,16 @@ module TechRadar.Client {
 
 
 
-    function getThings() {
+    function getThings(searchQuad: Quadrant) {
         console.log("getting things");
 
+        var url = "/api/things/search";
+        if (searchQuad != null) {
+            url += "?Quadrant=" + searchQuad.id;
+        }
+
         var d = $.Deferred();
-        $.getJSON("/api/things/search/")
+        $.getJSON(url)
           .done(function (data) {
               var things = [];
               for (var i = 0; i < data.length; i++) {
@@ -36,10 +41,10 @@ module TechRadar.Client {
     /// Get all things and all opinions for the current user.
     /// Returns a promise. The data given to a done() call is an
     /// object of the form {opinions: Opinion[], things: Thing[]}.
-    function getThingsAndOpinions() {
+    function getThingsAndOpinions(searchQuad: Quadrant) {
         console.log("getting things and opinions");
         var d = $.Deferred();
-        getThings().done(function (things) {
+        getThings(searchQuad).done(function (things) {
             console.log("getting opinions");
             $.getJSON("/api/opinions/" + AuthInfo.instance.username + "/")
                 .done(function (data) {
@@ -81,7 +86,7 @@ module TechRadar.Client {
         }
         var radar = new Radar(500, quad, (quad !== null), classes);
         if (AuthInfo.instance.isLoggedIn()) {
-            getThingsAndOpinions().done(function (data: { things: Thing[]; opinions: Opinion[]; }) {
+            getThingsAndOpinions(quad).done(function (data: { things: Thing[]; opinions: Opinion[]; }) {
                 var things = data.things;
                 var opinions = data.opinions;
                 console.log("got my things =" + JSON.stringify(things));

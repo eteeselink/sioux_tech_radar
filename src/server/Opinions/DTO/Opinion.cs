@@ -15,8 +15,12 @@ namespace Sioux.TechRadar{
         [PrimaryKey]
         [AutoIncrement]
         public int id { get; set; }
+
+        [Index]
         public String thingName{ get; set; }        
         public Double goodness { get; set; }
+
+        [Index]
         public String user { get; set; }
         public String rant { get; set; }
     }

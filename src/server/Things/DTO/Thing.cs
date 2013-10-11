@@ -16,35 +16,16 @@ namespace Sioux.TechRadar
     [Route("/api/things","POST")] // create
     public class Thing : IReturn<Thing>
     {
-        /// <summary>
-        /// Name prefixed by quadrant identifier. Used because we want (Name, Quadrantid) to be the
-        /// unique primary key but SQLite does not support this.
-        /// </summary>
         [PrimaryKey]
-        public string FullyQualifiedName
-        {
-            get
-            {
-                return String.Format("{0}_{1}", (int)Quadrantid, Name);
-            }
-            set
-            {
-                Quadrantid = (Quadrant)int.Parse("" + value[0]);
-                Name = value.Substring(2);
-            }
-        }
-
-        [Ignore]
         public string Name { get; set; }
 
-        [Ignore]
         public Quadrant Quadrantid { get; set; } 
 
         public string Title { get; set; }
         public string Description{ get; set; }
 
         /// <summary>
-        /// Whether or not a thing is supposed to exist when there are no associated opinions.
+        /// Whether or not a thing is supposed to "exist" when there are no associated opinions.
         /// </summary>
         public bool Sticky { get; set; }
 

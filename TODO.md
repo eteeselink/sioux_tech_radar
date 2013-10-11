@@ -10,6 +10,9 @@ New TODO d.d. 28-07-2013
 * Wiki-achtige uitleg over item 
   * Moet ook nog gedesigned worden (2u)
   * En gemaakt (4u)
+* Data-problemen
+  * Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen
+  * Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet
 * Zien wat anderen vinden (4u)
 * Je eigen overzichtsradar delen (4u)
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
@@ -20,3 +23,4 @@ OPEN ISSUES:
 * Iemand voegt een thing toe die in een ander kwadrant al bestaat. Ojee!
   Optie: een naam mag maar 1x bestaan; degene die'm het eerst toevoegt krijgt'm in dat kwadrant
   Optie: elke naam mag in elk kwadrant bestaan. deze! iesh beter
+  Oplossing: geen van twee, teveel gedoe. Revert!

@@ -39,13 +39,13 @@ namespace Sioux.TechRadar
                 {
                     //data if database is empty
                     
-                    var thingToInsert = new Thing() { Title = @"C" };
+                    var thingToInsert = new Thing() { Title = @"C", Sticky = true };
                     thingToInsert.SetName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
 
                     
-                    thingToInsert = new Thing() { Title = @"Scala" };
+                    thingToInsert = new Thing() { Title = @"Scala", Sticky = true };
                     thingToInsert.SetName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
@@ -94,13 +94,11 @@ namespace Sioux.TechRadar
         /// <summary>
         /// Returns a thing or `null`.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public Thing Get(string name, Quadrant quadrant)
+        public Thing Get(string name)
         {
             using (var connection = connectionFactory.Connect()) {
                 return connection
-                    .Select<Thing>("Name = {0} AND Quadrantid = {1}", name, quadrant)
+                    .Select<Thing>("Name = {0}", name)
                     .SingleOrDefault();
             }
         }
@@ -127,7 +125,8 @@ namespace Sioux.TechRadar
         }
         public IEnumerable<Thing> GetAll ()
         {
-            using (var connection = connectionFactory.Connect()) {
+            using (var connection = connectionFactory.Connect())
+            {
                 return connection.Select<Thing>();
             }
         }

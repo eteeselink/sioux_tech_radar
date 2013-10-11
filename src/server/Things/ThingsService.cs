@@ -74,14 +74,18 @@ namespace Sioux.TechRadar
 
             thing.SetName();
 
-            var existingThing = Repository.Get(thing.Name, thing.Quadrantid);
+            var existingThing = Repository.Get(thing.Name);
             if (existingThing == null)
             {
                 return Repository.StoreNew(thing);
             }
+            else if (existingThing.Quadrantid == thing.Quadrantid)
+            {
+                return existingThing;
+            }
             else
             {
-                throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists");
+                throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists (for category '" + thing.Quadrantid + "')");
             }
         }
     }
