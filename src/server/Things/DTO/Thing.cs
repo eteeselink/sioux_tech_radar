@@ -13,7 +13,6 @@ namespace Sioux.TechRadar
     /// A thing is in most cases a response object.
     /// </summary>
 
-    [Route("/api/things/{name}","PUT")] // update
     [Route("/api/things","POST")] // create
     public class Thing : IReturn<Thing>
     {
