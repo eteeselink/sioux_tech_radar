@@ -26,8 +26,6 @@ module TechRadar.Client {
         }
 
         private login() {
-            console.log(4);
-
             var body = JSON.stringify({
                 UserName: $('#username').val(),
                 Password: $('#password').val(),

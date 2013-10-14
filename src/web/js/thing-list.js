@@ -2,7 +2,8 @@ var TechRadar;
 (function (TechRadar) {
     (function (Client) {
         var ThingList = (function () {
-            function ThingList(things, opinions, quadrant, radar) {
+            function ThingList(tab, things, opinions, quadrant, radar) {
+                this.tab = tab;
                 this.things = things;
                 this.opinions = opinions;
                 this.quadrant = quadrant;
@@ -34,10 +35,10 @@ var TechRadar;
                 if(!button.hasClass('active')) {
                     var opinion = new Client.Opinion(thing, TechRadar.random(0.0, 1.0), "");
                     button.data('opinion', opinion);
-                    Client.addOpinion(opinion, this.radar);
+                    this.tab.addOpinion(opinion, this.radar);
                 } else {
                     var opinion = button.data('opinion');
-                    Client.removeOpinion(opinion, this.radar);
+                    this.tab.removeOpinion(opinion, this.radar);
                     button.data('opinion', null);
                 }
             };
@@ -52,19 +53,18 @@ var TechRadar;
             };
             ThingList.prototype.addOpinions = function (selectedOpinions) {
                 var _this = this;
-                console.log("Selected opinions: " + JSON.stringify(selectedOpinions));
                 selectedOpinions.forEach(function (opinion) {
                     var button = _this.container.find('.thingButton[data-thing=\'' + opinion.thing.name + '\']');
                     button.addClass("active");
                     button.data("opinion", opinion);
-                    Client.addOpinion(opinion, _this.radar);
+                    _this.tab.addOpinion(opinion, _this.radar);
                 });
             };
             ThingList.prototype.drawAddThingButton = function () {
                 var _this = this;
                 $('#thingsList').append('<div><input type="text" id="thing-add-title"><button class="btn" id="thing-add-submit">+</button></div>');
                 $('#thing-add-submit').click(function (ev) {
-                    var request = Client.addThing($('#thing-add-title').val(), _this.quadrant.id);
+                    var request = _this.tab.addThing($('#thing-add-title').val(), _this.quadrant.id);
                     request.done(function (thing) {
                         _this.container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>');
                         Client.showTab(_this.quadrant.id.toString());
