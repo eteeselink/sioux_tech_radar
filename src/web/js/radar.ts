@@ -10,7 +10,7 @@ module TechRadar.Client{
     /// force layout's constants depend on it
     public static radius = 200;
 
-    private svg: any;
+    public svg: any;
     private force: any;
     private opinions: Opinion[];
     private static quadrantGravity = 0.03;
@@ -119,27 +119,40 @@ module TechRadar.Client{
         var circles = this.svg.selectAll("circle.thing").data(this.opinions);
         var textThings = this.svg.selectAll("text.thing").data(this.opinions);
         
-      //remove all circles with no data attached.
+        //remove all circles with no data attached.
         circles.exit().remove();
         textThings.exit().remove();
 
-      // append elements to the enter set (= the set of newly created elements)
-      circles.enter().append("circle")
-        .attr("class", "thing")
-        .attr("r", 4)
-        .on("mousedown", (opinion: Opinion, index: number) => opinion.onChangeCallback())
-        .call(this.force.drag);
+        // append elements to the enter set (= the set of newly created elements)
+        circles.enter().append("circle")
+            .attr("class", "thing")
+            .attr("id", (opinion: Opinion) => "opinion_" + opinion.thing.name)
+            .attr("r", 4)
+            .on("mousedown", (opinion: Opinion, index: number) => {
+                this.select(opinion);
+            })
+            .call(this.force.drag);
 
-      textThings.enter()
-        .append("text")
-        .attr("class", "thing")
-        .attr("dx", (opinion: Opinion) => (opinion.thing.quadrant().isLeft() ? -1 : 1) * 12)
-        .attr("dy", 4)
-        .attr("text-anchor", (opinion: Opinion) => opinion.thing.quadrant().isLeft() ? "end" : "start");
+        textThings.enter().append("text")
+            .attr("class", "thing")
+            .attr("dx", (opinion: Opinion) => (opinion.thing.quadrant().isLeft() ? -1 : 1) * 12)
+            .attr("dy", 4)
+            .attr("text-anchor", (opinion: Opinion) => opinion.thing.quadrant().isLeft() ? "end" : "start");
 
-      textThings.text((opinion: Opinion) => opinion.thing.title);
-     
-      this.force.start();
+        textThings.text((opinion: Opinion) => opinion.thing.title);
+
+        this.force.start();
+    }
+
+    private unselectAll() {
+        console.log('unselect');
+        this.svg.select(".selected-opinion").classed('selected-opinion', false);
+    }
+
+    private select(opinion: Opinion) {
+        this.unselectAll();
+        this.svg.select("#opinion_" + opinion.thing.name).classed('selected-opinion', true);
+        opinion.onSelectCallback();
     }
 
 

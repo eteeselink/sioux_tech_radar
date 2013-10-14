@@ -2,12 +2,11 @@ var TechRadar;
 (function (TechRadar) {
     (function (Client) {
         var ThingList = (function () {
-            function ThingList(tab, things, opinions, quadrant, radar) {
+            function ThingList(tab, things, opinions, quadrant) {
                 this.tab = tab;
                 this.things = things;
                 this.opinions = opinions;
                 this.quadrant = quadrant;
-                this.radar = radar;
                 var _this = this;
                 $('#thingsList').remove();
                 var parentContainer = $('<div id="thingsList" class="thing-list-left">');
@@ -35,10 +34,10 @@ var TechRadar;
                 if(!button.hasClass('active')) {
                     var opinion = new Client.Opinion(thing, TechRadar.random(0.0, 1.0), "");
                     button.data('opinion', opinion);
-                    this.tab.addOpinion(opinion, this.radar);
+                    this.tab.addOpinion(opinion);
                 } else {
                     var opinion = button.data('opinion');
-                    this.tab.removeOpinion(opinion, this.radar);
+                    this.tab.removeOpinion(opinion);
                     button.data('opinion', null);
                 }
             };
@@ -57,7 +56,7 @@ var TechRadar;
                     var button = _this.container.find('.thingButton[data-thing=\'' + opinion.thing.name + '\']');
                     button.addClass("active");
                     button.data("opinion", opinion);
-                    _this.tab.addOpinion(opinion, _this.radar);
+                    _this.tab.addOpinion(opinion);
                 });
             };
             ThingList.prototype.drawAddThingButton = function () {

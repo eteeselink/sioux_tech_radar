@@ -74,12 +74,24 @@ div#rant-container {
         bottom: -0.5em;
     }
 
+    #rant-message {
+        position: absolute;
+        top: 160px;
+        clear: both;
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        color: #44ff44;
+        display: none;
+    }
+
     #rant {
         .rant-text;
         float: left;
         font-style: italic; 
         width: 250px;
         text-align: left;
+        height: 150px;
     }
 }
 
@@ -91,11 +103,18 @@ svg.radar
   //border: 2px solid red;
 
   @stroke: #83b2e5;
+  @selected-stroke: #ff8800;
   circle.thing
   {
     stroke: @stroke;
     stroke-width: 1;
     fill: lighten(@stroke, 15%);
+  }
+
+  circle.selected-opinion
+  {
+    stroke: @selected-stroke;
+    fill: lighten(@selected-stroke, 15%);
   }
 
   line.lines,

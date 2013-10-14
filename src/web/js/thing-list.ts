@@ -15,8 +15,7 @@ module TechRadar.Client {
             private tab: Tab,
             private things: Thing[],
             private opinions: Opinion[],
-            private quadrant: Quadrant,
-            private radar: Radar
+            private quadrant: Quadrant
         ) {
             $('#thingsList').remove();
 
@@ -54,13 +53,13 @@ module TechRadar.Client {
                 // create a new opinion object and add it to the radar. store the object with the button.
                 var opinion = new Opinion(thing, random(0.0, 1.0), "");
                 button.data('opinion', opinion);
-                this.tab.addOpinion(opinion, this.radar);
+                this.tab.addOpinion(opinion);
                 //buildRantList(selectedOpinions);
 
             } else {
                 // get the opinion object back from the button, and remove it everywhere.
                 var opinion: Opinion = button.data('opinion');
-                this.tab.removeOpinion(opinion, this.radar);
+                this.tab.removeOpinion(opinion);
                 button.data('opinion', null);
             }
         }
@@ -80,7 +79,7 @@ module TechRadar.Client {
                 var button = this.container.find('.thingButton[data-thing=\'' + opinion.thing.name + '\']');
                 button.addClass("active");
                 button.data("opinion", opinion); // tie the Opinion object directly to the Button element, using jQuery. This way, we never lose it.
-                this.tab.addOpinion(opinion, this.radar)
+                this.tab.addOpinion(opinion)
             });
 
         }

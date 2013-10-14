@@ -55,6 +55,16 @@ div#rant-container .quote {
 div#rant-container .quote-after {
   bottom: -0.5em;
 }
+div#rant-container #rant-message {
+  position: absolute;
+  top: 160px;
+  clear: both;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #44ff44;
+  display: none;
+}
 div#rant-container #rant {
   font-family: serif;
   font-size: 18px;
@@ -62,11 +72,16 @@ div#rant-container #rant {
   font-style: italic;
   width: 250px;
   text-align: left;
+  height: 150px;
 }
 svg.radar circle.thing {
   stroke: #83b2e5;
   stroke-width: 1;
   fill: #c2d9f2;
+}
+svg.radar circle.selected-opinion {
+  stroke: #ff8800;
+  fill: #ffac4d;
 }
 svg.radar line.lines,
 svg.radar circle.lines {

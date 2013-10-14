@@ -55,6 +55,7 @@ module TechRadar.Client {
     /// View model for a "thing" that can be positioned at some place
     /// on the technology radar.
     export class Opinion extends D3Node {
+        public onSelectCallback: Function = function () { };
         public onChangeCallback: Function = function () { };
 
         constructor(
@@ -66,11 +67,26 @@ module TechRadar.Client {
             this.setgoodness(goodness);
         }
 
+        /// returns 'f' or the empty function if f is null
+        private static functionify(f: Function) {
+            return f || function () { };
+        }
+
+        /// Returns the CIRCLE element that this opinion belongs to (JQuery)
+        public element(): JQuery {
+            return $('#opinion_' + this.thing.name);
+        }
+
+        /// Pass null to unregister callback.
+        public onSelect(callback: Function) {
+            this.onSelectCallback = Opinion.functionify(callback);
+        }
+
         /// Pass null to unregister callback.
         public onChange(callback: Function) {
-            callback = callback || function () { };
-            this.onChangeCallback = callback;
+            this.onChangeCallback = Opinion.functionify(callback);
         }
+
 
         public existsOnServer = false;
         private previousGoodness = goodness;
@@ -87,6 +103,8 @@ module TechRadar.Client {
                 this.previousGoodness = this.goodness();
                 this.updateOpinion();
             }
+
+            this.onChangeCallback();
         }
 
         public deleteOpinion() {
@@ -151,7 +169,7 @@ module TechRadar.Client {
         }
 
         public isBeingDragged() {
-            return this.fixed & 2;
+            return (this.fixed & 2) !== 0;
         }
         public goodness() {
             return this.polar.r / Radar.radius;

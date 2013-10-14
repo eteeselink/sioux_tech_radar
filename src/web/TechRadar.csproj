@@ -119,6 +119,9 @@
     <Content Include="js\thing-list.js.map">
       <DependentUpon>thing-list.ts</DependentUpon>
     </Content>
+    <Content Include="js\tab.js.map">
+      <DependentUpon>tab.ts</DependentUpon>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

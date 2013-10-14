@@ -3,15 +3,25 @@
 /// <reference path="radar.ts" />
 /// <reference path="auth.ts" />
 /// <reference path="thing-list.ts" />
-/// <reference path="techradar.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar.Client {
 
+    /// global singleton tab object.
+    var currentTab: Tab;
+    
+    export function showTab(q: string) {
+        currentTab = new Tab(q);
+    }
 
+    /// Encapsulates all data shown on the currently selected tab
+    /// (e.g. either a quadrant or the overview screen)
     export class Tab {
 
         private thingsList: ThingList;
+        private radar: Radar;
+        private currentOpinion: Opinion;
+
 
         constructor(q: string) {
 
@@ -23,7 +33,7 @@ module TechRadar.Client {
             if (quad !== null) {
                 classes += " single-quadrant";
             }
-            var radar = new Radar(375, quad, (quad !== null), classes);
+            this.radar = new Radar(375, quad, (quad !== null), classes);
             if (AuthInfo.instance.isLoggedIn()) {
                 getThingsAndOpinions(quad).done((data: { things: Thing[]; opinions: Opinion[]; }) => {
                     var things = data.things;
@@ -31,12 +41,12 @@ module TechRadar.Client {
 
                     if (quad !== null) {
                         // recreate the interactive thing list, which allows additions and removals to the radar
-                        this.thingsList = new ThingList(this, data.things, data.opinions, quad, radar);
-
+                        this.thingsList = new ThingList(this, data.things, data.opinions, quad);
+                        this.initRant();
                     } else {
-                        this.showAllThings(data.opinions, radar);
-
+                        this.showAllThings(data.opinions);
                     }
+                    $('#rant-container').hide();
                 });
             }
 
@@ -59,9 +69,10 @@ module TechRadar.Client {
             });
         }
 
-        public addOpinion(opinion: Opinion, radar: Radar) {
-            radar.addOpinion(opinion);
-            opinion.onChange(() => expandRant(opinion));
+        public addOpinion(opinion: Opinion) {
+            this.radar.addOpinion(opinion);
+            opinion.onSelect(() => this.selectOpinion(opinion));
+            opinion.onChange(() => this.updateRant(opinion));
 
             //  TODO: maybe this logic belongs in the Opinion class, by refactoring
             // updateOpinion and storeNewOpinion into a single save() method?
@@ -74,27 +85,74 @@ module TechRadar.Client {
         }
 
 
-        public removeOpinion(opinion: Opinion, radar: Radar) {
-            radar.removeOpinion(opinion);
-            opinion.onChange(null);
+        public removeOpinion(opinion: Opinion) {
+            this.radar.removeOpinion(opinion);
+            opinion.onSelect(null);
             opinion.existsOnServer = false; // not sure how much sense this makes, i guess the opinion object is gone for good now.
             opinion.deleteOpinion();
         }
 
         /// Shows the things for the overview tab, of all four quadrants
-        public showAllThings(opinions: Opinion[], radar: Radar) {
+        public showAllThings(opinions: Opinion[]) {
             opinions.forEach(opinion => {
-                this.addOpinion(opinion, radar);
+                this.addOpinion(opinion);
             });
+        }
+
+        public selectOpinion(opinion: Opinion) {
+            
+            if (opinion != this.currentOpinion) {
+                $('#rant-container').show(); //only has effect the first time an opinion is selected
+
+                this.updateRant(opinion);
+                $('#rant-subject').text(" over " + opinion.thing.title);
+                this.currentOpinion = opinion;
+            }
+        }
+
+        private initRant() {
+
+            var textarea = $('#rant');
+            textarea.change(ev => {
+                textarea.data('is-custom-rant', true);
+                this.currentOpinion.rant = textarea.val();
+            });
+            textarea.on('blur', ev => {
+                console.log('blur');
+                if (textarea.data('is-custom-rant')) {
+                    this.currentOpinion.updateOpinion();
+                    $('#rant-message')
+                        .show()
+                        .delay(2000)
+                        .hide(600);
+                }
+            });
+        }
+
+        private getDefaultRant(goodness) {
+            if (goodness < 0.20) return "Stevia moet gewoon in elk project gebruikt worden!";
+            if (goodness < 0.40) return "Eerst hield ik van Vanilla Ice. Toen kwam Stevia, en nu hou ik van Stevia én van Vanilla Ice!";
+            if (goodness < 0.55) return "Ik ben erg gecharmeerd van Stevia, en vind dat we het moeten uitproberen in een project";
+            if (goodness < 0.70) return "Volgens mij is Stevia wel de moeite waard om naar te kijken!";
+            if (goodness < 0.80) return "Stevia klinkt leuk, maar ik moet nog zien of het wat wordt.";
+            if (goodness < 0.90) return "Volgens mij is Stevia gebakken lucht.";
+            return "Stevia was in 1970 al een slecht idee, en dat is het nog steeds!";
+        }
+
+        public updateRant(opinion: Opinion) {
+            var text = '';
+            if (opinion.rant) {
+                text = opinion.rant;
+            }
+            else {
+                text = this.getDefaultRant(opinion.goodness());
+                text = text.replace("Stevia", opinion.thing.title);
+            }
+            var textarea = $('#rant');
+            textarea.text(text);
         }
     }
 
 
-    function expandRant(opinion: Opinion) {
-        console.log(opinion.thing.title);
-        var el = $('#collapse' + opinion.thing.name);
-        console.log(el);
-        (<any>el).collapse('show');
-    }
 
 }

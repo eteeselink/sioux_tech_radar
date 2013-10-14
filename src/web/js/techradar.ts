@@ -10,9 +10,6 @@ module TechRadar.Client {
 
     declare var d3: any;
 
-    /// global singleton tab object.
-    var currentTab: Tab;
-
     function showAlert(text: string) {
         $('#alert-text').html(text);
         $(".alert").show();
@@ -23,11 +20,6 @@ module TechRadar.Client {
             showAlert("Server said: " + errorThrown);
         });
     }
-
-    export function showTab(q: string) {
-        currentTab = new Tab(q);
-    }
-
 
     /// Find the thing named `thingname` in `things`. Returns `null` if none found.
     export function findThing(thingname: string, things: Thing[]) {
