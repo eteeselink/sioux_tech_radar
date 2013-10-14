@@ -97,3 +97,7 @@ svg.radar tspan {
   font-size: 10px;
   fill: #787878;
 }
+svg.radar.quadrant-3,
+svg.radar.quadrant-0 {
+  margin-left: -300px;
+}
