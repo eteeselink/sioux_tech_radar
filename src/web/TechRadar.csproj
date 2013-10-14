@@ -63,6 +63,10 @@
       <DependentUpon>structs.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="js\techradar.ts" />
+    <TypeScriptCompile Include="js\tab.ts" />
+    <Content Include="js\tab.js">
+      <DependentUpon>tab.ts</DependentUpon>
+    </Content>
     <Content Include="js\techradar.js">
       <DependentUpon>techradar.ts</DependentUpon>
     </Content>

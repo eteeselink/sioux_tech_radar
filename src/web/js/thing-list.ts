@@ -3,6 +3,7 @@
 /// <reference path="radar.ts" />
 /// <reference path="auth.ts" />
 /// <reference path="techradar.ts" />
+/// <reference path="tab.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar.Client {
