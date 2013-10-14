@@ -10,6 +10,7 @@ New TODO d.d. 28-07-2013
 * Wiki-achtige uitleg over item 
   * Moet ook nog gedesigned worden (2u)
   * En gemaakt (4u)
+* Maximum 5 items per kwadrant
 * Data-problemen
   * Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen
   * Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet

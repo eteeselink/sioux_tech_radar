@@ -62,6 +62,9 @@
                 }
             };
             Tab.prototype.removeOpinion = function (opinion) {
+                if(this.currentOpinion === opinion) {
+                    this.unselectOpinion();
+                }
                 this.radar.removeOpinion(opinion);
                 opinion.onSelect(null);
                 opinion.existsOnServer = false;
@@ -72,6 +75,10 @@
                 opinions.forEach(function (opinion) {
                     _this.addOpinion(opinion);
                 });
+            };
+            Tab.prototype.unselectOpinion = function () {
+                this.currentOpinion = null;
+                $('#rant-container').hide();
             };
             Tab.prototype.selectOpinion = function (opinion) {
                 if(opinion != this.currentOpinion) {
@@ -98,24 +105,24 @@
             };
             Tab.prototype.getDefaultRant = function (goodness) {
                 if(goodness < 0.20) {
-                    return "Stevia moet gewoon in elk project gebruikt worden!";
+                    return "Yakult moet gewoon in elk project gebruikt worden!";
                 }
                 if(goodness < 0.40) {
-                    return "Eerst hield ik van Vanilla Ice. Toen kwam Stevia, en nu hou ik van Stevia én van Vanilla Ice!";
+                    return "Eerst hield ik van Vanilla Ice. Toen kwam Yakult, en nu hou ik van Yakult én van Vanilla Ice!";
                 }
                 if(goodness < 0.55) {
-                    return "Ik ben erg gecharmeerd van Stevia, en vind dat we het moeten uitproberen in een project";
+                    return "Ik ben erg gecharmeerd van Yakult, en vind dat we het moeten uitproberen in een project";
                 }
                 if(goodness < 0.70) {
-                    return "Volgens mij is Stevia wel de moeite waard om naar te kijken!";
+                    return "Volgens mij is Yakult wel de moeite waard om naar te kijken!";
                 }
                 if(goodness < 0.80) {
-                    return "Stevia klinkt leuk, maar ik moet nog zien of het wat wordt.";
+                    return "Yakult klinkt leuk, maar ik moet nog zien of het wat wordt.";
                 }
                 if(goodness < 0.90) {
-                    return "Volgens mij is Stevia gebakken lucht.";
+                    return "Volgens mij is Yakult gebakken lucht.";
                 }
-                return "Stevia was in 1970 al een slecht idee, en dat is het nog steeds!";
+                return "Yakult was in 1970 al een slecht idee, en dat is het nog steeds!";
             };
             Tab.prototype.updateRant = function (opinion) {
                 var text = '';
@@ -123,7 +130,7 @@
                     text = opinion.rant;
                 } else {
                     text = this.getDefaultRant(opinion.goodness());
-                    text = text.replace("Stevia", opinion.thing.title);
+                    text = text.replace(/Yakult/g, opinion.thing.title);
                 }
                 var textarea = $('#rant');
                 textarea.text(text);

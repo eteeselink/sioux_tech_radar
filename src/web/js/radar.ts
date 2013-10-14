@@ -135,8 +135,6 @@ module TechRadar.Client{
 
         textThings.enter().append("text")
             .attr("class", "thing")
-            .attr("dx", (opinion: Opinion) => (opinion.thing.quadrant().isLeft() ? -1 : 1) * 12)
-            .attr("dy", 4)
             .attr("text-anchor", (opinion: Opinion) => opinion.thing.quadrant().isLeft() ? "end" : "start");
 
         textThings.text((opinion: Opinion) => opinion.thing.title);
@@ -188,12 +186,12 @@ module TechRadar.Client{
       var origin = this.diameter / 2;
 
       this.svg.selectAll("circle.thing")
-        .attr("cx", thing => thing.x)
-        .attr("cy", thing => thing.y);
+        .attr("cx", opinion => opinion.x)
+        .attr("cy", opinion => opinion.y);
 
       this.svg.selectAll("text.thing")
-        .attr("x", thing => thing.x)
-        .attr("y", thing => thing.y);
+        .attr("x", opinion => opinion.x + (opinion.thing.quadrant().isLeft() ? -10 : 10))
+        .attr("y", opinion => opinion.y + 4);
         //.text(thing => thing.name + " (" + thing.goodness().toPrecision(2) + ")");
     }
 

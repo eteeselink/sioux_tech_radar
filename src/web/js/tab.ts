@@ -86,6 +86,9 @@ module TechRadar.Client {
 
 
         public removeOpinion(opinion: Opinion) {
+            if (this.currentOpinion === opinion) {
+                this.unselectOpinion();
+            }
             this.radar.removeOpinion(opinion);
             opinion.onSelect(null);
             opinion.existsOnServer = false; // not sure how much sense this makes, i guess the opinion object is gone for good now.
@@ -97,6 +100,11 @@ module TechRadar.Client {
             opinions.forEach(opinion => {
                 this.addOpinion(opinion);
             });
+        }
+
+        public unselectOpinion() {
+            this.currentOpinion = null;
+            $('#rant-container').hide();
         }
 
         public selectOpinion(opinion: Opinion) {
@@ -130,13 +138,13 @@ module TechRadar.Client {
         }
 
         private getDefaultRant(goodness) {
-            if (goodness < 0.20) return "Stevia moet gewoon in elk project gebruikt worden!";
-            if (goodness < 0.40) return "Eerst hield ik van Vanilla Ice. Toen kwam Stevia, en nu hou ik van Stevia én van Vanilla Ice!";
-            if (goodness < 0.55) return "Ik ben erg gecharmeerd van Stevia, en vind dat we het moeten uitproberen in een project";
-            if (goodness < 0.70) return "Volgens mij is Stevia wel de moeite waard om naar te kijken!";
-            if (goodness < 0.80) return "Stevia klinkt leuk, maar ik moet nog zien of het wat wordt.";
-            if (goodness < 0.90) return "Volgens mij is Stevia gebakken lucht.";
-            return "Stevia was in 1970 al een slecht idee, en dat is het nog steeds!";
+            if (goodness < 0.20) return "Yakult moet gewoon in elk project gebruikt worden!";
+            if (goodness < 0.40) return "Eerst hield ik van Vanilla Ice. Toen kwam Yakult, en nu hou ik van Yakult én van Vanilla Ice!";
+            if (goodness < 0.55) return "Ik ben erg gecharmeerd van Yakult, en vind dat we het moeten uitproberen in een project";
+            if (goodness < 0.70) return "Volgens mij is Yakult wel de moeite waard om naar te kijken!";
+            if (goodness < 0.80) return "Yakult klinkt leuk, maar ik moet nog zien of het wat wordt.";
+            if (goodness < 0.90) return "Volgens mij is Yakult gebakken lucht.";
+            return "Yakult was in 1970 al een slecht idee, en dat is het nog steeds!";
         }
 
         public updateRant(opinion: Opinion) {
@@ -146,7 +154,7 @@ module TechRadar.Client {
             }
             else {
                 text = this.getDefaultRant(opinion.goodness());
-                text = text.replace("Stevia", opinion.thing.title);
+                text = text.replace(/Yakult/g, opinion.thing.title);
             }
             var textarea = $('#rant');
             textarea.text(text);
