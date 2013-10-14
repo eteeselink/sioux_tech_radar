@@ -69,6 +69,10 @@
     <Content Include="js\techradar.min.js">
       <DependentUpon>techradar.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="js\thing-list.ts" />
+    <Content Include="js\thing-list.js">
+      <DependentUpon>thing-list.ts</DependentUpon>
+    </Content>
     <Content Include="js\utils.js">
       <DependentUpon>utils.ts</DependentUpon>
     </Content>
@@ -107,6 +111,9 @@
     </Content>
     <Content Include="js\utils.js.map">
       <DependentUpon>utils.ts</DependentUpon>
+    </Content>
+    <Content Include="js\thing-list.js.map">
+      <DependentUpon>thing-list.ts</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

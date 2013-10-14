@@ -1,70 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Sioux Technology Radar</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <!--<link href="css/tech-radar.less" rel="stylesheet/less" type="text/css" />-->
     <link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>    
-    <div class="navbar">
-        <div class="navbar-inner">
-        <a class="brand" href="#">R A D A R</a>
-        <ul class="nav">
-            <li><a href="#" data-q="0" data-toggle="tab">Techniques</a></li>
-            <li><a href="#" data-q="1" data-toggle="tab">Tools</a></li>
-            <li class="active"><a href="#" data-q="2" data-toggle="tab">Languages</a></li>
-            <li><a href="#" data-q="3" data-toggle="tab">Platforms</a></li>
-            <li><a href="#" data-q="all" data-toggle="tab">Overzicht</a></li>
-            <li><a href="expl.html" target="_blank">Uitleg</a></li>
-            <li class="logon logged-no">
-                <form>
-                    <input id="username" type="text" placeholder="Sioux username" />
-                    <input id="password" type="password" placeholder="Wachtwoord" />
-                    <input id="login_button" value="Login" type="submit" />
-                </form>
-            </li>
-            <li class="logon logged-yes">
-                <a href="#">
-                Welkom <span id="current_username">teeselinke</span>
-                <input id="logout_button" value="Log off" type="button" />
-                </a>                
-            </li>
-        </ul>
-        </div>
-    </div>
     <!--<script data-main="js/main.min" src="js/ext/require-jquery.min.js"></script> -->
     <!--<script data-main="js/main" src="js/ext/require-jquery.js"></script>-->
-      <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
-      <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/ext/d3.v2.min.js"></script>
-      <script type="text/javascript" src="js/utils.js"></script>
-      <script type="text/javascript" src="js/structs.js"></script>
-      <script type="text/javascript" src="js/view-model.js"></script>
-      <script type="text/javascript" src="js/auth.js"></script>
-      <script type="text/javascript" src="js/radar.js"></script>
-      <script type="text/javascript" src="js/techradar.js"></script>
-      <script type="text/javascript" src="js/main.js"></script>
-      <script>$(".alert").alert()</script>
 
-      
-     <div id="addThingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Add a 'thing' to this radar</h3>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">R A D A R</a>
+            <ul class="nav">
+                <li><a href="#" data-q="0" data-toggle="tab">Techniques</a></li>
+                <li><a href="#" data-q="1" data-toggle="tab">Tools</a></li>
+                <li class="active"><a href="#" data-q="2" data-toggle="tab">Languages</a></li>
+                <li><a href="#" data-q="3" data-toggle="tab">Platforms</a></li>
+                <li><a href="#" data-q="all" data-toggle="tab">Overzicht</a></li>
+                <li><a href="expl.html" target="_blank">Uitleg</a></li>
+                <li class="logon logged-no">
+                    <form>
+                        <input id="username" type="text" placeholder="Sioux username" />
+                        <input id="password" type="password" placeholder="Wachtwoord" />
+                        <input id="login_button" value="Login" type="submit" />
+                    </form>
+                </li>
+                <li class="logon logged-yes">
+                    <a href="#">Welkom <span id="current_username">(loading username..)</span>
+                        <input id="logout_button" value="Log off" type="button" />
+                    </a>
+                </li>
+            </ul>
         </div>
-        <div class="modal-body">
-          <form class="form" id="addthingsform">
-          <input id="titleInput" type="text" placeholder="title of thing" />
-          <button class="btn" type="submit">Add</button>
-          </form>
-           <div id="addSuccess" class="alert alert-success hide"></div>            
-        </div>
-        <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>        
-        </div>
-    </div>    
+    </div>
+    <div class="alert" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
+    </div>
+    <div id="contents">
+        <!-- real content added dynamically with javascript -->
 
-  </body>
+    </div>
+    <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/ext/d3.v2.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/structs.js"></script>
+    <script type="text/javascript" src="js/view-model.js"></script>
+    <script type="text/javascript" src="js/auth.js"></script>
+    <script type="text/javascript" src="js/radar.js"></script>
+    <script type="text/javascript" src="js/techradar.js"></script>
+    <script type="text/javascript" src="js/thing-list.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>$(".alert").alert()</script>
+</body>
 </html>

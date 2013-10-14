@@ -34,11 +34,11 @@ namespace Sioux.TechRadar
             oldThing.Quadrantid = thing.Quadrantid;
             return oldThing;
         }
-        public Thing Get (string name, Quadrant quadrant)
+        public Thing Get (string name)
         {
             return Things
                 .Where(t => name == t.Name)
-                .Where(t => quadrant == t.Quadrantid)
+            ///    .Where(t => quadrant == t.Quadrantid)
                 .SingleOrDefault();
         }
 

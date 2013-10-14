@@ -2,12 +2,35 @@
 /// <reference path="view-model.ts" />
 /// <reference path="radar.ts" />
 /// <reference path="auth.ts" />
+/// <reference path="thing-list.ts" />
 /// <reference path="ext/jquery-1.8.d.ts" />
 
 module TechRadar.Client {
 
     declare var d3: any;
 
+    /// global singleton things list.
+    var thingsList: ThingList;
+
+    function showAlert(text: string) {
+        $('#alert-text').html(text);
+        $(".alert").show();
+    }
+
+    export function alertOnFail(request: JQueryXHR) {
+        request.fail(function (xhr: JQueryXHR, textStatus: string, errorThrown: string) {
+            showAlert("Server said: " + errorThrown);
+        });
+    }
+
+    /// Find the thing named `thingname` in `things`. Returns `null` if none found.
+    export function findThing(thingname: string, things: Thing[]) {
+        var things_matched = things.filter(t => t.name == thingname);
+        if (things_matched.length != 1) {
+            return null;
+        }
+        return things_matched[0];
+    }
 
 
     function getThings(searchQuad: Quadrant) {
@@ -72,12 +95,11 @@ module TechRadar.Client {
         return d.promise();
     }
 
-    function showTab(q: string) {
+    export function showTab(q: string) {
 
         console.log("showTab : " + q);
         // remove earlier radars, if any.
         $('svg.radar').remove();
-        $('#thingsList').remove();
 
         var quad = (q === "all") ? null : Quadrants[parseInt(q, 10)];
         var classes = "quadrant-" + q;
@@ -89,12 +111,16 @@ module TechRadar.Client {
             getThingsAndOpinions(quad).done(function (data: { things: Thing[]; opinions: Opinion[]; }) {
                 var things = data.things;
                 var opinions = data.opinions;
-                console.log("got my things =" + JSON.stringify(things));
-                console.log("got my opinions =" + JSON.stringify(opinions));
+                //console.log("got my things =" + JSON.stringify(things));
+                //console.log("got my opinions =" + JSON.stringify(opinions));
+
                 if (quad !== null) {
-                    showList(data.things, data.opinions, quad, radar);
+                    // recreate the interactive thing list, which allows additions and removals to the radar
+                    thingsList = new ThingList(data.things, data.opinions, quad, radar);
+
                 } else {
                     showAllThings(data.opinions, radar);
+
                 }
             });
         }
@@ -104,7 +130,7 @@ module TechRadar.Client {
     /// Creates a new Thing on the server. Returns a promise with as a single argument all
     /// data fields (name, title, etc) of the newly created thing. Notably, this means that the
     /// server chooses how a thing's title is turned into a name.
-    function addThing(thingname: string, quadrantnum: number) {
+    export function addThing(thingname: string, quadrantnum: number) {
         var newThing = new Thing(null, thingname, thingname + " has no description", quadrantnum); // random(0.1, 1.0)
 
         var dataforjson = JSON.stringify({ "Title": newThing.title, "Description": newThing.description, "Quadrantid": quadrantnum });
@@ -130,7 +156,7 @@ module TechRadar.Client {
 
     }
 
-    function addOpinion(opinion: Opinion, radar: Radar) {
+    export function addOpinion(opinion: Opinion, radar: Radar) {
         radar.addOpinion(opinion);
         opinion.onChange(() => expandRant(opinion));
 
@@ -144,16 +170,8 @@ module TechRadar.Client {
         }
     }
     
-    /// Find the thing named `thingname` in `things`. Returns `null` if none found.
-    function findThing(thingname: string, things: Thing[]) {
-        var things_matched = things.filter(t => t.name == thingname);
-        if (things_matched.length != 1) {
-            return null;
-        }
-        return things_matched[0];
-    }
 
-    function removeOpinion(opinion: Opinion, radar: Radar) {
+    export function removeOpinion(opinion: Opinion, radar: Radar) {
         radar.removeOpinion(opinion);
         opinion.onChange(null);
         opinion.existsOnServer = false; // not sure how much sense this makes, i guess the opinion object is gone for good now.
@@ -167,78 +185,10 @@ module TechRadar.Client {
         });
     }
 
-    function showList(things: Thing[], opinions: Opinion[], quadrant: Quadrant, radar: Radar) {
-        var parentContainer = $('<div id="thingsList" class="thing-list-left btn-group btn-group-vertical">');
-        var container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
-
-        // draw thing buttons
-        var selectedThings = things.filter(o => o.quadrant() === quadrant);
-        selectedThings.forEach(thing => {
-            container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
-        });
-
-        // add opinions to radar and set thing button state
-        var selectedOpinions = opinions.filter(o => o.thing.quadrant() === quadrant);
-        console.log("Selected opinions: " + JSON.stringify(selectedOpinions));
-        selectedOpinions.forEach(opinion => {
-            var button = container.find('.thingButton[data-thing=\'' + opinion.thing.name + '\']');
-            button.addClass("active");
-            button.data("opinion", opinion); // tie the Opinion object directly to the Button element, using jQuery. This way, we never lose it.
-            addOpinion(opinion, radar)
-        });
-
-        // add handlers for thing-button clicks.
-        container.find('.thingButton').click(function (ev) {
-            var button = $(this);
-            var thingname = button.data('thing');
-            var thing = findThing(thingname, things);
-
-            if (thing == null) {
-                alert("Programmer bug! Amount of things matched to button unexpected.");
-                throw new Error("Programmer bug! Amount of things matched to button unexpected.")
-            }
-            if (!button.hasClass('active')) {
-                // create a new opinion object and add it to the radar. store the object with the button.
-                var opinion = new Opinion(thing, random(0.0, 1.0), "");
-                button.data('opinion', opinion);
-                addOpinion(opinion, radar);
-                buildRantList(selectedOpinions);
-
-            } else {
-                // get the opinion object back from the button, and remove it everywhere.
-                var opinion: Opinion = button.data('opinion');
-                removeOpinion(opinion, radar);
-                button.data('opinion', null);
-            }
-        });
-
-
-        //section for adding rants    
-        buildRantList(selectedOpinions);
-
-
-        //Section for adding a thing.       
-        var btnAdd = $('<button class="btn btn_thing btn-info"  data-toggle="modal" data-target="#addThingsModal">Add</button>');
-
-        $('#addthingsform').unbind('submit');
-        $('#addthingsform').submit((ev) => {
-            addThing($('input#titleInput').val(), quadrant.id).done(function (thing) {
-                container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
-                showTab(quadrant.id.toString());
-                $('#addSuccess').text($('input#titleInput').val() + " has been added.");
-                $('#addSuccess').show();
-            });
-            ev.preventDefault();
-        });
-
-        parentContainer.append(container);
-        parentContainer.append(btnAdd);
-        $('body').append(parentContainer);
-    }
 
     function buildRantList(opinions: Opinion[]) {
         $('#rantList').remove();
-        $('body').append('<div class="rants-list-right" id="rantList"></div>');
+        $('#contents').append('<div class="rants-list-right" id="rantList"></div>');
         $('#rantList').append('<p>click to add rant</p>');
         opinions.forEach(opinion => {
             $('#rantList').append(newRantForAccordion(opinion));

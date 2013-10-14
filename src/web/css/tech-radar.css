@@ -6,6 +6,19 @@
   position: absolute;
   top: 60px;
 }
+#thing-add-title {
+  width: 110px;
+  padding: 4px 6px;
+  margin: 0;
+}
+#thing-add-submit {
+  width: 34px;
+  padding: 4px 10px;
+}
+#contents {
+  width: 100%;
+  position: relative;
+}
 .rants-list-right {
   position: absolute;
   top: 60px;
