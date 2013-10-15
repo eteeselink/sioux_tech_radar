@@ -7,7 +7,7 @@ namespace Sioux.TechRadar
 	public interface IThingsRepository
 	{
 		Thing StoreNew(Thing thing);
-		Thing StoreUpdated(Thing thing);
+		Thing UpdateDescription(Thing thing);
 		IEnumerable<Thing> GetByName (string[] names);	
 		Thing Get (string name);	
 		IEnumerable<Thing> GetByQuadrant (Quadrant quadrant);

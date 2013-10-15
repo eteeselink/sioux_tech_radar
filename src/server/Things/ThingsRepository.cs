@@ -78,11 +78,13 @@ namespace Sioux.TechRadar
             }
         }
 
-        public Thing StoreUpdated (Thing thing)
+        public Thing UpdateDescription (Thing thing)
         {
             try {
                 using (var connection = connectionFactory.Connect()) {
-                    connection.UpdateOnly( thing, t => t.Description ,  t => t.Name == thing.Name);
+                    connection.UpdateOnly(thing, 
+                        t => t.Description,  
+                        t => t.Name == thing.Name);
                 }
                 return thing;
             } catch (Exception e) {

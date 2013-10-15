@@ -27,7 +27,7 @@ namespace Sioux.TechRadar
             Things.AddLast(thing);
             return thing;
         }
-        public Thing StoreUpdated(Thing thing)
+        public Thing UpdateDescription(Thing thing)
         {
             var oldThing = Things.Where (t => t.Name == thing.Name).First ();
             oldThing.Description = thing.Description;

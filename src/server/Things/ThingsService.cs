@@ -61,9 +61,8 @@ namespace Sioux.TechRadar
         }
 
         /// <summary>
-        /// This will update a Thing
+        /// This will update the description of a Thing.
         /// </summary>
-        /// <param name="thing">Thing.</param>
         public object Put(Thing thing)
         {
 
@@ -72,23 +71,23 @@ namespace Sioux.TechRadar
             if (String.IsNullOrWhiteSpace(thing.Name)
                 || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest, "Thing was not complete");
 
-            Thing existingThing = Repository.Get(thing.Name, thing.Quadrantid);
+            Thing existingThing = Repository.Get(thing.Name);
 
             //verify update is valid
-            if (existingThing != null)
+            if (existingThing == null)
             {
-                if (existingThing.Quadrantid != thing.Quadrantid
-                    || existingThing.Title != thing.Title)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
-                }
-            }
-            else
-            {
-                throw new HttpError(HttpStatusCode.NotFound, "'" + thing.Name + "' does not exist yet");
+                throw new HttpError(HttpStatusCode.NotFound, "Cannot update: '" + thing.Name + "' does not exist yet");
             }
 
-            return Repository.StoreUpdated(thing);
+            if (existingThing.Quadrantid != thing.Quadrantid
+                || existingThing.Title != thing.Title)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
+            }
+
+            existingThing.Description = thing.Description;
+
+            return Repository.UpdateDescription(existingThing);
         }
 
         /// <summary>
