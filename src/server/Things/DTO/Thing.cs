@@ -22,7 +22,7 @@ namespace Sioux.TechRadar
         public Quadrant Quadrantid { get; set; } 
 
         public string Title { get; set; }
-        public string Description{ get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Whether or not a thing is supposed to "exist" when there are no associated opinions.

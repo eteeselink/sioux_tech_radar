@@ -53,7 +53,7 @@ module TechRadar.Client {
             // for text labels
             // all quadrants: make the svg 2x wider for the same reason, making space
             // for text labels in both directions.
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("#contents").append("svg")
               .attr("class", "radar " + auxClasses)
               .attr("width", this.diameter * (this.quadrant ? 1.5 : 2))
               .attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
