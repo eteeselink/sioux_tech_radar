@@ -60,9 +60,40 @@ namespace Sioux.TechRadar
             return result ?? new List<Thing>();
         }
 
+        /// <summary>
+        /// This will update a Thing
+        /// </summary>
+        /// <param name="thing">Thing.</param>
+        public object Put(Thing thing)
+        {
+
+            Console.WriteLine("Put received");
+
+            if (String.IsNullOrWhiteSpace(thing.Name)
+                || String.IsNullOrEmpty(thing.Description)) throw new HttpError(HttpStatusCode.BadRequest, "Thing was not complete");
+
+            Thing existingThing = Repository.Get(thing.Name, thing.Quadrantid);
+
+            //verify update is valid
+            if (existingThing != null)
+            {
+                if (existingThing.Quadrantid != thing.Quadrantid
+                    || existingThing.Title != thing.Title)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
+                }
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "'" + thing.Name + "' does not exist yet");
+            }
+
+            return Repository.StoreUpdated(thing);
+        }
 
         /// <summary>
         /// This will create a new Thing
+        /// 
         /// </summary>
         /// <param name="thing">Thing.</param>
         public object Post(Thing thing)
