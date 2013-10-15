@@ -16,6 +16,7 @@
                     classes += " single-quadrant";
                 }
                 this.radar = new Client.Radar(375, quad, (quad !== null), classes);
+                this.unselectOpinion();
                 if(Client.AuthInfo.instance.isLoggedIn()) {
                     Client.getThingsAndOpinions(quad).done(function (data) {
                         var things = data.things;
@@ -27,11 +28,12 @@
                         } else {
                             _this.showAllThings(data.opinions);
                         }
-                        $('#rant-container').hide();
-                        $('#desc-container').hide();
                     });
                 }
             }
+            Tab.prototype.hasActiveSelection = function () {
+                return this.currentOpinion !== null;
+            };
             Tab.prototype.addThing = function (thingname, quadrantnum) {
                 var newThing = new Client.Thing(null, thingname, "", quadrantnum);
                 var dataforjson = JSON.stringify({

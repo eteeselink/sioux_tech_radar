@@ -22,6 +22,10 @@ module TechRadar.Client {
         private radar: Radar;
         private currentOpinion: Opinion;
 
+        public hasActiveSelection() {
+            return this.currentOpinion !== null;
+        }
+
 
         constructor(q: string) {
 
@@ -34,6 +38,7 @@ module TechRadar.Client {
                 classes += " single-quadrant";
             }
             this.radar = new Radar(375, quad, (quad !== null), classes);
+            this.unselectOpinion();
             if (AuthInfo.instance.isLoggedIn()) {
                 getThingsAndOpinions(quad).done((data: { things: Thing[]; opinions: Opinion[]; }) => {
                     var things = data.things;
@@ -47,8 +52,6 @@ module TechRadar.Client {
                     } else {
                         this.showAllThings(data.opinions);
                     }
-                    $('#rant-container').hide();
-                    $('#desc-container').hide();
                 });
             }
 

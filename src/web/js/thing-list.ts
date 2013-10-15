@@ -65,8 +65,7 @@ module TechRadar.Client {
             // temporarily hide the description form of the currently selected opinion, if applicable.
             // keep track that we want to restore it in onMouseOut
             var desc = $('#desc-container');
-            if (desc.is(':visible')) {
-                desc.data('restore-me', true);
+            if (this.tab.hasActiveSelection()) {
                 desc.hide();
             }
         }
@@ -79,7 +78,7 @@ module TechRadar.Client {
 
             // restore the description form of the currently selected opinion, if applicable.
             var desc = $('#desc-container');
-            if (desc.data('restore-me')) {
+            if (this.tab.hasActiveSelection()) {
                 desc.show();
             }
         }

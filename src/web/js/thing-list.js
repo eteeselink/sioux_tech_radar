@@ -46,8 +46,7 @@ var TechRadar;
                 $('#desc-overlay-subject').text(thing.title);
                 $('#desc-overlay-container').show();
                 var desc = $('#desc-container');
-                if(desc.is(':visible')) {
-                    desc.data('restore-me', true);
+                if(this.tab.hasActiveSelection()) {
                     desc.hide();
                 }
             };
@@ -56,7 +55,7 @@ var TechRadar;
                 var thing = this.findThing(button);
                 $('#desc-overlay-container').hide();
                 var desc = $('#desc-container');
-                if(desc.data('restore-me')) {
+                if(this.tab.hasActiveSelection()) {
                     desc.show();
                 }
             };
