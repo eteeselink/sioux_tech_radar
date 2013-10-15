@@ -37,6 +37,18 @@ module TechRadar.Client {
 
     }
 
+    function storeDto(url: string, dto: any) {
+
+        return $.ajax({
+            url: url,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(dto),
+            dataType: 'json'
+        });
+    }
+        
+
     export var Quadrants = [Quadrant.Techniques, Quadrant.Tools, Quadrant.Languages, Quadrant.Platforms];
 
     export class Thing {
@@ -50,6 +62,16 @@ module TechRadar.Client {
         public quadrant() {
             return Quadrants[this.quadrantid];
         }
+
+        public updateDescription() {
+            console.log("ajax (updateDescription) called");
+            var thing = {
+                description: this.description
+            };
+            var url = "/api/things/" + encodeURIComponent(this.name);
+            return storeDto(url, thing);
+        }
+
     }
 
     /// View model for a "thing" that can be positioned at some place
@@ -138,13 +160,8 @@ module TechRadar.Client {
         }
 
         private store(opinion: any) {
-            return $.ajax({
-                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName),
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(opinion),
-                dataType: 'json'
-            });
+            var url = "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName);
+            return storeDto(url, opinion);
         }
 
         public polar: Polar;

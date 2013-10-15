@@ -40,13 +40,13 @@ namespace Sioux.TechRadar
                     //data if database is empty
                     
                     var thingToInsert = new Thing() { Title = @"C", Sticky = true };
-                    thingToInsert.SetName();
+                    thingToInsert.ComputeName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
 
                     
                     thingToInsert = new Thing() { Title = @"Scala", Sticky = true };
-                    thingToInsert.SetName();
+                    thingToInsert.ComputeName();
                     thingToInsert.Quadrantid = Quadrant.Languages;
                     db.Insert(thingToInsert);
                 }

@@ -28,7 +28,10 @@ module TechRadar.Client {
             this.addOpinions(selectedOpinions);
 
             // add handlers for thing-button clicks.
-            this.container.find('.thingButton').click(ev => this.onButtonClick(ev));
+            var buttons = this.container.find('.thingButton');
+            buttons.click(ev => this.onButtonClick(ev));
+            buttons.mouseover(ev => this.onMouseOver(ev));
+            buttons.mouseout(ev => this.onMouseOut(ev));
 
             ////section for adding rants    
             //buildRantList(selectedOpinions);
@@ -39,10 +42,51 @@ module TechRadar.Client {
             this.drawAddThingButton();
         }
 
+        private findThing(button: JQuery) {
+            var thingname = button.data('thing');
+            return findThing(thingname, this.things);
+        }
+
+        private onMouseOver(ev: Event) {
+            var button = $(ev.target);
+            var thing = this.findThing(button);
+
+            var description = thing.description;
+            if (!description || description.trim() === "") {
+                $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
+            }
+            else {
+                $('#desc-overlay').text(description);
+            }
+            
+            $('#desc-overlay-subject').text(thing.title);
+            $('#desc-overlay-container').show();
+
+            // temporarily hide the description form of the currently selected opinion, if applicable.
+            // keep track that we want to restore it in onMouseOut
+            var desc = $('#desc-container');
+            if (desc.is(':visible')) {
+                desc.data('restore-me', true);
+                desc.hide();
+            }
+        }
+
+        private onMouseOut(ev: Event) {
+            var button = $(ev.target);
+            var thing = this.findThing(button);
+
+            $('#desc-overlay-container').hide();
+
+            // restore the description form of the currently selected opinion, if applicable.
+            var desc = $('#desc-container');
+            if (desc.data('restore-me')) {
+                desc.show();
+            }
+        }
+
         private onButtonClick(ev: Event) {
             var button = $(ev.target);
-            var thingname = button.data('thing');
-            var thing = findThing(thingname, this.things);
+            var thing = this.findThing(button);
 
             if (thing == null) {
                 alert("Programmer bug! Amount of things matched to button unexpected.");

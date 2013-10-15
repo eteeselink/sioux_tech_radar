@@ -20,7 +20,7 @@ namespace Sioux.TechRadar
         [PrimaryKey]
         public string Name { get; set; }
 
-        public Quadrant Quadrantid { get; set; } 
+        public Quadrant? Quadrantid { get; set; } 
 
         public string Title { get; set; }
         public string Description { get; set; }
@@ -45,7 +45,7 @@ namespace Sioux.TechRadar
         /// <summary>
         /// Derive name from title. Replaces weird characters by friendlier ones.
         /// </summary>
-        public void SetName()
+        public void ComputeName()
         {
             if (!String.IsNullOrWhiteSpace(Name))
             {

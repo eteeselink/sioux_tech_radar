@@ -23,15 +23,17 @@
                         if(quad !== null) {
                             _this.thingsList = new Client.ThingList(_this, data.things, data.opinions, quad);
                             _this.initRant();
+                            _this.initDesc();
                         } else {
                             _this.showAllThings(data.opinions);
                         }
                         $('#rant-container').hide();
+                        $('#desc-container').hide();
                     });
                 }
             }
             Tab.prototype.addThing = function (thingname, quadrantnum) {
-                var newThing = new Client.Thing(null, thingname, thingname + " has no description", quadrantnum);
+                var newThing = new Client.Thing(null, thingname, "", quadrantnum);
                 var dataforjson = JSON.stringify({
                     "Title": newThing.title,
                     "Description": newThing.description,
@@ -79,18 +81,24 @@
             Tab.prototype.unselectOpinion = function () {
                 this.currentOpinion = null;
                 $('#rant-container').hide();
+                $('#desc-container').hide();
             };
             Tab.prototype.selectOpinion = function (opinion) {
                 if(opinion != this.currentOpinion) {
                     $('#rant-container').show();
                     this.updateRant(opinion);
+                    this.showDesc(opinion.thing);
                     $('#rant-subject').text(" over " + opinion.thing.title);
                     this.currentOpinion = opinion;
                 }
             };
+            Tab.prototype.flash = function (selector) {
+                $(selector).show().delay(2000).fadeOut(600);
+            };
             Tab.prototype.initRant = function () {
                 var _this = this;
                 var textarea = $('#rant');
+                textarea.unbind();
                 textarea.change(function (ev) {
                     textarea.data('is-custom-rant', true);
                     _this.currentOpinion.rant = textarea.val();
@@ -98,9 +106,27 @@
                 textarea.on('blur', function (ev) {
                     console.log('blur');
                     if(textarea.data('is-custom-rant')) {
-                        _this.currentOpinion.updateOpinion();
-                        $('#rant-message').show().delay(2000).hide(600);
+                        var req = _this.currentOpinion.updateOpinion();
+                        req.done(function () {
+                            return _this.flash('#rant-message');
+                        });
+                        Client.alertOnFail(req);
                     }
+                });
+            };
+            Tab.prototype.initDesc = function () {
+                var _this = this;
+                var form = $('#desc-form');
+                form.unbind();
+                form.submit(function (ev) {
+                    var thing = _this.currentOpinion.thing;
+                    thing.description = $('#desc').val();
+                    var req = thing.updateDescription();
+                    req.done(function () {
+                        return _this.flash('#desc-message');
+                    });
+                    Client.alertOnFail(req);
+                    return false;
                 });
             };
             Tab.prototype.getDefaultRant = function (goodness) {
@@ -134,6 +160,11 @@
                 }
                 var textarea = $('#rant');
                 textarea.text(text);
+            };
+            Tab.prototype.showDesc = function (thing) {
+                $('#desc-container').show();
+                $('#desc-subject').text(thing.title);
+                $('#desc').val(thing.description);
             };
             return Tab;
         })();

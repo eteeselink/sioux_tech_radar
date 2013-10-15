@@ -63,7 +63,7 @@ namespace Sioux.TechRadar
         /// <summary>
         /// This will update the description of a Thing.
         /// </summary>
-        public object Put(Thing thing)
+        public void Put(Thing thing)
         {
 
             Console.WriteLine("Put received");
@@ -79,15 +79,15 @@ namespace Sioux.TechRadar
                 throw new HttpError(HttpStatusCode.NotFound, "Cannot update: '" + thing.Name + "' does not exist yet");
             }
 
-            if (existingThing.Quadrantid != thing.Quadrantid
-                || existingThing.Title != thing.Title)
+            if (thing.Quadrantid != null
+                || thing.Title != null)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "only descriptions can be updated");
             }
 
             existingThing.Description = thing.Description;
 
-            return Repository.UpdateDescription(existingThing);
+            Repository.UpdateDescription(existingThing);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Sioux.TechRadar
             if (String.IsNullOrWhiteSpace(thing.Title)
                ) throw new HttpError(HttpStatusCode.NotAcceptable, "Thing was not complete");
 
-            thing.SetName();
+            thing.ComputeName();
 
             var existingThing = Repository.Get(thing.Name);
             if (existingThing == null)
@@ -115,7 +115,7 @@ namespace Sioux.TechRadar
             }
             else
             {
-                throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists (for category '" + thing.Quadrantid + "')");
+                throw new HttpError(System.Net.HttpStatusCode.Conflict, "'" + thing.Name + "' already exists (in category '" + thing.Quadrantid + "')");
             }
         }
     }

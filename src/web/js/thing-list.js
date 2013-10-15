@@ -16,17 +16,53 @@ var TechRadar;
                     return o.thing.quadrant() === _this.quadrant;
                 });
                 this.addOpinions(selectedOpinions);
-                this.container.find('.thingButton').click(function (ev) {
+                var buttons = this.container.find('.thingButton');
+                buttons.click(function (ev) {
                     return _this.onButtonClick(ev);
+                });
+                buttons.mouseover(function (ev) {
+                    return _this.onMouseOver(ev);
+                });
+                buttons.mouseout(function (ev) {
+                    return _this.onMouseOut(ev);
                 });
                 parentContainer.append(this.container);
                 $('#contents').append(parentContainer);
                 this.drawAddThingButton();
             }
+            ThingList.prototype.findThing = function (button) {
+                var thingname = button.data('thing');
+                return Client.findThing(thingname, this.things);
+            };
+            ThingList.prototype.onMouseOver = function (ev) {
+                var button = $(ev.target);
+                var thing = this.findThing(button);
+                var description = thing.description;
+                if(!description || description.trim() === "") {
+                    $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
+                } else {
+                    $('#desc-overlay').text(description);
+                }
+                $('#desc-overlay-subject').text(thing.title);
+                $('#desc-overlay-container').show();
+                var desc = $('#desc-container');
+                if(desc.is(':visible')) {
+                    desc.data('restore-me', true);
+                    desc.hide();
+                }
+            };
+            ThingList.prototype.onMouseOut = function (ev) {
+                var button = $(ev.target);
+                var thing = this.findThing(button);
+                $('#desc-overlay-container').hide();
+                var desc = $('#desc-container');
+                if(desc.data('restore-me')) {
+                    desc.show();
+                }
+            };
             ThingList.prototype.onButtonClick = function (ev) {
                 var button = $(ev.target);
-                var thingname = button.data('thing');
-                var thing = Client.findThing(thingname, this.things);
+                var thing = this.findThing(button);
                 if(thing == null) {
                     alert("Programmer bug! Amount of things matched to button unexpected.");
                     throw new Error("Programmer bug! Amount of things matched to button unexpected.");

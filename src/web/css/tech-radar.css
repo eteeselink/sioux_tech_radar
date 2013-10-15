@@ -42,9 +42,9 @@
 .message-mixin {
   clear: both;
   width: 100%;
-  text-align: center;
   font-size: 13px;
   color: #44ff44;
+  display: none;
 }
 div#rant-container {
   font-family: serif;
@@ -68,12 +68,15 @@ div#rant-container .quote-after {
   bottom: -0.5em;
 }
 div#rant-container #rant-message {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   clear: both;
   width: 100%;
-  text-align: center;
   font-size: 13px;
   color: #44ff44;
+  display: none;
   position: absolute;
+  text-align: left;
+  padding-left: 18px;
   top: 160px;
 }
 div#rant-container #rant {
@@ -85,25 +88,39 @@ div#rant-container #rant {
   text-align: left;
   height: 150px;
 }
-div#desc-container {
+div#desc-container,
+div#desc-overlay-container {
   clear: both;
   width: 550px;
-  border: 2px solid red;
   margin: 10px auto;
   text-align: left;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-div#desc-container textarea#desc {
+div#desc-container .header,
+div#desc-overlay-container .header {
+  font-weight: bold;
+}
+div#desc-container .header small,
+div#desc-overlay-container .header small {
+  font-weight: normal;
+}
+div#desc-container textarea#desc,
+div#desc-overlay-container textarea#desc {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   width: 95%;
   height: 100px;
 }
-div#desc-container div#desc-message {
+div#desc-container div#desc-message,
+div#desc-overlay-container div#desc-message {
   clear: both;
   width: 100%;
-  text-align: center;
   font-size: 13px;
   color: #44ff44;
+  display: none;
+  text-align: center;
+}
+div#desc-overlay-container {
+  display: none;
 }
 svg.radar circle.thing {
   stroke: #83b2e5;
