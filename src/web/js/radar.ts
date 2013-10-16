@@ -147,7 +147,7 @@ module TechRadar.Client {
             this.svg.select(".selected-opinion").classed('selected-opinion', false);
         }
 
-        private select(opinion: Opinion) {
+        public select(opinion: Opinion) {
             this.unselectAll();
             this.svg.select("#opinion_" + opinion.thing.name).classed('selected-opinion', true);
             opinion.onSelectCallback();

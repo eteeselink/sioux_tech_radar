@@ -70,6 +70,7 @@ var TechRadar;
                     var opinion = new Client.Opinion(thing, TechRadar.random(0.0, 1.0), "");
                     button.data('opinion', opinion);
                     this.tab.addOpinion(opinion);
+                    this.tab.selectOpinion(opinion);
                 } else {
                     var opinion = button.data('opinion');
                     this.tab.removeOpinion(opinion);

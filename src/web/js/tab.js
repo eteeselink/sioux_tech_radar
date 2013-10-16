@@ -53,7 +53,7 @@
                 var _this = this;
                 this.radar.addOpinion(opinion);
                 opinion.onSelect(function () {
-                    return _this.selectOpinion(opinion);
+                    return _this.onOpinionSelected(opinion);
                 });
                 opinion.onChange(function () {
                     return _this.updateRant(opinion);
@@ -86,6 +86,9 @@
                 $('#desc-container').hide();
             };
             Tab.prototype.selectOpinion = function (opinion) {
+                this.radar.select(opinion);
+            };
+            Tab.prototype.onOpinionSelected = function (opinion) {
                 if(opinion != this.currentOpinion) {
                     $('#rant-container').show();
                     this.updateRant(opinion);

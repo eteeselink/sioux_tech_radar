@@ -97,7 +97,11 @@ module TechRadar.Client {
                 var opinion = new Opinion(thing, random(0.0, 1.0), "");
                 button.data('opinion', opinion);
                 this.tab.addOpinion(opinion);
-                //buildRantList(selectedOpinions);
+                
+                // we immediately auto-select newly added opinion for UX reasons, so that rant and desc areas
+                // appear at an "expected" time(after a button click), and not only when a circle is
+                // clicked(which feels like a less - heavy operation)
+                this.tab.selectOpinion(opinion);
 
             } else {
                 // get the opinion object back from the button, and remove it everywhere.

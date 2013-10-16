@@ -76,7 +76,7 @@ module TechRadar.Client {
 
         public addOpinion(opinion: Opinion) {
             this.radar.addOpinion(opinion);
-            opinion.onSelect(() => this.selectOpinion(opinion));
+            opinion.onSelect(() => this.onOpinionSelected(opinion));
             opinion.onChange(() => this.updateRant(opinion));
 
             //  TODO: maybe this logic belongs in the Opinion class, by refactoring
@@ -114,6 +114,10 @@ module TechRadar.Client {
         }
 
         public selectOpinion(opinion: Opinion) {
+            this.radar.select(opinion);
+        }
+
+        private onOpinionSelected(opinion: Opinion) {
             
             if (opinion != this.currentOpinion) {
                 $('#rant-container').show();
