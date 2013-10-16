@@ -10,9 +10,11 @@ module TechRadar.Client {
 
     declare var d3: any;
 
-    function showAlert(text: string) {
+    export function showAlert(text: string) {
         $('#alert-text').html(text);
         $(".alert").show();
+
+        setTimeout(() => $(".alert").hide(600), 5000);
     }
 
     export function alertOnFail(request: JQueryXHR) {
@@ -131,15 +133,15 @@ module TechRadar.Client {
 
 
     function makeTabs() {
-        $('a[data-toggle="tab"]').on('shown', e => showTab($(e.target).data('q')));
+        $('a[data-toggle="tab"]').on('shown', e => Tab.show($(e.target).data('q')));
     }
 
 
     export function Start() {
         makeTabs();
 
-        AuthInfo.instance.registerCallback(function () { showTab($('li.active a[data-toggle="tab"]').data('q')); });
-        showTab($('li.active a[data-toggle="tab"]').data('q'));
+        AuthInfo.instance.registerCallback(function () { Tab.show($('li.active a[data-toggle="tab"]').data('q')); });
+        Tab.show($('li.active a[data-toggle="tab"]').data('q'));
         return this;
     }
 }

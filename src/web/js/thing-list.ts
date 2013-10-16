@@ -88,11 +88,17 @@ module TechRadar.Client {
             var thing = this.findThing(button);
 
             if (thing == null) {
-                alert("Programmer bug! Amount of things matched to button unexpected.");
+                showAlert("Programmer bug! Amount of things matched to button unexpected.");
                 throw new Error("Programmer bug! Amount of things matched to button unexpected.")
             }
 
             if (!button.hasClass('active')) {
+
+                if (this.tab.countOpinions() >= 5) {
+                    showAlert("Je mag maximaal 5 meningen geven per onderwerp. Kies de belangrijkste uit!");
+                    return false;
+                }
+
                 // create a new opinion object and add it to the radar. store the object with the button.
                 var opinion = new Opinion(thing, random(0.0, 1.0), "");
                 button.data('opinion', opinion);
@@ -139,7 +145,7 @@ module TechRadar.Client {
 
                 request.done(thing => {
                     this.container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>')
-                    showTab(this.quadrant.id.toString());
+                    Tab.show(this.quadrant.id.toString());
                 });
 
                 alertOnFail(request);

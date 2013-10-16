@@ -63,10 +63,14 @@ var TechRadar;
                 var button = $(ev.target);
                 var thing = this.findThing(button);
                 if(thing == null) {
-                    alert("Programmer bug! Amount of things matched to button unexpected.");
+                    Client.showAlert("Programmer bug! Amount of things matched to button unexpected.");
                     throw new Error("Programmer bug! Amount of things matched to button unexpected.");
                 }
                 if(!button.hasClass('active')) {
+                    if(this.tab.countOpinions() >= 5) {
+                        Client.showAlert("Je mag maximaal 5 meningen geven per onderwerp. Kies de belangrijkste uit!");
+                        return false;
+                    }
                     var opinion = new Client.Opinion(thing, TechRadar.random(0.0, 1.0), "");
                     button.data('opinion', opinion);
                     this.tab.addOpinion(opinion);
@@ -102,7 +106,7 @@ var TechRadar;
                     var request = _this.tab.addThing($('#thing-add-title').val(), _this.quadrant.id);
                     request.done(function (thing) {
                         _this.container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>');
-                        Client.showTab(_this.quadrant.id.toString());
+                        Client.Tab.show(_this.quadrant.id.toString());
                     });
                     Client.alertOnFail(request);
                     ev.preventDefault();

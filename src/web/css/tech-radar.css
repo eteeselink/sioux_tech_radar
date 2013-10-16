@@ -52,6 +52,7 @@ div#rant-container {
   position: absolute;
   right: 40px;
   width: 300px;
+  display: none;
 }
 div#rant-container .rant-name {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -66,6 +67,13 @@ div#rant-container .quote {
 }
 div#rant-container .quote-after {
   bottom: -0.5em;
+}
+div#rant-container .rant-why {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  margin: 0 18px 20px 18px;
+  height: 60px;
+  text-align: left;
 }
 div#rant-container #rant-message {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

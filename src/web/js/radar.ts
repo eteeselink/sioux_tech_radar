@@ -47,6 +47,10 @@ module TechRadar.Client {
             this.restart();
         }
 
+        public countOpinions() {
+            return this.opinions.length;
+        }
+
         private createSvg(auxClasses: string, margin: number) {
 
             // single quadrant: make the svg 1.5x wider that specified to accommodate

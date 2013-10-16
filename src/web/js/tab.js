@@ -1,11 +1,6 @@
 ﻿var TechRadar;
 (function (TechRadar) {
     (function (Client) {
-        var currentTab;
-        function showTab(q) {
-            currentTab = new Tab(q);
-        }
-        Client.showTab = showTab;
         var Tab = (function () {
             function Tab(q) {
                 var _this = this;
@@ -31,6 +26,9 @@
                     });
                 }
             }
+            Tab.show = function show(q) {
+                Tab.currentTab = new Tab(q);
+            };
             Tab.prototype.hasActiveSelection = function () {
                 return this.currentOpinion !== null;
             };
@@ -73,6 +71,9 @@
                 opinion.onSelect(null);
                 opinion.existsOnServer = false;
                 opinion.deleteOpinion();
+            };
+            Tab.prototype.countOpinions = function () {
+                return this.radar.countOpinions();
             };
             Tab.prototype.showAllThings = function (opinions) {
                 var _this = this;
@@ -119,21 +120,6 @@
                     }
                 });
             };
-            Tab.prototype.initDesc = function () {
-                var _this = this;
-                var form = $('#desc-form');
-                form.unbind();
-                form.submit(function (ev) {
-                    var thing = _this.currentOpinion.thing;
-                    thing.description = $('#desc').val();
-                    var req = thing.updateDescription();
-                    req.done(function () {
-                        return _this.flash('#desc-message');
-                    });
-                    Client.alertOnFail(req);
-                    return false;
-                });
-            };
             Tab.prototype.getDefaultRant = function (goodness) {
                 if(goodness < 0.20) {
                     return "Yakult moet gewoon in elk project gebruikt worden!";
@@ -155,21 +141,53 @@
                 }
                 return "Yakult was in 1970 al een slecht idee, en dat is het nog steeds!";
             };
+            Tab.prototype.getRantQuestion = function (goodness) {
+                if(goodness < 0.40) {
+                    return "Waarom vind jij dat we vaak wat met Yakult moeten doen?";
+                }
+                if(goodness < 0.70) {
+                    return "Waarom vind jij dat we Yakult in een project moeten proberen?";
+                }
+                if(goodness < 0.85) {
+                    return "Waarom vind jij dat we met Yakult moeten experimenteren?";
+                }
+                return "Waarom vind jij dat we van Yakult af moeten blijven?";
+            };
+            Tab.prototype.textForGoodness = function (opinion, func) {
+                var text = func(opinion.goodness());
+                return text.replace(/Yakult/g, opinion.thing.title);
+            };
             Tab.prototype.updateRant = function (opinion) {
                 var text = '';
                 if(opinion.rant) {
                     text = opinion.rant;
                 } else {
-                    text = this.getDefaultRant(opinion.goodness());
-                    text = text.replace(/Yakult/g, opinion.thing.title);
+                    text = this.textForGoodness(opinion, this.getDefaultRant);
                 }
                 var textarea = $('#rant');
                 textarea.text(text);
+                var question = this.textForGoodness(opinion, this.getRantQuestion);
+                $('#rant-why-question').text(question);
             };
             Tab.prototype.showDesc = function (thing) {
                 $('#desc-container').show();
                 $('#desc-subject').text(thing.title);
                 $('#desc').val(thing.description);
+            };
+            Tab.prototype.initDesc = function () {
+                var _this = this;
+                var form = $('#desc-form');
+                form.unbind();
+                form.submit(function (ev) {
+                    var thing = _this.currentOpinion.thing;
+                    thing.description = $('#desc').val();
+                    var req = thing.updateDescription();
+                    req.done(function () {
+                        return _this.flash('#desc-message');
+                    });
+                    Client.alertOnFail(req);
+                    return false;
+                });
             };
             return Tab;
         })();

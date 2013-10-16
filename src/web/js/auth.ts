@@ -47,7 +47,7 @@ module TechRadar.Client {
 
             request.fail(data => {
                 this.loggedIn = false;
-                alert("Could not log in. Incorrect u/p?");
+                showAlert("Could not log in. Incorrect u/p?");
             });
 
             request.always(() => this.updateUi());
@@ -64,7 +64,7 @@ module TechRadar.Client {
             });
 
             request.fail(data => {
-                alert("Bug! Something went wrong.");
+                showAlert("Bug! Something went wrong.");
                 console.log(data);
             });
 
