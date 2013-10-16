@@ -136,7 +136,9 @@
     <None Include="packages.config" />
     <None Include="x64\SQLite.Interop.dll" />
     <None Include="x86\SQLite.Interop.dll" />
-    <None Include="NLog.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NLog.xsd" />
     <None Include="sqlite\x64\sqlite3.dll" />
     <None Include="sqlite\x86\sqlite3.dll" />
