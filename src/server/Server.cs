@@ -16,6 +16,7 @@ using ServiceStack.ServiceInterface.Auth;
 using Sioux.TechRadar.Users.Auth;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
+using Sioux.TechRadar.sqlite;
 
 
 namespace Sioux.TechRadar
@@ -37,15 +38,16 @@ namespace Sioux.TechRadar
 
         public static void Main(string[] args)
         {
-            //ServiceStack.Logging.LogManager.LogFactory = new ServiceStack.Logging.NLogger.NLogFactory();
-
             int port = DefaultPort;
             bool help = false;
             string sqliteFile = "tempDB.sqlite";
+            int backupMinutes = 15;
+
             var opts = new OptionSet() {
-                { "port=",      (int v) => port = v },
-                { "h|?|help",   v => help = v != null },
-                { "sqlitefile=", v => sqliteFile = v },
+                { "port=",         "HTTP port to listen on",  (int v) => port = v },
+                { "h|?|help",      "Display this help",        v => help = v != null },
+                { "sqlitefile=",   "Database filename",        v => sqliteFile = v },
+                { "backupperiod=", "Backup period in minutes", (int v) => backupMinutes = v },
             };
 
             try
@@ -68,7 +70,12 @@ namespace Sioux.TechRadar
             Console.WriteLine("Server running..");
 
 
-            using (var server = new Server() { Port = port, SqliteFile = sqliteFile })
+            using (var server = new Server() 
+            { 
+                Port = port, 
+                SqliteFile = sqliteFile,
+                BackupPeriodMinutes = backupMinutes,
+            })
             {
                 server.Start();
                 logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
@@ -80,6 +87,9 @@ namespace Sioux.TechRadar
 
         public int Port { get; internal set; }
         public string SqliteFile { get; internal set; }
+        public int BackupPeriodMinutes { get; internal set; }
+
+        private BackupDaemon backupDaemon;
 
         string Url
         {
@@ -96,6 +106,7 @@ namespace Sioux.TechRadar
                 ConnectionString = SqliteFile
             };
 
+            backupDaemon = new BackupDaemon(factory, TimeSpan.FromMinutes(BackupPeriodMinutes));
             container.Register<IThingsRepository>(new ThingsRepository(factory));
             container.Register<IOpinionsRepository>(new OpinionsRepository(factory));
             container.Register<IUsersRepository>(new UsersRepository(factory));
@@ -141,6 +152,12 @@ namespace Sioux.TechRadar
         {
             Console.WriteLine(context.Request.Url);
             base.ProcessRequest(context);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            backupDaemon.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

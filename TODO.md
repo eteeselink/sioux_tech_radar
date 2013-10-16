@@ -7,13 +7,14 @@ New TODO d.d. 28-07-2013
   - "Add" is buggy (niet fixen, lijkt opera-only)
 + Rant: geen interactie, "undefined" (4u)
   + Gewenst: zodra je een ding versleept wordt een doorsnee rant automatisch ingevuld
-* Wiki-achtige uitleg over item 
-  * Moet ook nog gedesigned worden (2u)
-  * En gemaakt (4u)
++ Wiki-achtige uitleg over item 
+  + Moet ook nog gedesigned worden (2u)
+  + En gemaakt (4u)
 * Maximum 5 items per kwadrant
 * Data-problemen
   * Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen
   * Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet
++ DB backup
 * Zien wat anderen vinden (4u)
 * Je eigen overzichtsradar delen (4u)
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
