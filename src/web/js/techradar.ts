@@ -140,14 +140,43 @@ module TechRadar.Client {
         $('a[data-toggle="tab"]').on('shown', e => Tab.show($(e.target).data('q')));
     }
 
+    function findSharedUrlUserId() {
+        if (location.search) {
+            var query = location.search.substr(1);
+            if (query.match(/^[a-zA-Z0-9_-]{8}$/)) {
+                return query;
+            }
+        }
+        return null;
+    }
 
-    export function Start() {
+    function startPrivateMode() {
+        $('.navbar .private').show();
         makeTabs();
 
-        AuthInfo.instance.registerCallback(function () { Tab.show($('li.active a[data-toggle="tab"]').data('q')); });
-        Tab.show($('li.active a[data-toggle="tab"]').data('q'));
+        AuthInfo.init(() => {
+            Tab.show($('li.active a[data-toggle="tab"]').data('q'));
+        });
+    }
 
+    function startPublicMode(userId: string) {
+        AuthInfo.init(() => {
+            $('.navbar .public').show();
+            $('#public-username').text(AuthInfo.instance.username);
+            Tab.show('all');
+        }, userId);
+    }
+
+    export function Start() {
         $('.alert button.close').click(ev => $(ev.target).parent().hide(600));
+
+        var userId = findSharedUrlUserId();
+        if (userId === null) {
+            startPrivateMode();
+        }
+        else {
+            startPublicMode(userId);
+        }
 
         return this;
     }

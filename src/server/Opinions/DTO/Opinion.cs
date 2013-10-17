@@ -30,7 +30,7 @@ namespace Sioux.TechRadar{
     [Route("/api/opinions/{user}", "GET")] // get all  
     [Route("/api/opinions/{user}/{thingName}", "GET")] // read
     [Route("/api/opinions/{user}/{thingName}", "DELETE")]
-    [Authenticate]
+    [Authenticate(ApplyTo = ApplyTo.All ^ ApplyTo.Get)]
     public class OpinionRequest : IReturn<Opinion>
     {
         public String thingName { get; set; }

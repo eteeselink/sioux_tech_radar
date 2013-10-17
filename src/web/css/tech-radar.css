@@ -18,6 +18,10 @@
 .navbar {
   white-space: nowrap;
 }
+.navbar .public,
+.navbar .private {
+  display: none;
+}
 .navbar .navbar-inner {
   padding-left: 10px;
   max-width: 1100px;
@@ -138,6 +142,7 @@ div#rant-container #rant {
 }
 div#desc-container,
 div#desc-overlay-container {
+  display: none;
   clear: both;
   width: 550px;
   margin: 10px auto;

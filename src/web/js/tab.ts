@@ -45,7 +45,7 @@ module TechRadar.Client {
             var diameter = (this.isOverview()) ? 500 : 375;
             this.radar = new Radar(diameter, this.quadrant, !this.isOverview(), classes);
             this.unselectOpinion();
-            if (AuthInfo.instance.isLoggedIn()) {
+            if (AuthInfo.instance.canGetUserData()) {
                 var request = getThingsAndOpinions(this.quadrant);
                 request.done((data: { things: Thing[]; opinions: Opinion[]; }) => {
                     var things = data.things;

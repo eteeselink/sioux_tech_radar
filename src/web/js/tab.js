@@ -15,7 +15,7 @@
                 var diameter = (this.isOverview()) ? 500 : 375;
                 this.radar = new Client.Radar(diameter, this.quadrant, !this.isOverview(), classes);
                 this.unselectOpinion();
-                if(Client.AuthInfo.instance.isLoggedIn()) {
+                if(Client.AuthInfo.instance.canGetUserData()) {
                     var request = Client.getThingsAndOpinions(this.quadrant);
                     request.done(function (data) {
                         var things = data.things;

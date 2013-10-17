@@ -41,6 +41,14 @@ namespace Sioux.TechRadar.Users
                 .Replace('+', '_');
         }
 
+        public User GetUser(string userid)
+        {
+            using (var db = ConnectionFactory.Connect())
+            {
+                return db.GetById<User>(userid);
+            }
+        }
+
         public User GetOrCreateUser(string username)
         {
             using (var db = ConnectionFactory.Connect())

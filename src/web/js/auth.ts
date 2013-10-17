@@ -8,11 +8,13 @@ module TechRadar.Client {
 
         private url = "/api/auth/credentials?format=json";
         public username: string;
-        public userid: string;
         private loggedIn = false;
         private callbacks: { (isloggedin: Boolean): void; }[] = [];
 
-        constructor() {
+        constructor(
+            callback: (isloggedin: bool) => any,
+            public userid: string
+        ) {
             $('#login_button').click(e => this.login());
             $('#logout_button').click(e => this.logout());
 
@@ -20,12 +22,39 @@ module TechRadar.Client {
             //this.checkLoggedIn();
             $('#username').val('tech');
             $('#password').val('radar');
-            this.login();
+
+            AuthInfo.instance = this;
+
+            this.registerCallback(callback);
+
+            if (this.canGetUserData()) {
+                this.getUsername();
+            } else {
+                this.login();
+            }
         }
 
-        public registerCallback(callback: (isloggedin: Boolean) => any) {
+        public registerCallback(callback: (isloggedin: bool) => any) {
             this.callbacks.push(callback);
         }
+
+        private getUsername() {
+            var request = $.ajax({
+                url: '/api/users/' + this.userid,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json'
+            });
+
+            request.done(data => {
+                this.username = data.Username;
+            });
+
+            alertOnFail(request);
+
+            request.always(() => this.updateUi());
+        }
+
 
         private login() {
             var body = JSON.stringify({
@@ -87,11 +116,19 @@ module TechRadar.Client {
             }
         }
 
-        public isLoggedIn(): Boolean {
+        public isLoggedIn(): bool {
             return this.loggedIn;
         }
 
-        private static instance: AuthInfo = new AuthInfo();
+        public canGetUserData(): bool {
+            return this.userid !== null;
+        }
+
+        public static init(callback: (isloggedin: bool) => any, userid: string = null) {
+            new AuthInfo(callback, userid);
+        }
+
+        private static instance: AuthInfo;
     }
 
 }

@@ -9,5 +9,6 @@ namespace Sioux.TechRadar.Users
     public interface IUsersRepository
     {
         User GetOrCreateUser(string username);
+        User GetUser(string userid);
     }
 }
