@@ -15,6 +15,7 @@ New TODO d.d. 28-07-2013
   - Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen (oplossen met Adminer)
   - Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet (oplossen met Adminer)
 + DB backup
+* Overzichtsradar laten zien
 * Je eigen overzichtsradar delen (4u)
 * Zien wat anderen vinden (4u)
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)

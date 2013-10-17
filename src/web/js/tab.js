@@ -5,29 +5,36 @@
             function Tab(q) {
                 var _this = this;
                 $('svg.radar').remove();
-                var quad = (q === "all") ? null : Client.Quadrants[parseInt(q, 10)];
+                this.quadrant = (q === "all") ? null : Client.Quadrants[parseInt(q, 10)];
                 var classes = "quadrant-" + q;
-                if(quad !== null) {
+                if(!this.isOverview()) {
                     classes += " single-quadrant";
                 }
-                this.radar = new Client.Radar(375, quad, (quad !== null), classes);
+                var diameter = (this.isOverview()) ? 500 : 375;
+                this.radar = new Client.Radar(diameter, this.quadrant, !this.isOverview(), classes);
                 this.unselectOpinion();
                 if(Client.AuthInfo.instance.isLoggedIn()) {
-                    Client.getThingsAndOpinions(quad).done(function (data) {
+                    var request = Client.getThingsAndOpinions(this.quadrant);
+                    request.done(function (data) {
                         var things = data.things;
                         var opinions = data.opinions;
-                        if(quad !== null) {
-                            _this.thingsList = new Client.ThingList(_this, data.things, data.opinions, quad);
-                            _this.initRant();
-                            _this.initDesc();
-                        } else {
+                        if(_this.isOverview()) {
+                            _this.unselectOpinion();
                             _this.showAllThings(data.opinions);
+                            Client.ThingList.remove();
+                        } else {
+                            _this.thingsList = new Client.ThingList(_this, data.things, data.opinions, _this.quadrant);
+                            _this.initDesc();
                         }
+                        _this.initRant();
                     });
                 }
             }
             Tab.show = function show(q) {
                 Tab.currentTab = new Tab(q);
+            };
+            Tab.prototype.isOverview = function () {
+                return this.quadrant === null;
             };
             Tab.prototype.hasActiveSelection = function () {
                 return this.currentOpinion !== null;
@@ -90,13 +97,18 @@
                 this.radar.select(opinion);
             };
             Tab.prototype.onOpinionSelected = function (opinion) {
-                if(opinion != this.currentOpinion) {
-                    $('#rant-container').show();
-                    this.updateRant(opinion);
-                    this.showDesc(opinion.thing);
-                    $('#rant-subject').text(" over " + opinion.thing.title);
-                    this.currentOpinion = opinion;
+                if(opinion == this.currentOpinion) {
+                    return;
                 }
+                $('#rant-container').show();
+                this.updateRant(opinion);
+                this.showDesc(opinion.thing);
+                $('#rant-subject').text(" over " + opinion.thing.title);
+                this.currentOpinion = opinion;
+                var isOverview = this.isOverview();
+                $('.rant-why').toggle(!isOverview);
+                $('#rant').toggle(!isOverview);
+                $('#readonly-rant').toggle(isOverview);
             };
             Tab.prototype.flash = function (selector) {
                 $(selector).show().delay(2000).fadeOut(600);
@@ -105,20 +117,23 @@
                 var _this = this;
                 var textarea = $('#rant');
                 textarea.unbind();
-                textarea.change(function (ev) {
-                    textarea.data('is-custom-rant', true);
-                    _this.currentOpinion.rant = textarea.val();
-                });
-                textarea.on('blur', function (ev) {
-                    console.log('blur');
-                    if(textarea.data('is-custom-rant')) {
-                        var req = _this.currentOpinion.updateOpinion();
-                        req.done(function () {
-                            return _this.flash('#rant-message');
-                        });
-                        Client.alertOnFail(req);
-                    }
-                });
+                textarea.data('is-custom-rant', false);
+                if(!this.isOverview()) {
+                    textarea.change(function (ev) {
+                        textarea.data('is-custom-rant', true);
+                        _this.currentOpinion.rant = textarea.val();
+                    });
+                    textarea.on('blur', function (ev) {
+                        console.log('blur');
+                        if(textarea.data('is-custom-rant')) {
+                            var req = _this.currentOpinion.updateOpinion();
+                            req.done(function () {
+                                return _this.flash('#rant-message');
+                            });
+                            Client.alertOnFail(req);
+                        }
+                    });
+                }
             };
             Tab.prototype.getDefaultRant = function (goodness) {
                 if(goodness < 0.20) {
@@ -164,8 +179,8 @@
                 } else {
                     text = this.textForGoodness(opinion, this.getDefaultRant);
                 }
-                var textarea = $('#rant');
-                textarea.text(text);
+                $('#rant').val(text);
+                $('#readonly-rant').text(text);
                 var question = this.textForGoodness(opinion, this.getRantQuestion);
                 $('#rant-why-question').text(question);
             };

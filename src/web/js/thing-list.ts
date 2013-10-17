@@ -11,13 +11,17 @@ module TechRadar.Client {
     export class ThingList {
         private container: JQuery;
 
+        public static remove() {
+            $('#thingsList').remove();
+        }
+
         constructor(
             private tab: Tab,
             private things: Thing[],
             private opinions: Opinion[],
             private quadrant: Quadrant
         ) {
-            $('#thingsList').remove();
+            ThingList.remove();
 
             var parentContainer = $('<div id="thingsList" class="thing-list-left">');
             this.container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');

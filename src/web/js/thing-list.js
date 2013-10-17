@@ -8,7 +8,7 @@ var TechRadar;
                 this.opinions = opinions;
                 this.quadrant = quadrant;
                 var _this = this;
-                $('#thingsList').remove();
+                ThingList.remove();
                 var parentContainer = $('<div id="thingsList" class="thing-list-left">');
                 this.container = $('<div class=" btn-group  btn-group-vertical" data-toggle="buttons-checkbox">');
                 this.drawThingButtons();
@@ -30,6 +30,9 @@ var TechRadar;
                 $('#contents').append(parentContainer);
                 this.drawAddThingButton();
             }
+            ThingList.remove = function remove() {
+                $('#thingsList').remove();
+            };
             ThingList.prototype.findThing = function (button) {
                 var thingname = button.data('thing');
                 return Client.findThing(thingname, this.things);

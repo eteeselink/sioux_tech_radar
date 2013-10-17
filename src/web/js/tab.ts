@@ -22,32 +22,42 @@ module TechRadar.Client {
         private thingsList: ThingList;
         private radar: Radar;
         private currentOpinion: Opinion;
+        private quadrant: Quadrant;
+        private isOverview() { return this.quadrant === null; }
 
+        /// Called by `show` whenever we switch to a new tab. 
+        /// Switching tab means creating a new tab object.
         constructor(q: string) {
 
             // remove earlier radars, if any.
             $('svg.radar').remove();
 
-            var quad = (q === "all") ? null : Quadrants[parseInt(q, 10)];
+            this.quadrant = (q === "all") ? null : Quadrants[parseInt(q, 10)];
             var classes = "quadrant-" + q;
-            if (quad !== null) {
+            if (!this.isOverview()) {
                 classes += " single-quadrant";
             }
-            this.radar = new Radar(375, quad, (quad !== null), classes);
+
+            var diameter = (this.isOverview()) ? 500 : 375;
+            this.radar = new Radar(diameter, this.quadrant, !this.isOverview(), classes);
             this.unselectOpinion();
             if (AuthInfo.instance.isLoggedIn()) {
-                getThingsAndOpinions(quad).done((data: { things: Thing[]; opinions: Opinion[]; }) => {
+                var request = getThingsAndOpinions(this.quadrant);
+                request.done((data: { things: Thing[]; opinions: Opinion[]; }) => {
                     var things = data.things;
                     var opinions = data.opinions;
 
-                    if (quad !== null) {
-                        // recreate the interactive thing list, which allows additions and removals to the radar
-                        this.thingsList = new ThingList(this, data.things, data.opinions, quad);
-                        this.initRant();
-                        this.initDesc();
-                    } else {
+                    if (this.isOverview()) {
+                        this.unselectOpinion();
                         this.showAllThings(data.opinions);
+                        ThingList.remove();
                     }
+                    else {
+                        // recreate the interactive thing list, which allows additions and removals to the radar
+                        this.thingsList = new ThingList(this, data.things, data.opinions, this.quadrant);
+                        this.initDesc();
+                    }
+                    this.initRant();
                 });
             }
 
@@ -127,14 +137,21 @@ module TechRadar.Client {
         /// accordingly.
         private onOpinionSelected(opinion: Opinion) {
             
-            if (opinion != this.currentOpinion) {
-                $('#rant-container').show();
+            if (opinion == this.currentOpinion) return;
 
-                this.updateRant(opinion);
-                this.showDesc(opinion.thing)
-                $('#rant-subject').text(" over " + opinion.thing.title);
-                this.currentOpinion = opinion;
-            }
+            $('#rant-container').show();
+
+            this.updateRant(opinion);
+            this.showDesc(opinion.thing)
+            $('#rant-subject').text(" over " + opinion.thing.title);
+            this.currentOpinion = opinion;
+
+            // slightly readonly-fy the layout for the overview
+            var isOverview = this.isOverview();
+            $('.rant-why').toggle(!isOverview);
+            $('#rant').toggle(!isOverview);
+            $('#readonly-rant').toggle(isOverview);
+            
         }
 
         /// Show 'selector' for 2 seconds, then fade out.
@@ -150,18 +167,24 @@ module TechRadar.Client {
 
             var textarea = $('#rant');
             textarea.unbind();
-            textarea.change(ev => {
-                textarea.data('is-custom-rant', true);
-                this.currentOpinion.rant = textarea.val();
-            });
-            textarea.on('blur', ev => {
-                console.log('blur');
-                if (textarea.data('is-custom-rant')) {
-                    var req = this.currentOpinion.updateOpinion();
-                    req.done(() => this.flash('#rant-message'));
-                    alertOnFail(req);
-                }
-            });
+            textarea.data('is-custom-rant', false);
+
+            if (!this.isOverview()) {
+
+                textarea.change(ev => {
+                    textarea.data('is-custom-rant', true);
+                    this.currentOpinion.rant = textarea.val();
+                });
+
+                textarea.on('blur', ev => {
+                    console.log('blur');
+                    if (textarea.data('is-custom-rant')) {
+                        var req = this.currentOpinion.updateOpinion();
+                        req.done(() => this.flash('#rant-message'));
+                        alertOnFail(req);
+                    }
+                });
+            }
         }
 
         private getDefaultRant(goodness) {
@@ -194,8 +217,9 @@ module TechRadar.Client {
             else {
                 text = this.textForGoodness(opinion, this.getDefaultRant);
             }
-            var textarea = $('#rant');
-            textarea.text(text);
+
+            $('#rant').val(text);
+            $('#readonly-rant').text(text);
 
             var question = this.textForGoodness(opinion, this.getRantQuestion);
             $('#rant-why-question').text(question);
