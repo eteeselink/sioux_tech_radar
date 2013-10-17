@@ -141,11 +141,9 @@ module TechRadar.Client {
     }
 
     function findSharedUrlUserId() {
-        if (location.search) {
-            var query = location.search.substr(1);
-            if (query.match(/^[a-zA-Z0-9_-]{8}$/)) {
-                return query;
-            }
+        var userId = location.pathname.substr(location.pathname.length - 8);
+        if (userId.match(/^[a-zA-Z0-9_-]{8}$/)) {
+            return userId;
         }
         return null;
     }
@@ -157,7 +155,7 @@ module TechRadar.Client {
 
         AuthInfo.init(() => {
             Tab.show($('li.active a[data-toggle="tab"]').data('q'));
-            var linkUrl = location.protocol + "//" + location.host + location.pathname + "?" + AuthInfo.instance.userid;
+            var linkUrl = location.protocol + "//" + location.host + "/" + AuthInfo.instance.userid;
             $('#share-link-url').val(linkUrl);
         });
     }
