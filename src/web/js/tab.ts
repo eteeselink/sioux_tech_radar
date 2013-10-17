@@ -176,6 +176,18 @@ module TechRadar.Client {
 
         }
 
+        private onOpinionMoved(opinion: Opinion) {
+            this.updateRant(opinion);
+        }
+
+        private onOpinionChanged(opinion: Opinion) {
+            if (!this.hasEverHadAnOpinion) {
+                $('#rant-container').fadeIn(400);
+                $('#desc-container').fadeIn(400);
+            }
+            this.hasEverHadAnOpinion = true;
+        }
+
         /// Show 'selector' for 2 seconds, then fade out.
         private flash(selector) {
             $(selector)
@@ -213,7 +225,7 @@ module TechRadar.Client {
             if (goodness < 0.20) return "Yakult moet gewoon in elk project gebruikt worden!";
             if (goodness < 0.40) return "Eerst hield ik van Vanilla Ice. Toen kwam Yakult, en nu hou ik van Yakult én van Vanilla Ice!";
             if (goodness < 0.55) return "Ik ben erg gecharmeerd van Yakult, en vind dat we het moeten uitproberen in een project";
-            if (goodness < 0.70) return "Volgens mij is Yakult wel de moeite waard om naar te kijken!";
+            if (goodness < 0.70) return "Volgens mij is Yakult wel de moeite waard!";
             if (goodness < 0.80) return "Yakult klinkt leuk, maar ik moet nog zien of het wat wordt.";
             if (goodness < 0.90) return "Volgens mij is Yakult gebakken lucht.";
             return "Yakult was in 1970 al een slecht idee, en dat is het nog steeds!";
@@ -247,17 +259,6 @@ module TechRadar.Client {
             $('#rant-why-question').text(question);
         }
 
-        private onOpinionMoved(opinion: Opinion) {
-            this.updateRant(opinion);
-        }
-
-        private onOpinionChanged(opinion: Opinion) {
-            if (!this.hasEverHadAnOpinion) {
-                $('#rant-container').fadeIn(400);
-                $('#desc-container').fadeIn(400);
-            }
-            this.hasEverHadAnOpinion = true;
-        }
 
         public showDesc(thing: Thing) {
             if (this.hasEverHadAnOpinion) {

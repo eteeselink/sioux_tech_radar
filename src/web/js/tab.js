@@ -127,6 +127,16 @@
                     this.showDesc(opinion.thing);
                 }
             };
+            Tab.prototype.onOpinionMoved = function (opinion) {
+                this.updateRant(opinion);
+            };
+            Tab.prototype.onOpinionChanged = function (opinion) {
+                if(!this.hasEverHadAnOpinion) {
+                    $('#rant-container').fadeIn(400);
+                    $('#desc-container').fadeIn(400);
+                }
+                this.hasEverHadAnOpinion = true;
+            };
             Tab.prototype.flash = function (selector) {
                 $(selector).show().delay(2000).fadeOut(600);
             };
@@ -163,7 +173,7 @@
                     return "Ik ben erg gecharmeerd van Yakult, en vind dat we het moeten uitproberen in een project";
                 }
                 if(goodness < 0.70) {
-                    return "Volgens mij is Yakult wel de moeite waard om naar te kijken!";
+                    return "Volgens mij is Yakult wel de moeite waard!";
                 }
                 if(goodness < 0.80) {
                     return "Yakult klinkt leuk, maar ik moet nog zien of het wat wordt.";
@@ -200,16 +210,6 @@
                 $('#readonly-rant').text(text);
                 var question = this.textForGoodness(opinion, this.getRantQuestion);
                 $('#rant-why-question').text(question);
-            };
-            Tab.prototype.onOpinionMoved = function (opinion) {
-                this.updateRant(opinion);
-            };
-            Tab.prototype.onOpinionChanged = function (opinion) {
-                if(!this.hasEverHadAnOpinion) {
-                    $('#rant-container').fadeIn(400);
-                    $('#desc-container').fadeIn(400);
-                }
-                this.hasEverHadAnOpinion = true;
             };
             Tab.prototype.showDesc = function (thing) {
                 if(this.hasEverHadAnOpinion) {
