@@ -27,7 +27,7 @@ namespace Sioux.TechRadar
 
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
                     ThingsRequest req = new ThingsRequest() { Names = new string[] { "VBS?", "Yes", csharp.Name } };
-                    IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+                    IEnumerable<Thing> res = client.Get(req);
 
                     Assert.AreEqual(1, res.Count());
                     Assert.That(res.First().Name, Is.EqualTo(csharp.Name));
@@ -47,7 +47,7 @@ namespace Sioux.TechRadar
                 
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
                     ThingsRequest req = new ThingsRequest(){Names = new string[] { "C#","mono" , "c++" }}; // notice that C# should be c#
-                    IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
+                    IEnumerable<Thing> res = client.Get(req);
                     
                     Assert.AreEqual(2, res.Count());					
                 }
@@ -143,7 +143,7 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithFakeRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
+                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
                     var existingThing = client.Post(newThing);
                     existingThing.Name.ShouldBe("d");
 
@@ -197,15 +197,16 @@ namespace Sioux.TechRadar
                     var newThing = new Thing(){ Name="d", Description="Not C++", Quadrantid=Quadrant.Languages};
 
                     fs.FakeThingsRepos.Things.AddLast(newThing);
-                    var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same", Quadrantid=Quadrant.Languages};
+                    var updatedThing = new Thing(){ Name="d", Description="Not C++, but kinda the same"};
 
-                    Thing result= client.Put(updatedThing);
+                    client.Put(updatedThing);
 
                     ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
                     
                     Assert.AreEqual(1, res.Count());
-                    Assert.That(result.Quadrantid, Is.EqualTo(updatedThing.Quadrantid));
+                    Thing result = res.Single();
+                    Assert.That(result.Quadrantid, Is.EqualTo(newThing.Quadrantid));
                     Assert.That(result.Description, Is.EqualTo(updatedThing.Description));
                 }
             }

@@ -70,7 +70,7 @@ namespace Sioux.TechRadar
             Console.WriteLine("Server running..");
 
 
-            using (var server = new Server() 
+            using (var server = new Server(true) 
             { 
                 Port = port, 
                 SqliteFile = sqliteFile,
@@ -90,6 +90,7 @@ namespace Sioux.TechRadar
         public int BackupPeriodMinutes { get; internal set; }
 
         private BackupDaemon backupDaemon;
+        private readonly bool enableBackups;
 
         string Url
         {
@@ -106,7 +107,11 @@ namespace Sioux.TechRadar
                 ConnectionString = SqliteFile
             };
 
-            backupDaemon = new BackupDaemon(factory, TimeSpan.FromMinutes(BackupPeriodMinutes));
+            if (enableBackups)
+            {
+                backupDaemon = new BackupDaemon(factory, TimeSpan.FromMinutes(BackupPeriodMinutes));
+            }
+
             container.Register<IThingsRepository>(new ThingsRepository(factory));
             container.Register<IOpinionsRepository>(new OpinionsRepository(factory));
             container.Register<IUsersRepository>(new UsersRepository(factory));
@@ -136,10 +141,11 @@ namespace Sioux.TechRadar
 
         }
 
-        public Server()
+        public Server(bool enableBackups = false)
             : base("Sioux TechRadar Service", typeof(Server).Assembly)
         {
-            Port = DefaultPort;
+            this.Port = DefaultPort;
+            this.enableBackups = enableBackups;
         }
 
         public Server Start()
@@ -157,7 +163,10 @@ namespace Sioux.TechRadar
 
         protected override void Dispose(bool disposing)
         {
-            backupDaemon.Dispose();
+            if (backupDaemon != null)
+            {
+                backupDaemon.Dispose();
+            }
             base.Dispose(disposing);
         }
     }

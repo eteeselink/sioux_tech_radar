@@ -24,7 +24,7 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithRealRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Name="D", Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
+                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
                     client.Post(newThing);					
                     ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};					
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
@@ -44,17 +44,18 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithRealRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
-                    var updatedThing = fs.RealThingsRepos.StoreNew(newThing);
+                    var newThing = new Thing(){ Name="d", Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
+                    newThing = fs.RealThingsRepos.StoreNew(newThing);
 
-                    updatedThing.Description += ", whatever";
-                    Thing result= client.Put(updatedThing);
+                    var updatedThing = new Thing() { Name = "d", Description = ", whatever" };
+                    client.Put(updatedThing);
 
                     ThingsRequest req = new ThingsRequest(){Names = new string[] { "d" }};
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
                     
                     res.Count().ShouldBe(1);
-                    result.Quadrantid.ShouldBe(updatedThing.Quadrantid);
+                    Thing result = res.Single();
+                    result.Quadrantid.ShouldBe(newThing.Quadrantid);
                     result.Description.ShouldBe(updatedThing.Description);
                 }
             }

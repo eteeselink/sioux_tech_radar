@@ -8,6 +8,7 @@ using Shouldly;
 using System.Net;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceClient.Web;
+using Sioux.TechRadar.Users.DTO;
 
 namespace Sioux.TechRadar
 {
@@ -39,7 +40,7 @@ namespace Sioux.TechRadar
                     
                     // log in
                     var restClient = new JsonServiceClient(FakeServer.BaseUri);
-                    var response = restClient.Post<AuthResponse>(
+                    var response = restClient.Post<AuthResponseEx>(
                         "/api/auth/credentials?format=json",
                         new Auth()
                         {
@@ -49,23 +50,15 @@ namespace Sioux.TechRadar
                         });
 
                     response.SessionId.ShouldMatch(@"[a-zA-Z0-9=+/]{20,100}");
-
-                    // check session service
-                    var checkResponse = restClient.Get<AuthResponse>("/api/session");
-                    checkResponse.SessionId.ShouldMatch(@"[a-zA-Z0-9=+/]{20,100}");
-                    checkResponse.UserName.ShouldBe("tech");
+                    response.UserName.ShouldBe("tech");
+                    response.UserId.ShouldMatch(@"^[a-zA-Z0-9_-]{8}$");
 
 
                     // log out
                     var logoutResponse = restClient.Delete<AuthResponse>("/api/auth/credentials?format=json&UserName=tech");
                     logoutResponse.SessionId.ShouldBe(null);
 
-
-                    // check that GET /api/session 404s
-                    var httpError = Should.Throw<WebServiceException>(() => 
-                        restClient.Get<AuthResponse>("/api/session")
-                    );
-                    httpError.StatusCode.ShouldBe(404);
+                    // can't come up with a good way to verify that we logged out.
                 }
             }
         }

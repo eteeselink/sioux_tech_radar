@@ -73,8 +73,8 @@ namespace Sioux.TechRadar
                 return thing;
             } catch (Exception e) {
                 logger.ErrorException("attempted to insert a new thing",e);
-                //throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to insert thing");
-                return null;
+                throw new HttpError(HttpStatusCode.InternalServerError, "exception while trying to insert thing");
+                //return null;
             }
         }
 
