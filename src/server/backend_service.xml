@@ -1,0 +1,8 @@
+<service>
+ <id>SiouxTechRadarBackend</id>
+ <name>Sioux Tech Radar - backend</name>
+ <description>Sioux Tech Radar - backend</description>
+
+ <executable>Server.exe</executable>
+ <argument>--port=8888</argument>
+</service>
