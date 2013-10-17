@@ -40,18 +40,7 @@ var TechRadar;
             ThingList.prototype.onMouseOver = function (ev) {
                 var button = $(ev.target);
                 var thing = this.findThing(button);
-                var description = thing.description;
-                if(!description || description.trim() === "") {
-                    $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
-                } else {
-                    $('#desc-overlay').text(description);
-                }
-                $('#desc-overlay-subject').text(thing.title);
-                $('#desc-overlay-container').show();
-                var desc = $('#desc-container');
-                if(this.tab.hasActiveSelection()) {
-                    desc.hide();
-                }
+                this.tab.showDescOverlay(thing);
             };
             ThingList.prototype.onMouseOut = function (ev) {
                 var button = $(ev.target);

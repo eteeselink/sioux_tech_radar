@@ -1,9 +1,12 @@
 ﻿body {
   font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace;
-  text-align: center;
 }
 .bootstrap-font-mixin {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+#page {
+  position: relative;
+  text-align: center;
 }
 #thing-add-title {
   width: 110px;
@@ -92,7 +95,7 @@ div#rant-container .rant {
   font-size: 18px;
   float: left;
   font-style: italic;
-  width: 250px;
+  max-width: 250px;
   text-align: left;
 }
 div#rant-container #rant {
@@ -118,7 +121,11 @@ div#desc-container textarea#desc,
 div#desc-overlay-container textarea#desc {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   width: 95%;
-  height: 100px;
+  height: 70px;
+}
+div#desc-container form,
+div#desc-overlay-container form {
+  margin: 0;
 }
 div#desc-container div#desc-message,
 div#desc-overlay-container div#desc-message {
@@ -128,9 +135,19 @@ div#desc-overlay-container div#desc-message {
   color: #44ff44;
   display: none;
   text-align: center;
+  margin-top: -25px;
 }
 div#desc-overlay-container {
   display: none;
+}
+.all-quadrants div#desc-overlay-container {
+  position: absolute;
+  right: 40px;
+  width: 400px;
+  bottom: 0px;
+}
+.all-quadrants div#rant-container {
+  top: 0px;
 }
 svg.radar circle.thing {
   stroke: #83b2e5;
@@ -157,5 +174,8 @@ svg.radar tspan {
 }
 svg.radar.quadrant-3,
 svg.radar.quadrant-0 {
+  margin-left: -300px;
+}
+.all-quadrants svg.radar {
   margin-left: -300px;
 }

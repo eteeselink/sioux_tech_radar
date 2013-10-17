@@ -15,7 +15,7 @@ New TODO d.d. 28-07-2013
   - Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen (oplossen met Adminer)
   - Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet (oplossen met Adminer)
 + DB backup
-* Overzichtsradar laten zien
++ Overzichtsradar laten zien  
 * Je eigen overzichtsradar delen (4u)
 * Zien wat anderen vinden (4u)
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
@@ -26,7 +26,7 @@ New TODO d.d. 28-07-2013
 Totaal: 24 uur. Best flink, toch! Prio volgorde klopt zo.
 
 OPEN ISSUES:
-* Iemand voegt een thing toe die in een ander kwadrant al bestaat. Ojee!
+- Iemand voegt een thing toe die in een ander kwadrant al bestaat. Ojee!
   Optie: een naam mag maar 1x bestaan; degene die'm het eerst toevoegt krijgt'm in dat kwadrant
   Optie: elke naam mag in elk kwadrant bestaan. deze! iesh beter
   Oplossing: geen van twee, teveel gedoe. Revert!

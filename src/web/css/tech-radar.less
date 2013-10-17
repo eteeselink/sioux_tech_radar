@@ -1,11 +1,16 @@
 body
 {
   font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace;
-  text-align: center;
+  
 }
 
 .bootstrap-font-mixin {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+#page {
+    position: relative;
+    text-align: center;
 }
 
 #thing-add-title
@@ -110,7 +115,7 @@ div#rant-container {
         .rant-text;
         float: left;
         font-style: italic; 
-        width: 250px;
+        max-width: 250px;
         text-align: left;
     }
 
@@ -138,18 +143,36 @@ div#desc-overlay-container
     textarea#desc {
         .bootstrap-font-mixin;
         width: 95%;
-        height: 100px;
+        height: 70px;
+    }
+
+    form {
+        margin: 0;
     }
 
     div#desc-message {
         .message-mixin;
         text-align: center;
+        margin-top: -25px;
     }
 }
 
 div#desc-overlay-container 
 {
     display: none;
+}
+
+.all-quadrants div#desc-overlay-container 
+{
+    position: absolute;
+    right: 40px;
+    width: 400px;
+    bottom: 0px;
+}
+
+.all-quadrants div#rant-container
+{
+    top: 0px;
 }
 
 @bgcolor: #ccc;
@@ -196,3 +219,7 @@ svg.radar.quadrant-0
     margin-left: -300px;
 }
 
+.all-quadrants svg.radar
+{
+    margin-left: -300px;
+}

@@ -55,23 +55,7 @@ module TechRadar.Client {
             var button = $(ev.target);
             var thing = this.findThing(button);
 
-            var description = thing.description;
-            if (!description || description.trim() === "") {
-                $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
-            }
-            else {
-                $('#desc-overlay').text(description);
-            }
-            
-            $('#desc-overlay-subject').text(thing.title);
-            $('#desc-overlay-container').show();
-
-            // temporarily hide the description form of the currently selected opinion, if applicable.
-            // keep track that we want to restore it in onMouseOut
-            var desc = $('#desc-container');
-            if (this.tab.hasActiveSelection()) {
-                desc.hide();
-            }
+            this.tab.showDescOverlay(thing);
         }
 
         private onMouseOut(ev: Event) {

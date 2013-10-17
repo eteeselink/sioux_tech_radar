@@ -36,45 +36,47 @@
             </ul>
         </div>
     </div>
-    <div class="alert" style="display: none;">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
-    </div>
-    <div id="contents">
-        <!-- real content added dynamically with javascript. mostly. -->
+    <div id="page">
+        <div class="alert" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
+        </div>
+        <div id="contents">
+            <!-- real content added dynamically with javascript. mostly. -->
 
-        <div id="rant-container">
-            <div class="rant-why">
-                <strong>Waarom?</strong><br />
-                <span id="rant-why-question">Waarom vind jij dat we meer met C++ moeten doen?</span>
+            <div id="rant-container">
+                <div class="rant-why">
+                    <strong>Waarom?</strong><br />
+                    <span id="rant-why-question">Waarom vind jij dat we meer met C++ moeten doen?</span>
+                </div>
+
+                <div class="quote quote-before">&ldquo;</div>
+                <textarea id="rant" class="rant">Nou, daar heb ik wel wat over te zeggen!</textarea>
+                <div id="readonly-rant" class="rant"></div>
+                <div class="quote quote-after">&rdquo;</div>
+                <div class="rant-name">&mdash; <span id="rant-name">eteeselink</span><span id="rant-subject"></span></div>
+                <div id="rant-message" class="message-ok">Opgeslagen!</div>
             </div>
 
-            <div class="quote quote-before">&ldquo;</div>
-            <textarea id="rant" class="rant">Nou, daar heb ik wel wat over te zeggen!</textarea>
-            <div id="readonly-rant" class="rant"></div>
-            <div class="quote quote-after">&rdquo;</div>
-            <div class="rant-name">&mdash; <span id="rant-name">eteeselink</span><span id="rant-subject"></span></div>
-            <div id="rant-message" class="message-ok">Opgeslagen!</div>
-        </div>
 
-
-    </div>
-    <div id="desc-container">
-        <div class="header">
-            Wat is <span id="desc-subject">C++</span>?<br />
-            <small>Help je collega's met een korte toelichting: (iedereen kan deze tekst lezen en veranderen)</small>
         </div>
-        <form id="desc-form">
-            <textarea id="desc"></textarea>
-            <input type="submit" class="btn" value="Opslaan" />
-        </form>
-        <div id="desc-message" class="message-ok">Opgeslagen!</div>
-    </div>
-    <div id="desc-overlay-container" class="well">
-        <div class="header">
-            Wat is <span id="desc-overlay-subject">C++</span>?<br />
+        <div id="desc-container">
+            <div class="header">
+                Wat is <span id="desc-subject">C++</span>?<br />
+                <small>Help je collega's met een korte toelichting: (iedereen kan deze tekst lezen en veranderen)</small>
+            </div>
+            <form id="desc-form">
+                <textarea id="desc"></textarea>
+                <input type="submit" class="btn" value="Opslaan" />
+            </form>
+            <div id="desc-message" class="message-ok">Opgeslagen!</div>
         </div>
-        <div id="desc-overlay">C++ is dit en dat en zus en zo.</div>
+        <div id="desc-overlay-container" class="well">
+            <div class="header">
+                Wat is <span id="desc-overlay-subject">C++</span>?<br />
+            </div>
+            <div id="desc-overlay">C++ is dit en dat en zus en zo.</div>
+        </div>
     </div>
     <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>

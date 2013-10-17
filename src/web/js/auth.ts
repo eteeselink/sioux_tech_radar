@@ -1,4 +1,5 @@
 /// <reference path="ext/jquery-1.8.d.ts" />
+/// <reference path="techradar.ts" />
 
 module TechRadar.Client {
 

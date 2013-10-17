@@ -10,6 +10,7 @@
                 if(!this.isOverview()) {
                     classes += " single-quadrant";
                 }
+                $('body').removeClass('single-quadrant all-quadrants').addClass(this.isOverview() ? 'all-quadrants' : 'single-quadrant');
                 var diameter = (this.isOverview()) ? 500 : 375;
                 this.radar = new Client.Radar(diameter, this.quadrant, !this.isOverview(), classes);
                 this.unselectOpinion();
@@ -92,6 +93,7 @@
                 this.currentOpinion = null;
                 $('#rant-container').hide();
                 $('#desc-container').hide();
+                $('#desc-overlay-container').hide();
             };
             Tab.prototype.selectOpinion = function (opinion) {
                 this.radar.select(opinion);
@@ -102,13 +104,19 @@
                 }
                 $('#rant-container').show();
                 this.updateRant(opinion);
-                this.showDesc(opinion.thing);
                 $('#rant-subject').text(" over " + opinion.thing.title);
                 this.currentOpinion = opinion;
-                var isOverview = this.isOverview();
-                $('.rant-why').toggle(!isOverview);
-                $('#rant').toggle(!isOverview);
-                $('#readonly-rant').toggle(isOverview);
+                if(this.isOverview()) {
+                    $('.rant-why').hide();
+                    $('#rant').hide();
+                    $('#readonly-rant').show();
+                    this.showDescOverlay(opinion.thing);
+                } else {
+                    $('.rant-why').show();
+                    $('#rant').show();
+                    $('#readonly-rant').hide();
+                    this.showDesc(opinion.thing);
+                }
             };
             Tab.prototype.flash = function (selector) {
                 $(selector).show().delay(2000).fadeOut(600);
@@ -188,6 +196,20 @@
                 $('#desc-container').show();
                 $('#desc-subject').text(thing.title);
                 $('#desc').val(thing.description);
+            };
+            Tab.prototype.showDescOverlay = function (thing) {
+                var description = thing.description;
+                if(!description || description.trim() === "") {
+                    $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
+                } else {
+                    $('#desc-overlay').text(description);
+                }
+                $('#desc-overlay-subject').text(thing.title);
+                $('#desc-overlay-container').show();
+                var desc = $('#desc-container');
+                if(this.hasActiveSelection()) {
+                    desc.hide();
+                }
             };
             Tab.prototype.initDesc = function () {
                 var _this = this;

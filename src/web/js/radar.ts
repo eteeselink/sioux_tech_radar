@@ -59,8 +59,8 @@ module TechRadar.Client {
             // for text labels in both directions.
             var svg = d3.select("#contents").append("svg")
               .attr("class", "radar " + auxClasses)
-              .attr("width", this.diameter * (this.quadrant ? 1.5 : 2))
-              .attr("height", this.diameter * (this.quadrant ? margin : (margin * 2 - 1)));
+              .attr("width", this.diameter * (this.quadrant ? 1.5 : margin))
+              .attr("height", this.diameter * margin);
 
             // set up a global SVG transformation from internal coordinate system
             // to whatever `this.diameter` has been set to.
@@ -70,7 +70,7 @@ module TechRadar.Client {
                 var translatey = this.quadrant.isTop() ? Radar.radius * margin : 0;
             } else {
                 var scale = this.diameter / (Radar.radius * 2);
-                var translatex = Radar.radius * 2;
+                var translatex = Radar.radius * margin;
                 var translatey = Radar.radius * margin;
             }
 

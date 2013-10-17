@@ -37,6 +37,9 @@ module TechRadar.Client {
             if (!this.isOverview()) {
                 classes += " single-quadrant";
             }
+            $('body')
+                .removeClass('single-quadrant all-quadrants')
+                .addClass(this.isOverview() ? 'all-quadrants' : 'single-quadrant');
 
             var diameter = (this.isOverview()) ? 500 : 375;
             this.radar = new Radar(diameter, this.quadrant, !this.isOverview(), classes);
@@ -125,6 +128,7 @@ module TechRadar.Client {
             this.currentOpinion = null;
             $('#rant-container').hide();
             $('#desc-container').hide();
+            $('#desc-overlay-container').hide();
         }
 
         /// Select this opinion. Emulates a click on a circle
@@ -142,15 +146,23 @@ module TechRadar.Client {
             $('#rant-container').show();
 
             this.updateRant(opinion);
-            this.showDesc(opinion.thing)
             $('#rant-subject').text(" over " + opinion.thing.title);
             this.currentOpinion = opinion;
 
             // slightly readonly-fy the layout for the overview
-            var isOverview = this.isOverview();
-            $('.rant-why').toggle(!isOverview);
-            $('#rant').toggle(!isOverview);
-            $('#readonly-rant').toggle(isOverview);
+
+            if (this.isOverview()) {
+                $('.rant-why').hide();
+                $('#rant').hide();
+                $('#readonly-rant').show();
+                this.showDescOverlay(opinion.thing);
+            }
+            else {
+                $('.rant-why').show();
+                $('#rant').show();
+                $('#readonly-rant').hide();
+                this.showDesc(opinion.thing)
+            }
             
         }
 
@@ -229,6 +241,28 @@ module TechRadar.Client {
             $('#desc-container').show();
             $('#desc-subject').text(thing.title);
             $('#desc').val(thing.description);
+        }
+
+        /// Show the read-only description overlay of a particular thing.
+        /// Called by ThingList or in the overview screen.
+        public showDescOverlay(thing: Thing) {
+            var description = thing.description;
+            if (!description || description.trim() === "") {
+                $('#desc-overlay').html("<i>Niemand heeft nog wat over " + thing.title + " geschreven</i>");
+            }
+            else {
+                $('#desc-overlay').text(description);
+            }
+
+            $('#desc-overlay-subject').text(thing.title);
+            $('#desc-overlay-container').show();
+
+            // temporarily hide the description form of the currently selected opinion, if applicable.
+            // keep track that we want to restore it in onMouseOut
+            var desc = $('#desc-container');
+            if (this.hasActiveSelection()) {
+                desc.hide();
+            }
         }
 
         /// hook up appropriate event handlers on the 'desc' area
