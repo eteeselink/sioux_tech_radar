@@ -64,7 +64,7 @@ namespace Sioux.TechRadar
             if (!ConnectionString.Equals(MemoryConnectionString) 
                 &&!File.Exists (filename)) 
             {
-                var dir = Path.GetDirectoryName(filename);
+                var dir = Path.GetDirectoryName(Path.GetFullPath(filename));
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);

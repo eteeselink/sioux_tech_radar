@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.OrmLite;
+using System.Security.Cryptography;
 
 namespace Sioux.TechRadar.Users
 {
@@ -27,6 +28,19 @@ namespace Sioux.TechRadar.Users
             }
         }
 
+        /// <summary>
+        /// Computes a probably-unique id that is URL-safe.
+        /// </summary>
+        private string GetUniqueId()
+        {
+            var bytes = new byte[6];  // 6 bytes becomes 8 base64 chars. should be unique enough for our purposes.
+            RNGCryptoServiceProvider.Create().GetNonZeroBytes(bytes);
+            return Convert.ToBase64String(bytes)
+                .TrimEnd('=')
+                .Replace('/', '-')
+                .Replace('+', '_');
+        }
+
         public User GetOrCreateUser(string username)
         {
             using (var db = ConnectionFactory.Connect())
@@ -34,9 +48,11 @@ namespace Sioux.TechRadar.Users
                 var user = db.SingleWhere<User>("Username", username);
                 if (user == null)
                 {
+                    
                     user = new User
                     { 
-                        Username = username 
+                        Username = username,
+                        UserId = GetUniqueId(),
                     };
                     logger.Info("Created new user '{0}'", username);
 

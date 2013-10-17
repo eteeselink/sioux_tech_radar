@@ -11,12 +11,13 @@ using System.Text;
 
 namespace Sioux.TechRadar.Users
 {
+    
     public class SessionService : Service
     {
         private static Logger logger = LogManager.GetLogger("SessionService");
         public IThingsRepository Repository { get; set; }  //Injected by IOC
 
-        public AuthResponse Get(SessionRequest sessionRequest)
+        public AuthResponseEx Get(SessionRequest sessionRequest)
         {
 
             var authSession = this.GetSession();
@@ -26,10 +27,11 @@ namespace Sioux.TechRadar.Users
             }
             else
             {
-                return new AuthResponse()
+                return new AuthResponseEx()
                 {
                     SessionId = authSession.Id,
-                    UserName = authSession.UserAuthName
+                    UserName = authSession.UserAuthName,
+                    UserId = authSession.UserName,
                 };
             }
         }

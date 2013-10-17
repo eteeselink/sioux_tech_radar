@@ -11,9 +11,9 @@ New TODO d.d. 28-07-2013
   + Moet ook nog gedesigned worden (2u)
   + En gemaakt (4u)
 + Maximum 5 items per kwadrant
-* Data-problemen
-  + Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen
-  * Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet (oplossen met Adminer)
+- Data-problemen
+  - Als mensen troep toevoegen, is dat niet gemakkelijk te verwijderen (oplossen met Adminer)
+  - Als iemand 1x "blabloe" toevoegt aan "Languages", kan dat nooit meer elders worden gezet (oplossen met Adminer)
 + DB backup
 * Je eigen overzichtsradar delen (4u)
 * Zien wat anderen vinden (4u)

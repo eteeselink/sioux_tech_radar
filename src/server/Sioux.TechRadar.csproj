@@ -124,6 +124,7 @@
     <Compile Include="Opinions\IOpinionsRepository.cs" />
     <Compile Include="Opinions\DTO\Opinion.cs" />
     <Compile Include="sqlite\SqLiteConnectionFactory.cs" />
+    <Compile Include="Users\DTO\AuthResponseEx.cs" />
     <Compile Include="Users\DTO\SessionRequest.cs" />
     <Compile Include="Users\DTO\User.cs" />
     <Compile Include="Users\IUsersRepository.cs" />

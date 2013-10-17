@@ -132,7 +132,7 @@ module TechRadar.Client {
         public deleteOpinion() {
             console.log("ajax (deleteOpinion) called");
             return $.ajax({
-                url: "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(this.thing.name),
+                url: "/api/opinions/" + AuthInfo.instance.userid + "/" + encodeURIComponent(this.thing.name),
                 type: 'DELETE',
                 contentType: 'application/json',
                 dataType: 'json'
@@ -160,7 +160,7 @@ module TechRadar.Client {
         }
 
         private store(opinion: any) {
-            var url = "/api/opinions/" + AuthInfo.instance.username + "/" + encodeURIComponent(opinion.thingName);
+            var url = "/api/opinions/" + AuthInfo.instance.userid + "/" + encodeURIComponent(opinion.thingName);
             return storeDto(url, opinion);
         }
 

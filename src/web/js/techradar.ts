@@ -66,7 +66,7 @@ module TechRadar.Client {
     export function getThingsAndOpinions(searchQuad: Quadrant) {
         var d = $.Deferred();
         getThings(searchQuad).done(function (things) {
-            $.getJSON("/api/opinions/" + AuthInfo.instance.username + "/")
+            $.getJSON("/api/opinions/" + AuthInfo.instance.userid + "/")
                 .done(function (data) {
                     var opinions: Opinion[] = [];
 

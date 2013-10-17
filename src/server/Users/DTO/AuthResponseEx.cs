@@ -1,17 +1,14 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using ServiceStack.ServiceInterface.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sioux.TechRadar.Users.DTO
 {
-    public class User
+    public class AuthResponseEx : AuthResponse
     {
-        [PrimaryKey]
         public string UserId { get; set; }
-
-        [Index(true)]
-        public string Username { get; set; }
     }
 }

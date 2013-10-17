@@ -1,5 +1,6 @@
 ﻿using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using Sioux.TechRadar.Users.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,26 @@ namespace Sioux.TechRadar.Users.Auth
         {
             // Note:
             // `session.UserAuthName` is already set to the user's user name.
+            // we use `session.UserName` for the user's secret unique id.
             
             var usersRepo = authService.TryResolve<IUsersRepository>();
             var user = usersRepo.GetOrCreateUser(session.UserAuthName);
-            session.UserName = user.Username;
+            session.UserName = user.UserId;
             authService.SaveSession(session);
+        }
+
+        public override object Authenticate(IServiceBase authService, IAuthSession session, ServiceStack.ServiceInterface.Auth.Auth request)
+        {
+            var response = (AuthResponse)base.Authenticate(authService, session, request);
+            session = authService.GetSession(true);
+            return new AuthResponseEx
+            {
+                ReferrerUrl = response.ReferrerUrl,
+                ResponseStatus = response.ResponseStatus,
+                SessionId = response.SessionId,
+                UserId = session.UserName,
+                UserName = session.UserAuthName,
+            };
         }
     }
 }

@@ -7,6 +7,7 @@ module TechRadar.Client {
 
         private url = "/api/auth/credentials?format=json";
         public username: string;
+        public userid: string;
         private loggedIn = false;
         private callbacks: { (isloggedin: Boolean): void; }[] = [];
 
@@ -43,6 +44,7 @@ module TechRadar.Client {
             request.done(data => {
                 this.loggedIn = true;
                 this.username = data.UserName;
+                this.userid = data.UserId;
             });
 
             request.fail(data => {
@@ -82,21 +84,6 @@ module TechRadar.Client {
             for (var i = 0; i < this.callbacks.length; i++) {
                 this.callbacks[i](this.loggedIn);
             }
-        }
-
-        private checkLoggedIn() {
-            var request = $.getJSON("/api/session");
-
-            request.done(data => {
-                this.loggedIn = true;
-                this.username = data.UserName;
-            });
-
-            request.fail(data => {
-                this.loggedIn = false;
-            });
-
-            request.always(() => this.updateUi());
         }
 
         public isLoggedIn(): Boolean {
