@@ -4,6 +4,7 @@
         var Tab = (function () {
             function Tab(q) {
                 var _this = this;
+                this.hasEverHadAnOpinion = false;
                 $('svg.radar').remove();
                 this.quadrant = (q === "all") ? null : Client.Quadrants[parseInt(q, 10)];
                 var classes = "quadrant-" + q;
@@ -19,6 +20,9 @@
                     request.done(function (data) {
                         var things = data.things;
                         var opinions = data.opinions;
+                        if(opinions.length > 0) {
+                            _this.hasEverHadAnOpinion = true;
+                        }
                         if(_this.isOverview()) {
                             _this.unselectOpinion();
                             _this.showAllThings(data.opinions);
@@ -61,8 +65,11 @@
                 opinion.onSelect(function () {
                     return _this.onOpinionSelected(opinion);
                 });
+                opinion.onMove(function () {
+                    return _this.onOpinionMoved(opinion);
+                });
                 opinion.onChange(function () {
-                    return _this.updateRant(opinion);
+                    return _this.onOpinionChanged(opinion);
                 });
                 if(opinion.existsOnServer) {
                     opinion.updateOpinion();
@@ -102,7 +109,9 @@
                 if(opinion == this.currentOpinion) {
                     return;
                 }
-                $('#rant-container').show();
+                if(this.hasEverHadAnOpinion) {
+                    $('#rant-container').show();
+                }
                 this.updateRant(opinion);
                 $('#rant-subject').text(" over " + opinion.thing.title);
                 this.currentOpinion = opinion;
@@ -192,8 +201,20 @@
                 var question = this.textForGoodness(opinion, this.getRantQuestion);
                 $('#rant-why-question').text(question);
             };
+            Tab.prototype.onOpinionMoved = function (opinion) {
+                this.updateRant(opinion);
+            };
+            Tab.prototype.onOpinionChanged = function (opinion) {
+                if(!this.hasEverHadAnOpinion) {
+                    $('#rant-container').fadeIn(400);
+                    $('#desc-container').fadeIn(400);
+                }
+                this.hasEverHadAnOpinion = true;
+            };
             Tab.prototype.showDesc = function (thing) {
-                $('#desc-container').show();
+                if(this.hasEverHadAnOpinion) {
+                    $('#desc-container').show();
+                }
                 $('#desc-subject').text(thing.title);
                 $('#desc').val(thing.description);
             };

@@ -79,6 +79,7 @@ module TechRadar.Client {
     export class Opinion extends D3Node {
         public onSelectCallback: Function = function () { };
         public onChangeCallback: Function = function () { };
+        public onMoveCallback: Function = function () { };
 
         constructor(
               public thing: Thing,
@@ -109,6 +110,10 @@ module TechRadar.Client {
             this.onChangeCallback = Opinion.functionify(callback);
         }
 
+        /// Pass null to unregister callback.
+        public onMove(callback: Function) {
+            this.onMoveCallback = Opinion.functionify(callback);
+        }
 
         public existsOnServer = false;
         private previousGoodness = goodness;
@@ -124,9 +129,11 @@ module TechRadar.Client {
                 }
                 this.previousGoodness = this.goodness();
                 this.updateOpinion();
+
+                this.onChangeCallback();
             }
 
-            this.onChangeCallback();
+            this.onMoveCallback();
         }
 
         public deleteOpinion() {

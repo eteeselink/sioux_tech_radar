@@ -47,9 +47,8 @@ var TechRadar;
                 var button = $(ev.target);
                 var thing = this.findThing(button);
                 $('#desc-overlay-container').hide();
-                var desc = $('#desc-container');
                 if(this.tab.hasActiveSelection()) {
-                    desc.show();
+                    this.tab.showDesc(thing);
                 }
             };
             ThingList.prototype.onButtonClick = function (ev) {
@@ -70,7 +69,7 @@ var TechRadar;
                     this.tab.selectOpinion(opinion);
                     if(!ThingList.hasEverAddedAThing) {
                         ThingList.hasEverAddedAThing = true;
-                        var text = "Wat vind jij van Yakult? Sleep het bolletje op de radar om je mening te geven. Als je wilt kun je je mening nog wat toelichten, maar dat hoeft niet.";
+                        var text = "Wat vind jij van Yakult?<br /> Sleep het bolletje op de radar om je mening te geven. Als je wilt kun je je mening nog wat toelichten, maar dat hoeft niet.";
                         text = text.replace("Yakult", opinion.thing.title);
                         Client.showAlert(text, 'info', 10000);
                     }

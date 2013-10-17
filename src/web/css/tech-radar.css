@@ -11,9 +11,13 @@
 .alert {
   max-width: 600px;
   margin: 0 auto 20px auto;
+  text-align: left;
 }
 .navbar {
   white-space: nowrap;
+}
+.navbar .navbar-inner {
+  padding-left: 10px;
 }
 .navbar form,
 .navbar p {
@@ -23,10 +27,14 @@
   padding: 10px 15px;
 }
 .navbar .btn {
-  margin: -10px 0;
+  margin: -10px 0 -6px 0;
 }
 .navbar .logged-yes .btn {
   margin-left: 10px;
+}
+.navbar a.brand {
+  margin: 0;
+  padding: 7px 4px 0 0;
 }
 .navbar .logon {
   margin-left: 20px;

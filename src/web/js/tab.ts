@@ -19,6 +19,7 @@ module TechRadar.Client {
             currentTab = new Tab(q);
         }
 
+        private hasEverHadAnOpinion = false;
         private thingsList: ThingList;
         private radar: Radar;
         private currentOpinion: Opinion;
@@ -49,6 +50,10 @@ module TechRadar.Client {
                 request.done((data: { things: Thing[]; opinions: Opinion[]; }) => {
                     var things = data.things;
                     var opinions = data.opinions;
+
+                    if (opinions.length > 0) {
+                        this.hasEverHadAnOpinion = true;
+                    }
 
                     if (this.isOverview()) {
                         this.unselectOpinion();
@@ -90,7 +95,8 @@ module TechRadar.Client {
         public addOpinion(opinion: Opinion) {
             this.radar.addOpinion(opinion);
             opinion.onSelect(() => this.onOpinionSelected(opinion));
-            opinion.onChange(() => this.updateRant(opinion));
+            opinion.onMove(() => this.onOpinionMoved(opinion));
+            opinion.onChange(() => this.onOpinionChanged(opinion));
 
             //  TODO: maybe this logic belongs in the Opinion class, by refactoring
             // updateOpinion and storeNewOpinion into a single save() method?
@@ -143,7 +149,11 @@ module TechRadar.Client {
             
             if (opinion == this.currentOpinion) return;
 
-            $('#rant-container').show();
+            if (this.hasEverHadAnOpinion) {
+                $('#rant-container').show();
+            }
+            // no else clause: the container is only shown *after* the user has 
+            // moved an opinion the first time.
 
             this.updateRant(opinion);
             $('#rant-subject').text(" over " + opinion.thing.title);
@@ -163,7 +173,7 @@ module TechRadar.Client {
                 $('#readonly-rant').hide();
                 this.showDesc(opinion.thing)
             }
-            
+
         }
 
         /// Show 'selector' for 2 seconds, then fade out.
@@ -237,8 +247,25 @@ module TechRadar.Client {
             $('#rant-why-question').text(question);
         }
 
-        private showDesc(thing: Thing) {
-            $('#desc-container').show();
+        private onOpinionMoved(opinion: Opinion) {
+            this.updateRant(opinion);
+        }
+
+        private onOpinionChanged(opinion: Opinion) {
+            if (!this.hasEverHadAnOpinion) {
+                $('#rant-container').fadeIn(400);
+                $('#desc-container').fadeIn(400);
+            }
+            this.hasEverHadAnOpinion = true;
+        }
+
+        public showDesc(thing: Thing) {
+            if (this.hasEverHadAnOpinion) {
+                $('#desc-container').show();
+            }
+            // no else clause: the container is only shown *after* the user has 
+            // moved an opinion the first time.
+
             $('#desc-subject').text(thing.title);
             $('#desc').val(thing.description);
         }
