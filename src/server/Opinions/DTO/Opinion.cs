@@ -25,7 +25,7 @@ namespace Sioux.TechRadar{
         public String rant { get; set; }
     }
 
-    [Route("/api/opinions/{user}", "GET")] // get all  
+    [Route("/api/opinions/{user}", "GET")] // create  
     [Route("/api/opinions/{user}/{thingName}", "GET")] // read
     [Route("/api/opinions/{user}/{thingName}", "DELETE")]
     [Authenticate]

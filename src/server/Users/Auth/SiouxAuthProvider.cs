@@ -7,12 +7,8 @@ using System.Text;
 
 namespace Sioux.TechRadar.Users.Auth
 {
-    public class SiouxAuthProvider : BasicAuthProvider
+    public class SiouxAuthProvider : CredentialsAuthProvider
     {
-        public SiouxAuthProvider()
-        {
-            this.AuthRealm = "Sioux Technology Radar";
-        }
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
             if (userName == "tech" && password == "radar")

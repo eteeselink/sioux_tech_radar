@@ -1,5 +1,4 @@
 ﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +11,4 @@ namespace Sioux.TechRadar.Users.DTO
     {
     }
 
-    [Route("/api/validate_credentials", "GET")]
-    [Authenticate]
-    public class ValidateCredentials
-    {
-    }
 }

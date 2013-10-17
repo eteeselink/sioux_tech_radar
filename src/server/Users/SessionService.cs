@@ -34,10 +34,5 @@ namespace Sioux.TechRadar.Users
             }
         }
 
-        public void Get(ValidateCredentials request)
-        {
-            // do nothing. if the authentication fails, this request fails.
-            // otherwise, an empty 200 OK is returned.
-        }
     }
 }

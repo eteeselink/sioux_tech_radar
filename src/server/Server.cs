@@ -122,8 +122,7 @@ namespace Sioux.TechRadar
                     { typeof(AuthService), new[]{"/api/auth", "/api/auth/{provider}"} },
                     { typeof(AssignRolesService), new[]{"/assignroles"} },
                     { typeof(UnAssignRolesService), new[]{"/unassignroles"} },
-                },
-                HtmlRedirect = null,
+                }
             };
             Plugins.Add(authFeature);
 
