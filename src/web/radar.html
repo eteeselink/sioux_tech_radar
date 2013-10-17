@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Sioux Technology Radar</title>
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">
+                <img src="img/logo_wide_small.png" /></a>
+            <ul class="nav public">
+                <li>
+                    <p><span id="public-username">user</span>'s persoonlijke technologieradar</p>
+                </li>
+            </ul>
+            <ul class="nav private">
+                <li><a href="#" data-q="0" data-toggle="tab">Techniques</a></li>
+                <li><a href="#" data-q="1" data-toggle="tab">Tools</a></li>
+                <li class="active"><a href="#" data-q="2" data-toggle="tab">Languages</a></li>
+                <li><a href="#" data-q="3" data-toggle="tab">Platforms</a></li>
+                <li><a href="#" data-q="all" data-toggle="tab">Overzicht</a></li>
+                <li><a href="expl.html" target="_blank">Uitleg</a></li>
+                <li class="logon logged-no">
+                    <form id="login-form">
+                        <input class="input-small" id="username" type="text" placeholder="Sioux username" />
+                        <input class="input-small" id="password" type="password" placeholder="Wachtwoord" />
+                        <input class="btn" id="login_button" value="Login" type="submit" />
+                    </form>
+                </li>
+                <li class="logon logged-yes">
+                    <p>
+                        Welkom <span id="current_username">(loading username..)</span>
+                        <input id="logout_button" class="btn" value="Log off" type="button" />
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="page">
+        <div class="alert" style="display: none;">
+            <button type="button" class="close">&times;</button>
+            <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
+        </div>
+        <div id="contents">
+            <!-- real content added dynamically with javascript. mostly. -->
+
+            <div id="rant-container">
+                <div class="rant-why">
+                    <strong>Waarom?</strong><br />
+                    <span id="rant-why-question">Waarom vind jij dat we meer met C++ moeten doen?</span>
+                </div>
+
+                <div class="quote quote-before">&ldquo;</div>
+                <textarea id="rant" class="rant">Nou, daar heb ik wel wat over te zeggen!</textarea>
+                <div id="readonly-rant" class="rant"></div>
+                <div class="quote quote-after">&rdquo;</div>
+                <div class="rant-name">&mdash; <span id="rant-name">eteeselink</span><span id="rant-subject"></span></div>
+                <div id="rant-message" class="message-ok">Opgeslagen!</div>
+            </div>
+
+
+        </div>
+
+        <div id="desc-container">
+            <div class="header">
+                Wat is <span id="desc-subject">C++</span>?<br />
+                <small>Help je collega's met een korte toelichting: (iedereen kan deze tekst lezen en veranderen)</small>
+            </div>
+            <form id="desc-form">
+                <textarea id="desc"></textarea>
+                <input type="submit" class="btn" value="Opslaan" />
+            </form>
+            <div id="desc-message" class="message-ok">Opgeslagen!</div>
+        </div>
+        <div id="desc-overlay-container" class="well">
+            <div class="header">
+                Wat is <span id="desc-overlay-subject">C++</span>?<br />
+            </div>
+            <div id="desc-overlay">C++ is dit en dat en zus en zo.</div>
+        </div>
+
+        <a id="share-link-button" href="#share-link-modal" role="button" class="btn" data-toggle="modal">Deel dit overzicht met anderen</a>
+        <div id="share-link-modal" class="modal hide fade in out">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Deel je mening</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>Deel jouw persoonlijke technologieradar met collega's en vrienden!</strong><br />
+                    Je mening wordt alleen openbaar als je dit adres verspreidt:<br />
+                    <input class="input-xxlarge" id="share-link-url" type="text" value="http://moo" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/ext/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/ext/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/structs.js"></script>
+    <script type="text/javascript" src="js/view-model.js"></script>
+    <script type="text/javascript" src="js/auth.js"></script>
+    <script type="text/javascript" src="js/radar.js"></script>
+    <script type="text/javascript" src="js/techradar.js"></script>
+    <script type="text/javascript" src="js/tab.js"></script>
+    <script type="text/javascript" src="js/thing-list.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
