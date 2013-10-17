@@ -1,0 +1,15 @@
+<service>
+ <id>SiouxTechRadarNginx</id>
+ <name>Sioux Tech Radar - nginx</name>
+ <description>Sioux Tech Radar - nginx</description>
+
+ <executable>nginx.exe</executable>
+ <startargument>-p</startargument>
+ <startargument>../nginx-data</startargument>
+
+ <stopexecutable>nginx.exe</stopexecutable>
+ <stopargument>-p</stopargument>
+ <stopargument>../nginx-data</stopargument>
+ <stopargument>-s</stopargument>
+ <stopargument>stop</stopargument>
+</service>

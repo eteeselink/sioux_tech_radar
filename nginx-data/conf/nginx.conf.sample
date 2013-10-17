@@ -40,8 +40,8 @@ http {
         #listen       54321;    # for local testing; expected to be blocked by server firewall.
         #listen       443 ssl;
         #server_name  ~^localhost|techradar.sioux.eu$;
-        #ssl_certificate     techradar.sioux.eu.crt;
-        #ssl_certificate_key techradar.sioux.eu.key;
+        #ssl_certificate     sioux.eu.crt;
+        #ssl_certificate_key sioux.eu.key;
 
         #charset koi8-r;
 

@@ -79,7 +79,16 @@ namespace Sioux.TechRadar
             {
                 server.Start();
                 logger.Info("Sioux Technology Radar Server Created at {0}, listening on {1}", DateTime.Now, port);
-                while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+
+                try
+                {
+                    while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+                }
+                catch (InvalidOperationException)
+                {
+                    // there's no console when running as a service; just loop indefinitely.
+                    while (true) { }
+                }
             }
         }
 

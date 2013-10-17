@@ -1,0 +1,10 @@
+<service>
+ <id>SiouxTechRadarBackend</id>
+ <name>Sioux Tech Radar - backend</name>
+ <description>Sioux Tech Radar - backend</description>
+
+ <workingdirectory>C:\hcode\sioux_tech_radar\src\server\bin\Debug</workingdirectory>
+ <executable>C:\hcode\sioux_tech_radar\src\server\bin\Debug\Server.exe</executable>
+ <argument>--port=8888</argument>
+ <argument>--backupperiod=15</argument>
+</service>
