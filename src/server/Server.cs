@@ -122,7 +122,8 @@ namespace Sioux.TechRadar
                     { typeof(AuthService), new[]{"/api/auth", "/api/auth/{provider}"} },
                     { typeof(AssignRolesService), new[]{"/assignroles"} },
                     { typeof(UnAssignRolesService), new[]{"/unassignroles"} },
-                }
+                },
+                HtmlRedirect = null, // don't redirect to some login page on unauthorized access.
             };
             Plugins.Add(authFeature);
 
