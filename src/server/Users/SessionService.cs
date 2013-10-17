@@ -17,24 +17,24 @@ namespace Sioux.TechRadar.Users
         private static Logger logger = LogManager.GetLogger("SessionService");
         public IUsersRepository Repository { get; set; }  //Injected by IOC
 
-        //public AuthResponseEx Get(SessionRequest sessionRequest)
-        //{
+        public AuthResponseEx Get(SessionRequest sessionRequest)
+        {
 
-        //    var authSession = this.GetSession();
-        //    if (authSession.UserAuthName == null)
-        //    {
-        //        throw new HttpError(HttpStatusCode.NotFound, "No session found. Log in, maybe?");
-        //    }
-        //    else
-        //    {
-        //        return new AuthResponseEx()
-        //        {
-        //            SessionId = authSession.Id,
-        //            UserName = authSession.UserAuthName,
-        //            UserId = authSession.UserName,
-        //        };
-        //    }
-        //}
+            var authSession = this.GetSession();
+            if (authSession.UserAuthName == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "No session found. Log in, maybe?");
+            }
+            else
+            {
+                return new AuthResponseEx()
+                {
+                    SessionId = authSession.Id,
+                    UserName = authSession.UserAuthName,
+                    UserId = authSession.UserName,
+                };
+            }
+        }
 
         public User Get(User userRequest)
         {

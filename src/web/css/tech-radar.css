@@ -199,7 +199,7 @@ div#desc-overlay-container {
 .all-quadrants div#rant-container {
   top: 0px;
 }
-.all-quadrants #share-link-button {
+body.private.all-quadrants #share-link-button {
   display: block;
   position: absolute;
   left: 0px;

@@ -252,6 +252,30 @@
                     .mouseout(function () {
                         animClip($(this), entire, clipped);
                     });
+                    
+                $('#btnLogin').click(function() {
+                    var body = JSON.stringify({
+                        UserName: $('#username').val(),
+                        Password: $('#password').val(),
+                        RememberMe: true
+                    })
+
+                    var request = $.ajax({
+                        url: "/api/auth/credentials?format=json",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: body,
+                        dataType: 'json'
+                    })
+
+                    request.done(function(data) {
+                        location.href = "/";
+                    });
+
+                    request.fail(function (data) {
+                        alert("Inloggen mislukt. Corrigeer je gebruikersnaam of wachtwoord en probeer het nog eens.");
+                    });
+                });
             });
     </script>
     </body>

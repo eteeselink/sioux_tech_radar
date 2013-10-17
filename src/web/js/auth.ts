@@ -15,13 +15,13 @@ module TechRadar.Client {
             callback: (isloggedin: bool) => any,
             public userid: string
         ) {
-            $('#login_button').click(e => this.login());
+            $('#login-form').submit(e => this.login());
             $('#logout_button').click(e => this.logout());
 
-            // TODO: flip comments when not debugging
-            //this.checkLoggedIn();
-            $('#username').val('tech');
-            $('#password').val('radar');
+            // UNTODO: flip comments when not debugging
+            this.checkLoggedIn();
+            //$('#username').val('tech');
+            //$('#password').val('radar');
 
             AuthInfo.instance = this;
 
@@ -29,8 +29,6 @@ module TechRadar.Client {
 
             if (this.canGetUserData()) {
                 this.getUsername();
-            } else {
-                this.login();
             }
         }
 
@@ -56,6 +54,24 @@ module TechRadar.Client {
         }
 
 
+        private checkLoggedIn() {
+            var request = $.getJSON("/api/session");
+
+            request.done(data => {
+                this.loggedIn = true;
+                this.username = data.UserName;
+                this.userid   = data.UserId;
+            });
+
+            request.fail(data => {
+                this.loggedIn = false;
+            });
+
+            request.always(() => this.updateUi());
+        }
+
+
+
         private login() {
             var body = JSON.stringify({
                 UserName: $('#username').val(),
@@ -79,10 +95,11 @@ module TechRadar.Client {
 
             request.fail(data => {
                 this.loggedIn = false;
-                showAlert("Could not log in. Incorrect u/p?");
+                showAlert("Inloggen mislukt. Corrigeer je gebruikersnaam of wachtwoord en probeer het nog eens.");
             });
 
             request.always(() => this.updateUi());
+            return false;
         }
 
         private logout() {
@@ -93,6 +110,7 @@ module TechRadar.Client {
 
             request.done(data => {
                 this.loggedIn = false;
+                location.reload();
             });
 
             request.fail(data => {

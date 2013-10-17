@@ -152,6 +152,7 @@ module TechRadar.Client {
 
     function startPrivateMode() {
         $('.navbar .private').show();
+        $("body").addClass("private");
         makeTabs();
 
         AuthInfo.init(() => {
@@ -162,6 +163,7 @@ module TechRadar.Client {
     }
 
     function startPublicMode(userId: string) {
+        $("body").addClass("public");
         AuthInfo.init(() => {
             $('.navbar .public').show();
             $('#public-username').text(AuthInfo.instance.username);
