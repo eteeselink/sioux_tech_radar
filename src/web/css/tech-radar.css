@@ -7,6 +7,8 @@
 #page {
   position: relative;
   text-align: center;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 .alert {
   max-width: 600px;
@@ -18,6 +20,8 @@
 }
 .navbar .navbar-inner {
   padding-left: 10px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 .navbar form,
 .navbar p {

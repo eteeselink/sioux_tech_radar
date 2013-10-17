@@ -61,7 +61,8 @@ module TechRadar.Client {
                         ThingList.remove();
                     }
                     else {
-                        // recreate the interactive thing list, which allows additions and removals to the radar
+                        // (re)create the interactive thing list, which allows additions 
+                        // and removals to the radar
                         this.thingsList = new ThingList(this, data.things, data.opinions, this.quadrant);
                         this.initDesc();
                     }
