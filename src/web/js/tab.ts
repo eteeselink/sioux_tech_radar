@@ -99,11 +99,8 @@ module TechRadar.Client {
             opinion.onMove(() => this.onOpinionMoved(opinion));
             opinion.onChange(() => this.onOpinionChanged(opinion));
 
-            //  TODO: maybe this logic belongs in the Opinion class, by refactoring
-            // updateOpinion and storeNewOpinion into a single save() method?
-            if (opinion.existsOnServer) {
-                opinion.updateOpinion();
-            } else {
+            //  TODO: maybe this logic belongs in the Opinion class?
+            if (!opinion.existsOnServer) {
                 opinion.existsOnServer = true;
                 opinion.storeNewOpinion();
             }
@@ -150,13 +147,25 @@ module TechRadar.Client {
             
             if (opinion == this.currentOpinion) return;
 
-            if (this.hasEverHadAnOpinion) {
-                $('#rant-container').show();
+            if (this.isOverview()) {
+                if (opinion.rant) {
+                    $('#rant-container').show();
+                    this.updateRant(opinion);
+                }
+                else {
+                    $('#rant-container').hide();
+                }
             }
-            // no else clause: the container is only shown *after* the user has 
-            // moved an opinion the first time.
-
-            this.updateRant(opinion);
+            else {
+                if (this.hasEverHadAnOpinion) {
+                    $('#rant-container').show();
+                }
+                // no else clause: the container is only shown *after* the user has 
+                // moved an opinion the first time.
+            
+                this.updateRant(opinion);
+            }
+            
             $('#rant-subject').text(" over " + opinion.thing.title);
             this.currentOpinion = opinion;
 
@@ -245,6 +254,7 @@ module TechRadar.Client {
         }
 
         public updateRant(opinion: Opinion) {
+
             var text = '';
             if (opinion.rant) {
                 text = opinion.rant;

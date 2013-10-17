@@ -71,9 +71,7 @@
                 opinion.onChange(function () {
                     return _this.onOpinionChanged(opinion);
                 });
-                if(opinion.existsOnServer) {
-                    opinion.updateOpinion();
-                } else {
+                if(!opinion.existsOnServer) {
                     opinion.existsOnServer = true;
                     opinion.storeNewOpinion();
                 }
@@ -109,10 +107,19 @@
                 if(opinion == this.currentOpinion) {
                     return;
                 }
-                if(this.hasEverHadAnOpinion) {
-                    $('#rant-container').show();
+                if(this.isOverview()) {
+                    if(opinion.rant) {
+                        $('#rant-container').show();
+                        this.updateRant(opinion);
+                    } else {
+                        $('#rant-container').hide();
+                    }
+                } else {
+                    if(this.hasEverHadAnOpinion) {
+                        $('#rant-container').show();
+                    }
+                    this.updateRant(opinion);
                 }
-                this.updateRant(opinion);
                 $('#rant-subject').text(" over " + opinion.thing.title);
                 this.currentOpinion = opinion;
                 if(this.isOverview()) {

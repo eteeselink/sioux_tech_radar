@@ -10,10 +10,11 @@
 <body>
     <div class="navbar">
         <div class="navbar-inner">
-            <a class="brand" href="#"><img src="img/logo_wide_small.png" /></a>
+            <a class="brand" href="#">
+                <img src="img/logo_wide_small.png" /></a>
             <ul class="nav public">
                 <li>
-                    <p><span id="public-username">user</span>'s opinions</p>
+                    <p><span id="public-username">user</span>'s persoonlijke technologieradar</p>
                 </li>
             </ul>
             <ul class="nav private">
@@ -63,6 +64,7 @@
 
 
         </div>
+
         <div id="desc-container">
             <div class="header">
                 Wat is <span id="desc-subject">C++</span>?<br />
@@ -79,6 +81,24 @@
                 Wat is <span id="desc-overlay-subject">C++</span>?<br />
             </div>
             <div id="desc-overlay">C++ is dit en dat en zus en zo.</div>
+        </div>
+
+        <a id="share-link-button" href="#share-link-modal" role="button" class="btn" data-toggle="modal">Deel dit overzicht met anderen</a>
+        <div id="share-link-modal" class="modal hide fade in out">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Deel je mening</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>Deel jouw persoonlijke technologieradar met collega's en vrienden!</strong><br />
+                    Je mening wordt alleen openbaar als je dit adres verspreidt:<br />
+                    <input class="input-xxlarge" id="share-link-url" type="text" value="http://moo" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Ok</a>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="js/ext/jquery-1.8.3.min.js"></script>

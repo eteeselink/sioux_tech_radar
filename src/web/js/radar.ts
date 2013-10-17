@@ -166,10 +166,11 @@ module TechRadar.Client {
             this.opinions.forEach(opinion => {
 
                 var quadrant = opinion.thing.quadrant();
-                // "read" the newly computed x,y values into `thing.polar`.
-                opinion.updatePolar();
 
-                // set the thing's radius to whatever it was, unless we're being dragged
+                // "read" the newly computed x,y values into `opinion.polar`.
+                opinion.updatePolar(this.goodnessEditable);
+
+                // lock the opinion's distance from the origin, unless it's being dragged.
                 opinion.fixRadius(this.goodnessEditable);
 
                 // enable "quadrant gravity", pulling each node a bit to the centre diagonal

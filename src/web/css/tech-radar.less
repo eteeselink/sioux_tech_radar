@@ -218,18 +218,46 @@ div#desc-overlay-container
     display: none;
 }
 
-.all-quadrants div#desc-overlay-container 
+.modal
 {
-    position: absolute;
-    right: 40px;
-    width: 400px;
-    bottom: 0px;
+    text-align: left;
+
+    input {
+        margin: 20px 10px 0 10px;
+        width: 400px;
+    }
 }
 
-.all-quadrants div#rant-container
+#share-link-button
 {
-    top: 0px;
+    display: none;
 }
+
+.all-quadrants
+{
+    div#desc-overlay-container 
+    {
+        position: absolute;
+        right: 40px;
+        width: 400px;
+        bottom: 0px;
+    }
+
+    div#rant-container
+    {
+        top: 0px;
+    }
+
+    #share-link-button
+    {
+        display: block;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+    }
+}
+
+
 
 @bgcolor: #ccc;
 svg.radar

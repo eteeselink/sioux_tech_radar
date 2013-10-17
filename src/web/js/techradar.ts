@@ -156,6 +156,8 @@ module TechRadar.Client {
 
         AuthInfo.init(() => {
             Tab.show($('li.active a[data-toggle="tab"]').data('q'));
+            var linkUrl = location.protocol + "//" + location.host + location.pathname + "?" + AuthInfo.instance.userid;
+            $('#share-link-url').val(linkUrl);
         });
     }
 

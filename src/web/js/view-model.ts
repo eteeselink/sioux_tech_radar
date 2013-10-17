@@ -174,16 +174,18 @@ module TechRadar.Client {
         public polar: Polar;
         public prevPolar: Polar;
 
-        public updatePolar() {
+        public updatePolar(goodnessEditable: bool) {
             this.prevPolar = this.polar;
             this.polar = Polar.fromPoint(this.x, this.y);
-            this.notifyServer();
+
+            if (goodnessEditable) {
+                this.notifyServer();
+            }
         }
 
         public fixRadius(goodnessEditable: bool) {
             if ((!this.isBeingDragged()) || (!goodnessEditable)) {
                 this.polar.r = this.prevPolar.r;
-                this.notifyServer();
             }
         }
 

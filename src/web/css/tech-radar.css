@@ -180,6 +180,16 @@ div#desc-overlay-container div#desc-message {
 div#desc-overlay-container {
   display: none;
 }
+.modal {
+  text-align: left;
+}
+.modal input {
+  margin: 20px 10px 0 10px;
+  width: 400px;
+}
+#share-link-button {
+  display: none;
+}
 .all-quadrants div#desc-overlay-container {
   position: absolute;
   right: 40px;
@@ -188,6 +198,12 @@ div#desc-overlay-container {
 }
 .all-quadrants div#rant-container {
   top: 0px;
+}
+.all-quadrants #share-link-button {
+  display: block;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 }
 svg.radar circle.thing {
   stroke: #83b2e5;
