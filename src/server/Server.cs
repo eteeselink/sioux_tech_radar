@@ -40,7 +40,7 @@ namespace Sioux.TechRadar
         {
             int port = DefaultPort;
             bool help = false;
-            string sqliteFile = "tempDB.sqlite";
+            string sqliteFile = "tech_radar.sqlite";
             int backupMinutes = 15;
 
             var opts = new OptionSet() {

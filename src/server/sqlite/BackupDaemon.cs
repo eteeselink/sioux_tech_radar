@@ -3,6 +3,7 @@ using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,10 +65,19 @@ namespace Sioux.TechRadar.sqlite
         {
             try
             {
-                var destName = String.Format("{0}_{1:yyyyMMddHHmmss}", factory.ConnectionString, DateTime.Now);
+                // compute the earliest non-existing filename like "backup_20131017_14_1.sqlite", for the 2nd backup past 14:00 on October 17th.
+                var destName = String.Format("backup_{0:yyyyMMdd_HH}", DateTime.Now);
+                var filename = "";
+                int count = 0;
+                do
+                {
+                    filename = String.Format("backup\\{0}_{1}.sqlite", destName, count);
+                    count++;
+                } while(File.Exists(filename));
+
                 var destFactory = new SqLiteConnectionFactory
                 {
-                    ConnectionString = String.Format("backup\\{0}.sqlite", destName)
+                    ConnectionString = filename,
                 };
 
                 using (var dest = (OrmLiteConnection)destFactory.Connect())
