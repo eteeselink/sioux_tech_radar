@@ -153,10 +153,17 @@ module TechRadar.Client {
         $("body").addClass("private");
         makeTabs();
 
-        AuthInfo.init(() => {
+        AuthInfo.init((isLogged: bool) => {
             Tab.show($('li.active a[data-toggle="tab"]').data('q'));
             var linkUrl = location.protocol + "//" + location.host + "/" + AuthInfo.instance.userid;
             $('#share-link-url').val(linkUrl);
+
+            if (isLogged) {
+                $("body").addClass("logged-in");
+            }
+            else {
+                $("body").removeClass("logged-in");
+            }
         });
     }
 
