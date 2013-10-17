@@ -10,11 +10,15 @@ module TechRadar.Client {
 
     declare var d3: any;
 
-    export function showAlert(text: string) {
+    export function showAlert(text: string, type = "warning", timeout = 5000) {
         $('#alert-text').html(text);
-        $(".alert").show();
 
-        setTimeout(() => $(".alert").hide(600), 5000);
+        $('.alert')
+            .removeClass('alert-error alert-warning alert-info alert-success')
+            .addClass('alert-' + type)
+            .show();
+
+        setTimeout(() => $(".alert button.close").click(), timeout);
     }
 
     export function alertOnFail(request: JQueryXHR) {
@@ -142,6 +146,9 @@ module TechRadar.Client {
 
         AuthInfo.instance.registerCallback(function () { Tab.show($('li.active a[data-toggle="tab"]').data('q')); });
         Tab.show($('li.active a[data-toggle="tab"]').data('q'));
+
+        $('.alert button.close').click(ev => $(ev.target).parent().hide(600));
+
         return this;
     }
 }

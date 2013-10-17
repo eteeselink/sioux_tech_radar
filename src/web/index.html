@@ -3,11 +3,8 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Sioux Technology Radar</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <!--<link href="css/tech-radar.less" rel="stylesheet/less" type="text/css" />-->
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/tech-radar.min.css" rel="stylesheet" type="text/css" />
-    <!--<script data-main="js/main.min" src="js/ext/require-jquery.min.js"></script> -->
-    <!--<script data-main="js/main" src="js/ext/require-jquery.js"></script>-->
 
 </head>
 <body>
@@ -23,22 +20,23 @@
                 <li><a href="expl.html" target="_blank">Uitleg</a></li>
                 <li class="logon logged-no">
                     <form>
-                        <input id="username" type="text" placeholder="Sioux username" />
-                        <input id="password" type="password" placeholder="Wachtwoord" />
-                        <input id="login_button" value="Login" type="submit" />
+                        <input class="input-small" id="username" type="text" placeholder="Sioux username" />
+                        <input class="input-small" id="password" type="password" placeholder="Wachtwoord" />
+                        <input class="btn" id="login_button" value="Login" type="submit" />
                     </form>
                 </li>
                 <li class="logon logged-yes">
-                    <a href="#">Welkom <span id="current_username">(loading username..)</span>
-                        <input id="logout_button" value="Log off" type="button" />
-                    </a>
+                    <p>
+                        Welkom <span id="current_username">(loading username..)</span>
+                        <input id="logout_button" class="btn" value="Log off" type="button" />
+                    </p>
                 </li>
             </ul>
         </div>
     </div>
     <div id="page">
         <div class="alert" style="display: none;">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <button type="button" class="close">&times;</button>
             <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
         </div>
         <div id="contents">
@@ -90,6 +88,5 @@
     <script type="text/javascript" src="js/tab.js"></script>
     <script type="text/javascript" src="js/thing-list.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <script>$(".alert").alert()</script>
 </body>
 </html>

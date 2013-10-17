@@ -1,5 +1,5 @@
 ﻿body {
-  font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .bootstrap-font-mixin {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -7,6 +7,29 @@
 #page {
   position: relative;
   text-align: center;
+}
+.alert {
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+}
+.navbar {
+  white-space: nowrap;
+}
+.navbar form,
+.navbar p {
+  margin: 0;
+}
+.navbar p {
+  padding: 10px 15px;
+}
+.navbar .btn {
+  margin: -10px 0;
+}
+.navbar .logged-yes .btn {
+  margin-left: 10px;
+}
+.navbar .logon {
+  margin-left: 20px;
 }
 #thing-add-title {
   width: 110px;

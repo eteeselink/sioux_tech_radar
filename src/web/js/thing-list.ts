@@ -9,6 +9,7 @@
 module TechRadar.Client {
 
     export class ThingList {
+        private static hasEverAddedAThing = false;
         private container: JQuery;
 
         public static remove() {
@@ -96,6 +97,15 @@ module TechRadar.Client {
                 // appear at an "expected" time(after a button click), and not only when a circle is
                 // clicked(which feels like a less - heavy operation)
                 this.tab.selectOpinion(opinion);
+
+                // Show help text the first time around.
+                if (!ThingList.hasEverAddedAThing) {
+                    ThingList.hasEverAddedAThing = true;
+
+                    var text = "Wat vind jij van Yakult? Sleep het bolletje op de radar om je mening te geven. Als je wilt kun je je mening nog wat toelichten, maar dat hoeft niet.";
+                    text = text.replace("Yakult", opinion.thing.title);
+                    showAlert(text, 'info', 10000);
+                }
 
             } else {
                 // get the opinion object back from the button, and remove it everywhere.
