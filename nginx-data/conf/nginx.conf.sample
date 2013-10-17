@@ -31,10 +31,17 @@ http {
     keepalive_timeout  65;
 
     #gzip  on;
-
+    
+    
     server {
         listen       54321;
         server_name  localhost;
+        
+        #listen       54321;    # for local testing; expected to be blocked by server firewall.
+        #listen       443 ssl;
+        #server_name  ~^localhost|techradar.sioux.eu$;
+        #ssl_certificate     techradar.sioux.eu.crt;
+        #ssl_certificate_key techradar.sioux.eu.key;
 
         #charset koi8-r;
 
@@ -51,6 +58,9 @@ http {
             index  index.html index.htm;
             rewrite  "^/radar$"  /radar.html  last;
             rewrite  "^/[a-zA-Z0-9_-]{8}$" /radar.html  last;
+            
+            # remove in production
+            expires -1;
         }
         
         
@@ -87,42 +97,5 @@ http {
         #    deny  all;
         #}
     }
-
-
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    #
-    #server {
-    #    listen       8000;
-    #    listen       somename:8080;
-    #    server_name  somename  alias  another.alias;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-
-    # HTTPS server
-    #
-    #server {
-    #    listen       443;
-    #    server_name  localhost;
-
-    #    ssl                  on;
-    #    ssl_certificate      cert.pem;
-    #    ssl_certificate_key  cert.key;
-
-    #    ssl_session_timeout  5m;
-
-    #    ssl_protocols  SSLv2 SSLv3 TLSv1;
-    #    ssl_ciphers  HIGH:!aNULL:!MD5;
-    #    ssl_prefer_server_ciphers   on;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
 
 }

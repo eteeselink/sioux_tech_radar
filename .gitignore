@@ -137,3 +137,6 @@ src/web/js/view-model.js.map
 src/web/js/main.min.js
 src/web/js/techradar.min.js
 src/web/js/view-model.min.js
+
+# actual nginx configuration; copy nginx.conf to nginx.conf.sample before use!
+nginx-data/conf/nginx.conf
