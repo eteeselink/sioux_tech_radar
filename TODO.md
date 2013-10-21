@@ -22,13 +22,13 @@ New TODO d.d. 28-07-2013
 * Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
 
 
-* Deploy
++ Deploy
   + .net 4.5 erin
   + git pull
   + msbuild aanroepen (release)
   + build\nginx_service.exe install
   + src\server\bin\Release\backend_service.exe install
-  * php-fcgi in windows startup en achter nginx hangen -> adminer.php
+  + php-fcgi in windows startup en achter nginx hangen -> adminer.php
 
 
 OPEN ISSUES:

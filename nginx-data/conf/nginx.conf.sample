@@ -52,6 +52,21 @@ http {
             expires -1;
             #proxy_set_header       Host $host;
         }
+        
+        
+      	# we use PHP only for adminer
+        location /admin/adminer.php {
+            alias   ../src/server/bin/Release/db/adminer.php;
+            
+            fastcgi_pass   127.0.0.1:9123;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info       ^(.+\.php)(/.+)$;
+            fastcgi_param PATH_INFO       $fastcgi_path_info;
+            
+            # somehow can't get this to work with a relative path or anything else that isn't nuts. giving up.
+            fastcgi_param SCRIPT_FILENAME C:/tech_radar/sioux_tech_radar/src/server/bin/Release/db/adminer.php;
+            include       fastcgi_params;
+        }  
 
         location / {
             root   ../src/web;
