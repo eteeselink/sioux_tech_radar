@@ -63,10 +63,13 @@ namespace Sioux.TechRadar
                 .Replace("#", "sharp")
                 .Replace("$", "dollar")
                 .Replace("%", "percent")
+                .Replace(" ", "_")
                 .Replace("^", "caret")
                 .Replace("&", "and")
                 .Replace("*", "times")
                 .Replace("=", "equals");
+
+            name = Regex.Replace(name, "[^a-zA-Z0-9_]", "__");
 
             Name = Uri.EscapeDataString(name);  
         }

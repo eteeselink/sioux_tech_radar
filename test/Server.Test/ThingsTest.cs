@@ -143,15 +143,15 @@ namespace Sioux.TechRadar
             using (FakeServer fs = new FakeServer().StartWithFakeRepos())
             {
                 using(JsonServiceClient client = new JsonServiceClient(FakeServer.BaseUri)){
-                    var newThing = new Thing(){ Title="D", Description="Not C++", Quadrantid=Quadrant.Languages};
+                    var newThing = new Thing(){ Title="D[]", Description="Not C++", Quadrantid=Quadrant.Languages};
                     var existingThing = client.Post(newThing);
-                    existingThing.Name.ShouldBe("d");
+                    existingThing.Name.ShouldBe("d____");
 
-                    ThingsRequest req = new ThingsRequest(){ Names = new string[] { "d" }};
+                    ThingsRequest req = new ThingsRequest(){ Names = new string[] { "d____" }};
                     IEnumerable<Thing> res = client.Get(req.UrlEncodeNames());
 
                     res.Count().ShouldBe(1);
-                    res.First().Name.ShouldBe("d");
+                    res.First().Name.ShouldBe("d____");
                 }
             }
         }
