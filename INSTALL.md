@@ -29,6 +29,16 @@ From a command line, run the following commands:
     backend-service.exe install
     backend-service.exe start
 
+
+### Deploying updates
+
+Stop all services. Then:
+
+    git pull
+    build.cmd
+
+Start all services again.
+
 ### Admin
 
 If you want, you can use PHP and Adminer to allow remote db administration.
