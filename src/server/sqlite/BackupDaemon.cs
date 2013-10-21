@@ -66,12 +66,12 @@ namespace Sioux.TechRadar.sqlite
             try
             {
                 // compute the earliest non-existing filename like "backup_20131017_14_1.sqlite", for the 2nd backup past 14:00 on October 17th.
-                var destName = String.Format("backup_{0:yyyyMMdd_HH}", DateTime.Now);
+                var destName = String.Format("{0:yyyyMMdd_HH}", DateTime.Now);
                 var filename = "";
                 int count = 0;
                 do
                 {
-                    filename = String.Format("backup\\{0}_{1}.sqlite", destName, count);
+                    filename = String.Format("db\\backup\\{0}_{1}.sqlite", destName, count);
                     count++;
                 } while(File.Exists(filename));
 

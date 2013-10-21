@@ -121,5 +121,5 @@ UpgradeLog*.XML
 *.js.map
 
 
-# actual nginx configuration; copy nginx.conf to nginx.conf.sample before use!
+# actual nginx configuration; copy nginx.conf.sample to nginx.conf before use!
 nginx-data/conf/nginx.conf
