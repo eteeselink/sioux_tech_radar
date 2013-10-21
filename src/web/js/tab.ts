@@ -268,6 +268,7 @@ module TechRadar.Client {
 
             var question = this.textForGoodness(opinion, this.getRantQuestion);
             $('#rant-why-question').text(question);
+            $('#rant-name').text(AuthInfo.instance.username);
         }
 
 

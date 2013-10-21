@@ -217,6 +217,7 @@
                 $('#readonly-rant').text(text);
                 var question = this.textForGoodness(opinion, this.getRantQuestion);
                 $('#rant-why-question').text(question);
+                $('#rant-name').text(Client.AuthInfo.instance.username);
             };
             Tab.prototype.showDesc = function (thing) {
                 if(this.hasEverHadAnOpinion) {

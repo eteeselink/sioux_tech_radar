@@ -14,7 +14,7 @@
                 <img src="img/logo_wide_small.png" /></a>
             <ul class="nav public">
                 <li>
-                    <p><span id="public-username">user</span>'s persoonlijke technologieradar</p>
+                    <p>Dit is de technologieradar van <strong><span id="public-username">user</span></strong></p>
                 </li>
             </ul>
             <ul class="nav private">
@@ -45,6 +45,10 @@
             <button type="button" class="close">&times;</button>
             <span id="alert-text"><strong>Warning!</strong> Best check yo self, you're not looking too good.</span>
         </div>
+        <div id="overview-header">
+            Dit is jouw persoonlijke technologieradar.
+            <a id="share-link-button" href="#share-link-modal" role="button" data-toggle="modal">Deel dit overzicht met anderen</a>.
+        </div>
         <div id="contents">
             <!-- real content added dynamically with javascript. mostly. -->
 
@@ -58,7 +62,7 @@
                 <textarea id="rant" class="rant">Nou, daar heb ik wel wat over te zeggen!</textarea>
                 <div id="readonly-rant" class="rant"></div>
                 <div class="quote quote-after">&rdquo;</div>
-                <div class="rant-name">&mdash; <span id="rant-name">eteeselink</span><span id="rant-subject"></span></div>
+                <div class="rant-name">&mdash; <span id="rant-name">[user]</span><span id="rant-subject"></span></div>
                 <div id="rant-message" class="message-ok">Opgeslagen!</div>
             </div>
 
@@ -72,7 +76,7 @@
             </div>
             <form id="desc-form">
                 <textarea id="desc"></textarea>
-                <input type="submit" class="btn" value="Opslaan" />
+                <input type="submit" class="btn" value="Toelichting opslaan" />
             </form>
             <div id="desc-message" class="message-ok">Opgeslagen!</div>
         </div>
@@ -83,7 +87,6 @@
             <div id="desc-overlay">C++ is dit en dat en zus en zo.</div>
         </div>
 
-        <a id="share-link-button" href="#share-link-modal" role="button" class="btn" data-toggle="modal">Deel dit overzicht met anderen</a>
         <div id="share-link-modal" class="modal hide fade in out">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
