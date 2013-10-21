@@ -17,6 +17,7 @@ using Sioux.TechRadar.Users.Auth;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using Sioux.TechRadar.sqlite;
+using System.Threading;
 
 
 namespace Sioux.TechRadar
@@ -86,8 +87,12 @@ namespace Sioux.TechRadar
                 }
                 catch (InvalidOperationException)
                 {
-                    // there's no console when running as a service; just loop indefinitely.
-                    while (true) { }
+                    // there's no console when running as a service; just loop indefinitely. I'm not actually sure
+                    // why we still need this thread at all, but I don't want to dive into that. This is fine.
+                    while (true) 
+                    {
+                        Thread.Sleep(1000); 
+                    }
                 }
             }
         }
