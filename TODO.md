@@ -19,7 +19,7 @@ New TODO d.d. 28-07-2013
 * Je eigen overzichtsradar delen (4u)
   * Open issue: de openbare radar probeert PUT te doen. Waarom?
 - Zien wat anderen vinden (4u)
-* Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
++ Expl eerst, daarna pas radar zelf (.html file renamen) (2u)
 
 
 + Deploy
@@ -38,4 +38,5 @@ OPEN ISSUES:
   Oplossing: geen van twee, teveel gedoe. Revert!
   
 * kwadrantnaam bij radar
-* bug: thing-name in desc verandert niet altijd goed mee
++ bug: thing-name in desc verandert niet altijd goed mee
++ bug: overzichtsradar-veld is niet breed genoeg

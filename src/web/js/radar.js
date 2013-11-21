@@ -26,14 +26,14 @@ var TechRadar;
                 return this.opinions.length;
             };
             Radar.prototype.createSvg = function (auxClasses, margin) {
-                var svg = d3.select("#contents").append("svg").attr("class", "radar " + auxClasses).attr("width", this.diameter * (this.quadrant ? 1.5 : margin)).attr("height", this.diameter * margin);
+                var svg = d3.select("#contents").append("svg").attr("class", "radar " + auxClasses).attr("width", this.diameter * (this.quadrant ? 1.5 : 2)).attr("height", this.diameter * margin);
                 if(this.quadrant) {
                     var scale = this.diameter / Radar.radius;
                     var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5 : 0;
                     var translatey = this.quadrant.isTop() ? Radar.radius * margin : 0;
                 } else {
                     var scale = this.diameter / (Radar.radius * 2);
-                    var translatex = Radar.radius * margin;
+                    var translatex = Radar.radius * 2;
                     var translatey = Radar.radius * margin;
                 }
                 this.svg = svg.append("g").attr("transform", "scale(" + scale + ") translate(" + translatex + ", " + translatey + ")");
