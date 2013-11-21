@@ -75,36 +75,6 @@ var TechRadar;
             return d.promise();
         }
         Client.getThingsAndOpinions = getThingsAndOpinions;
-        function buildRantList(opinions) {
-            $('#rantList').remove();
-            $('#contents').append('<div class="rants-list-right" id="rantList"></div>');
-            $('#rantList').append('<p>click to add rant</p>');
-            opinions.forEach(function (opinion) {
-                $('#rantList').append(newRantForAccordion(opinion));
-            });
-            $('#rantList').show();
-        }
-        function newRantForAccordion(opinion) {
-            var thing = opinion.thing;
-            console.log("adding rant for " + thing.name);
-            var aGroup = $('<div class="accordion-group">');
-            var ahead = $('<div class="accordion-heading">');
-            ahead.append('<a class="accordion-toggle" data-toggle="collapse" data-parent="#rantList" href="#collapse' + thing.name + '">' + thing.title + '</a>');
-            aGroup.append(ahead);
-            var aBody = $('<div id="collapse' + thing.name + '" class="accordion-body collapse">');
-            var subBody = $('<div class="accordion-inner">');
-            aBody.append(subBody);
-            var inputRant = $('<textarea id = "input' + thing.name + '" > ' + opinion.rant + ' </textarea>');
-            subBody.append(inputRant);
-            aGroup.append(aBody);
-            var handler = function () {
-                opinion.rant = inputRant.val();
-                console.log("updating rant: " + opinion.rant);
-                opinion.updateOpinion();
-            };
-            inputRant.change(handler);
-            return aGroup;
-        }
         function makeTabs() {
             $('a[data-toggle="tab"]').on('shown', function (e) {
                 return Client.Tab.show($(e.target).data('q'));
