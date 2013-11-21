@@ -68,7 +68,8 @@ module TechRadar.Client {
                 var scale = this.diameter / Radar.radius;
                 var translatex = this.quadrant.isLeft() ? Radar.radius * 1.5 : 0;
                 var translatey = this.quadrant.isTop() ? Radar.radius * margin : 0;
-            } else {
+            }
+            else {
                 var scale = this.diameter / (Radar.radius * 2);
                 var translatex = Radar.radius * margin;
                 var translatey = Radar.radius * margin;
@@ -98,6 +99,9 @@ module TechRadar.Client {
 
             // y axis
             this.drawLine(axislen, 0, -axislen, 0);
+
+            this.svg.append("text")
+                .attr("class", "quadrant-label");
 
         }
 

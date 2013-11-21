@@ -36,3 +36,6 @@ OPEN ISSUES:
   Optie: een naam mag maar 1x bestaan; degene die'm het eerst toevoegt krijgt'm in dat kwadrant
   Optie: elke naam mag in elk kwadrant bestaan. deze! iesh beter
   Oplossing: geen van twee, teveel gedoe. Revert!
+  
+* kwadrantnaam bij radar
+* bug: thing-name in desc verandert niet altijd goed mee

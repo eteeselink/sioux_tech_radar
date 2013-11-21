@@ -47,6 +47,7 @@ var TechRadar;
                 var axislen = Radar.radius * axisLengthFactor;
                 this.drawLine(0, axislen, 0, -axislen);
                 this.drawLine(axislen, 0, -axislen, 0);
+                this.svg.append("text").attr("class", "quadrant-label");
             };
             Radar.prototype.setupForceLayout = function () {
                 var _this = this;
