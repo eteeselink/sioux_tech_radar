@@ -220,6 +220,10 @@
                 $('#rant-name').text(Client.AuthInfo.instance.username);
             };
             Tab.prototype.showDesc = function (thing) {
+                if (typeof thing === "undefined") { thing = null; }
+                if(thing == null) {
+                    thing = this.currentOpinion.thing;
+                }
                 if(this.hasEverHadAnOpinion) {
                     $('#desc-container').show();
                 }

@@ -67,7 +67,7 @@ module TechRadar.Client {
 
             // restore the description form of the currently selected opinion, if applicable.
             if (this.tab.hasActiveSelection()) {
-                this.tab.showDesc(thing);
+                this.tab.showDesc();
             }
         }
 

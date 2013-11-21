@@ -271,8 +271,11 @@ module TechRadar.Client {
             $('#rant-name').text(AuthInfo.instance.username);
         }
 
-
-        public showDesc(thing: Thing) {
+        /** If `thing` is null, the description of the current thing is shown. */
+        public showDesc(thing: Thing = null) {
+            if (thing == null) {
+                thing = this.currentOpinion.thing;
+            }
             if (this.hasEverHadAnOpinion) {
                 $('#desc-container').show();
             }

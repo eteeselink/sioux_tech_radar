@@ -48,7 +48,7 @@ var TechRadar;
                 var thing = this.findThing(button);
                 $('#desc-overlay-container').hide();
                 if(this.tab.hasActiveSelection()) {
-                    this.tab.showDesc(thing);
+                    this.tab.showDesc();
                 }
             };
             ThingList.prototype.onButtonClick = function (ev) {
