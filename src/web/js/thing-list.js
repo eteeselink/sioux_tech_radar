@@ -85,7 +85,11 @@ var TechRadar;
                     return o.quadrant() === _this.quadrant;
                 });
                 selectedThings.forEach(function (thing) {
-                    _this.container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + thing.title + '</button>');
+                    var title = thing.title;
+                    if(title.length > 22) {
+                        title = title.substr(0, 21) + "&hellip;";
+                    }
+                    _this.container.append('<button class="btn btn_thing thingButton" data-thing="' + thing.name + '">' + title + '</button>');
                 });
             };
             ThingList.prototype.addOpinions = function (selectedOpinions) {

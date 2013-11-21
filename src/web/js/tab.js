@@ -8,10 +8,12 @@
                 $('svg.radar').remove();
                 this.quadrant = (q === "all") ? null : Client.Quadrants[parseInt(q, 10)];
                 var classes = "quadrant-" + q;
-                if(!this.isOverview()) {
+                if(this.isOverview()) {
+                    $('body').addClass('all-quadrants').removeClass('single-quadrant left-quadrant right-quadrant');
+                } else {
                     classes += " single-quadrant";
+                    $('body').addClass('single-quadrant').removeClass('all-quadrants').addClass(this.quadrant.isLeft() ? 'left-quadrant' : 'right-quadrant').removeClass(this.quadrant.isLeft() ? 'right-quadrant' : 'left-quadrant');
                 }
-                $('body').removeClass('single-quadrant all-quadrants').addClass(this.isOverview() ? 'all-quadrants' : 'single-quadrant');
                 var diameter = (this.isOverview()) ? 500 : 375;
                 this.radar = new Client.Radar(diameter, this.quadrant, !this.isOverview(), classes);
                 this.unselectOpinion();
