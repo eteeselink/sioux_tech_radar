@@ -100,8 +100,13 @@ module TechRadar.Client {
             // y axis
             this.drawLine(axislen, 0, -axislen, 0);
 
-            this.svg.append("text")
-                .attr("class", "quadrant-label");
+            $('.quadrant-label').remove();
+            if (this.quadrant==null) {
+                $('#contents').append('<div class="quadrant-label ql-left ql-top">Techniques</div>');
+                $('#contents').append('<div class="quadrant-label ql-right ql-top">Tools</div>');
+                $('#contents').append('<div class="quadrant-label ql-right ql-bottom">Languages</div>');
+                $('#contents').append('<div class="quadrant-label ql-left ql-bottom">Platforms</div>');
+            }
 
         }
 

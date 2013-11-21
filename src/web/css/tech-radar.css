@@ -206,6 +206,24 @@ body.private.all-quadrants.logged-in div#overview-header {
   margin-top: -10px;
   padding-left: 90px;
 }
+body.all-quadrants .quadrant-label {
+  position: absolute;
+  color: #ddd;
+  font-size: 1.3em;
+  font-variant: small-caps;
+}
+body.all-quadrants .quadrant-label.ql-left {
+  left: 200px;
+}
+body.all-quadrants .quadrant-label.ql-right {
+  right: 200px;
+}
+body.all-quadrants .quadrant-label.ql-top {
+  top: 10px;
+}
+body.all-quadrants .quadrant-label.ql-bottom {
+  bottom: 10px;
+}
 svg.radar circle.thing {
   stroke: #83b2e5;
   stroke-width: 1;
@@ -234,5 +252,5 @@ svg.radar.quadrant-0 {
   margin-left: -300px;
 }
 .all-quadrants svg.radar {
-  margin-left: -300px;
+  margin-left: 0px;
 }

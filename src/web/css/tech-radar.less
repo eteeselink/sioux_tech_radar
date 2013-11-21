@@ -263,6 +263,18 @@ body.private.all-quadrants.logged-in
     }
 }
 
+body.all-quadrants .quadrant-label
+{
+    position: absolute;
+    color: #ddd;
+    font-size: 1.3em;
+    font-variant: small-caps;
+
+    &.ql-left { left: 200px; }
+    &.ql-right { right: 200px; }
+    &.ql-top { top: 10px; }
+    &.ql-bottom { bottom: 10px; }
+}
 
 @bgcolor: #ccc;
 svg.radar
@@ -310,5 +322,5 @@ svg.radar.quadrant-0
 
 .all-quadrants svg.radar
 {
-    margin-left: -300px;
+    margin-left: 0px;
 }
