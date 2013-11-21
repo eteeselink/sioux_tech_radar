@@ -10,7 +10,8 @@ namespace Sioux.TechRadar.Users.Auth
     class SiouxExchangeServer
     {
         private const string Domain = "siouxehv.nl";
-        private const string ExchangeServer = "mail.sioux.eu";
+        //private const string ExchangeServer = "mail.sioux.eu";
+        private const string ExchangeServer = "10.192.168.25";
 
         /// <summary>
         /// Connects with the Sioux Exchange server to check whether the given username/password are valid
