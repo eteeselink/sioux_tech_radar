@@ -69,16 +69,19 @@ body
     white-space: nowrap;
 }
 
+@thing-list-width: 180px;
 #thing-add-title
 {
-    width: 110px;
+    width: @thing-list-width - 50px;
     padding: 4px 6px;
     margin: 0;
+    margin-bottom: 20px;
 }
 #thing-add-submit
 {
     width: 34px;
     padding: 4px 10px;
+    margin-bottom: 20px;
 }
 #contents 
 {
@@ -92,10 +95,10 @@ body
   top: 0px;
   left: 0px;  
 }
- 
+
 .btn_thing{
-    min-width:180px !important;
-    width:180px !important;
+    min-width:@thing-list-width !important;
+    width:@thing-list-width !important;
     text-align: left;
 }
 

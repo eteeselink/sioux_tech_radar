@@ -48,13 +48,15 @@
   margin-left: 20px;
 }
 #thing-add-title {
-  width: 110px;
+  width: 130px;
   padding: 4px 6px;
   margin: 0;
+  margin-bottom: 20px;
 }
 #thing-add-submit {
   width: 34px;
   padding: 4px 10px;
+  margin-bottom: 20px;
 }
 #contents {
   width: 100%;

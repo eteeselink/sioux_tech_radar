@@ -103,7 +103,7 @@ var TechRadar;
             };
             ThingList.prototype.drawAddThingButton = function () {
                 var _this = this;
-                $('#thingsList').append('<div><input type="text" id="thing-add-title"><button class="btn" id="thing-add-submit">+</button></div>');
+                $('#thingsList').append('<div><input placeholder="Mis je iets?" type="text" id="thing-add-title"><button class="btn" id="thing-add-submit">+</button></div>');
                 $('#thing-add-submit').click(function (ev) {
                     var request = _this.tab.addThing($('#thing-add-title').val(), _this.quadrant.id);
                     request.done(function (thing) {
