@@ -210,7 +210,7 @@ body.private.all-quadrants.logged-in div#overview-header {
 }
 body.all-quadrants .quadrant-label {
   position: absolute;
-  color: #ddd;
+  color: #888;
   font-size: 1.3em;
   font-variant: small-caps;
 }
@@ -244,6 +244,7 @@ svg.radar circle.lines {
 svg.radar text {
   font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
   font-size: 12px;
+  fill: #333333;
 }
 svg.radar tspan {
   font-size: 10px;
